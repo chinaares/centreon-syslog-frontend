@@ -1,0 +1,97 @@
+## Centreon-Syslog-Frontend 1.3.2
+Bug #1794: Delete hard coded "centreon" database name in SQL uninstall and install script on Frontend
+Enhancement #1793: ODT export in search page
+
+## Centreon-Syslog-Frontend 1.3.1
+Bug #1782: Filters not save on search page
+Bug #1787: Incomplete topology update during upgrade from 1.2.1 to 1.3
+Bug #1792: Incorrect SQL uninstall
+
+## Centreon-Syslog-Frontend 1.3
+Bug #1143: button "modify" don't appear after save configuration
+Bug #1485: Database name is hard coded
+Bug #1661: Select number of display lines in search page don't works
+Bug #1780: Can't download CSV file from search page with IE all version
+Bug #1781: Can't use CSV and XML export after udgrade of Centreon-Syslog-frontend
+Enhancement #912: CSV export for syslog search page
+Enhancement #1107: Add Nagios plugin to check syslog events in database
+Enhancement #1114: Clean install script for frontend
+Enhancement #1116: Separate serveur configuration and Database information in configuration page
+Enhancement #1123: Usage of the priority filter in the frontend view
+Enhancement #1173: Monitoring : Syslog filters parameters not updated
+Enhancement #1620: Possibility to defined syslog monitoring refresh interval
+Enhancement #1778: Add French translation of module
+
+## Centreon-Syslog-Frontend 1.2.1
+Bug #1398: No CSS for "warn" level message type
+Bug #1451: Typo in function name "insertCache"
+
+## Centreon-Syslog-Frontend 1.2.1-RC3
+Enhancement #1343: ssh2
+Enhancement #1353: Add file to determine compatibility between frontend and server version
+Enhancement #1354: Catch DB error in Search page of Cetreon Syslog frontend
+Bug #1361 :Trop de "tag" donne des pages blanches
+
+## Centreon-Syslog-Frontend 1.2.1-RC2
+Bug #1332: Internet Explorer 8 error (KB927917)
+
+## Centreon-Syslog-Frontend 1.2.1-RC1
+Enhancement #1112: Clean sources code for frontend
+Enhancement #1151: Control process reloadCache and tableLogRotate
+Bug #1156: Search page doesn't compatible with Centreon 2.1
+Bug #1158: File was not exorped with sucess message !
+Bug #1167: don't create start creation of old cache table if any logsxxxxxxxx table exist
+Bug #1168: Export script won't delete temp file
+Bug #1169: ssh_export.php : echo before Session::start()
+Bug #1172: syslog_xml.php : Hardcoded path to centreon.conf.php
+Bug #1174: Monitoring : Syslog filters parameters not escaped
+Bug #1299: Syslog Search leaves a blank white screen.
+
+## Centreon-Syslog-Frontend 1.2
+Tag stable version
+
+## Centreon-Syslog-Frontend 1.2-RC3
+=> bugfix : replace "Research" menu label by "Search"
+
+## Centreon-Syslog-Frontend 1.2-RC2
+=> bugfix : correct path in install.sh
+
+## Centreon-Syslog-Frontend 1.2-RC1
+=> enhancement : separation between web part and server part.
+=> enhancement : add AJAX for refresh syslog monitoring view.
+=> enhancement : add possibility to export configuration of syslog server on a distant server.
+=> enhancement : separate monitoring view and research view.
+=> enhancement : add ddocumentation for installation, expoitation and administration of module.
+=> bugfix #1030: Bad USER and MODE on cron file
+=> bugfix #1035: Set DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci on syslog database
+=> bugfix #1075: No verification for file "syslog_conf.pm"
+=> bugfix #1076: Incorrect right on "syslog.conf.php" file
+
+## Syslog 1.1
+=> enhancement : sort select box on main page
+
+## Syslog 1.1-RC4
+=> enhancement : change css class for administration page
+=> enhancement : change appearance change of the bonds towards the following pages
+=> bugfix : reloadcache.php cron file empty after module installation
+=> bugfix : link properties for following pages
+
+## Syslog 1.1-RC3
+
+=> enhancement : cron to reload search_cache for performances
+=> enhancement : new installer
+=> bugfix : DataTimePicket on search filter
+
+## Syslog 1.1-RC2
+
+=> improve Centreon topology
+=> improve Centreon css
+
+## Syslog-NG 1.1-RC1
+
+=> enhancement : Compatibility with Centreon 2.0
+=> enhancement : change module name for "Syslog"
+
+## Syslog-NG 1.0
+
+version only compatible Centreon 1.4.x

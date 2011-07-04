@@ -1,0 +1,11 @@
+Syslog Module for Centreon 2.1.x
+
+Customize your options in 'Administration -> Modules -> Syslog -> Configuration' menu.
+
+If this is the first installation, please put "logs" in "Syslog Table Name" field for first day.
+The second day, you can put "all_logs" in "Syslog Table Name" field beause this table was created
+after first tables rotation.
+
+http://forge.centreon.com/projects/show/centreon-syslog
+
+Enjoy ! ;

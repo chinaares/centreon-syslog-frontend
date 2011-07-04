@@ -1,0 +1,31 @@
+{$form.javascript}
+<form {$form.attributes}>
+	<div id="validFormTop">
+	{if $o == "a"}
+		<p class="oreonbutton">{$form.submitC.html}&nbsp;&nbsp;&nbsp;{$form.reset.html}</p>
+	{else if $o == "w"}
+		<p class="oreonbutton">{$form.submitM.html}</p>
+	{else if $o == "m"}
+		<p class="oreonbutton">{$form.submitS.html}&nbsp;&nbsp;&nbsp;{$form.reset.html}</p>
+	{/if}
+	</div>
+	 <table class="ListTable">
+	 	<tr class="ListHeader"><td class="FormHeader" colspan="2">&nbsp;<img src='./img/icones/16x16/text_code_colored.gif'>&nbsp;&nbsp;{$form.header.title}</td></tr>
+	 	<tr class="list_lvl_1"><td class="ListColLvl1_name" colspan="2"><img src='./img/icones/16x16/note.gif'>&nbsp;&nbsp;{$syslog_db_general}</td></tr>
+		<tr class="list_one"><td class="FormRowField">{$form.centreon_hosts.label}</td><td class="FormRowValue">{$form.centreon_hosts.html}</td></tr>
+		<tr class="list_two"><td class="FormRowField">{$form.syslog_name.label}</td><td class="FormRowValue">{$form.syslog_name.html}</td></tr>
+		<tr class="list_one"><td class="FormRowField">{$form.syslog_ip.label}</td><td class="FormRowValue">{$form.syslog_ip.html}</td></tr>
+	</table>
+	<div id="validForm">
+		<p>{$form.action.html}</p>
+		{if $o == "a"}
+			<p class="oreonbutton">{$form.submitC.html}&nbsp;&nbsp;&nbsp;{$form.reset.html}</p>
+		{else if $o == "w"}
+			<p class="oreonbutton">{$form.submitM.html}</p>
+		{else if $o == "m"}
+			<p class="oreonbutton">{$form.submitS.html}&nbsp;&nbsp;&nbsp;{$form.reset.html}</p>
+		{/if}
+	</div>
+	{$form.hidden}
+</form>
+

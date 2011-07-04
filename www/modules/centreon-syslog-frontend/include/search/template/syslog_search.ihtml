@@ -1,0 +1,89 @@
+<link href="./modules/centreon-syslog/css/syslog.css" type="text/css" rel="stylesheet">
+<link href="./include/common/javascript/datePicker.css" rel="stylesheet" type="text/css"/>
+
+{$Formfilterhidden.javascript}
+{$Formfilter.javascript}
+
+<form {$Formfilter.attributes}>
+	<table class="ListTable">
+		<tr class='ListHeader'>
+			<td class="ListColHeaderLeft" colspan=4>
+				<img src='./img/icones/16x16/text_view.gif'>&nbsp;{$FILTER_TITLE}
+			</td>
+			<td align=right>
+				{$export}&nbsp;&nbsp;:
+				&nbsp;&nbsp;<a href="javascript:ajax_generateCSV_XML('CSV')"><img src="./modules/centreon-syslog/img/office_excel.png" alt="export CSV"/></a>
+				&nbsp;&nbsp;<a href="javascript:ajax_generateCSV_XML('XML')"><img src="./modules/centreon-syslog/img/xml.png" alt="export XML"/></a>
+				&nbsp;&nbsp;<a href="javascript:ajax_generateODT('ODT')"><img src="./modules/centreon-syslog/img/openoffice_writer.gif" alt="export ODT"/></a>
+			</td>
+		</tr>
+		<tr class='ListColLeft'>
+			<td colspan="6" align=center>
+				<b>{$Formfilter.start_date.label}:</b>
+				&nbsp;&nbsp;
+				<input id="StartDate" name="StartDate" type="text" value="{$startDate}" onclick="displayDatePicker('StartDate', this)" size="10" />
+				&nbsp;&nbsp;
+				<input id="StartTime" name="StartTime" type="text" value="{$startTime}" onclick="displayTimePicker('StartTime', this)" size="5" />
+				&nbsp;
+				<b>{$Formfilter.end_date.label}:</b>
+				&nbsp;&nbsp;
+				<input id="EndDate" name="EndDate" type="text" value="{$endDate}" onclick="displayDatePicker('EndDate', this)" size="10" />
+				&nbsp;&nbsp;
+				<input id="EndTime" name="EndTime" type="text" value="{$endTime}" onclick="displayTimePicker('EndTime', this)" size="5" />
+			</td>
+		</tr>
+		<tr class='ListHeader'>
+				<td class="ListColHeaderCenter">{$headerMenu_host}</td>
+				<td class="ListColHeaderCenter">{$headerMenu_facility}</td>
+				<td class="ListColHeaderCenter">{$headerMenu_severity}</td>	
+				<td class="ListColHeaderCenter">{$headerMenu_program}</td>
+				<td class="ListColHeaderCenter">{$headerMenu_msg}</td>
+		</tr>
+		<tr class="list_one">
+			<td class="ListColCenter">{$Formfilter.filter_host.html}</td>
+			<td class="ListColCenter">{$Formfilter.filter_Ffacility.html}&nbsp;&nbsp;{$Formfilter.filter_facility.html}</td>
+			<td class="ListColCenter">{$Formfilter.filter_Fseverity.html}&nbsp;&nbsp;{$Formfilter.filter_severity.html}</td>
+			<td class="ListColCenter">{$Formfilter.filter_program.html}</td>
+			<td class="ListColCenter">{$Formfilter.filter_msg.html}</td>
+		</tr>
+		<tr class="list_two">
+			<td class="ListColCenter" colspan="6">{$Formfilter.filter_search.html}&nbsp;&nbsp;&nbsp;{$Formfilter.reset.html}</td>
+		</tr>
+	</table>
+	{$Formfilter.hidden}
+</form>		
+<br>
+<form {$Formfilterhidden.attributes}>
+	{php}
+	   include('./modules/centreon-syslog/include/pagination/pagination_syslog.php');
+	{/php}
+	<table class="ListTable">
+		<tr class='ListHeader'>
+			<td class="SyslogListColCenterNoWrap" >{$headerMenu_datetime}</td>
+			<td class="SyslogListColCenterNoWrap">{$headerMenu_host}</td>
+			<td class="SyslogListColCenterNoWrap">{$headerMenu_facility}</td>
+			<td class="SyslogListColCenterNoWrap">{$headerMenu_severity}</td>	
+			<td class="SyslogListColCenterNoWrap">{$headerMenu_program}</td>
+			<td class="SyslogListColCenterNoWrap">{$headerMenu_msg}</td>
+		</tr>
+		{section name=elem loop=$elemArr}
+		<tr class={cycle values="list_two, list_one"}>
+			<td class="SyslogListColCenterNoWrap" >{$elemArr[elem].RowMenu_datetime}</td>
+			<td class="SyslogListColCenterNoWrap">{$elemArr[elem].RowMenu_host}</td>
+			<td class="SyslogListColCenterNoWrap">{$elemArr[elem].RowMenu_facility}</td>
+			<td class="sev_{$elemArr[elem].RowMenu_priority}">{$elemArr[elem].RowMenu_priority}</td>
+			<td class="SyslogListColCenterNoWrap">{$elemArr[elem].RowMenu_program}</td>
+			<td class="ListColLeft">{$elemArr[elem].RowMenu_msg}</td>
+		</tr>
+		{/section}
+	</table>
+	<table class="Toolbar_TableBottom">
+		<tr>
+			{php}
+			   include('./modules/centreon-syslog/include/pagination/pagination_syslog.php');
+			{/php}
+		</tr>
+	</table>
+	<input type='hidden' id='limit' name='limit' value='{$limit}'/>
+	{$Formfilterhidden.hidden}
+</form>	

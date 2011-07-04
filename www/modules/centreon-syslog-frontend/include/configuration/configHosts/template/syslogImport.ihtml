@@ -1,0 +1,37 @@
+<script type="text/javascript" src="./include/common/javascript/tool.js"></script>
+<form id='listForm' name='form' method='POST'>
+	<p class="oreonbutton">{$form.import.html}</p>
+	<table class="ToolbarTable">
+		<tr class="ToolbarTR">
+			<input name="p" value="{$p}" type="hidden">
+			{php}
+			   include('./include/common/pagination.php');
+			{/php}
+		</tr>
+	</table>
+	<table class="ListTable">
+		<tr class="ListHeader">
+			<td class="ListColHeaderPicker"><input type="checkbox" name="checkall" onclick="checkUncheckAll(this);"/></td>
+			<td class="ListColHeaderCenter">{$headerMenu_syslog_dns}</td>
+			<td class="ListColHeaderCenter">{$headerMenu_syslog_ipv4}</td>
+		</tr>
+		{section name=elem loop=$elemArr}
+		<tr class={$elemArr[elem].MenuClass}>
+			<td class="ListColPicker"><input type='checkbox' name='{$elemArr[elem].hostName}::{$elemArr[elem].hostIPV4}' /></td>
+			<td class="ListColCenter">{$elemArr[elem].hostName}</td>
+			<td class="ListColCenter">{$elemArr[elem].hostIPV4}</td>
+		</tr>
+		{/section}
+	</table>
+	<table class="ToolbarTable">
+		<tr>
+			<input name="p" value="{$p}" type="hidden">
+			{php}
+			   include('./include/common/pagination.php');
+			{/php}
+		</tr>
+	</table>
+<input type='hidden' name='o' id='o' value='42'>
+<input type='hidden' id='limit' name='limit' value='{$limit}'>
+{$form.hidden}
+</form>

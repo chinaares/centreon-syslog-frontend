@@ -1,0 +1,76 @@
+/* From php-syslogng */    
+.sev_debug { // DEBUG
+padding-left:3px;
+text-align:center;
+  background-color: #ffffff;
+}
+
+.sev_info { // INFO
+padding-left:3px;
+text-align:center;
+  background-color: #dfffdf;
+}
+
+.sev_notice { // NOTICE
+padding-left:3px;
+text-align:center;
+  background-color: #a0ffa0;
+}
+
+.sev_warning { // WARNING
+padding-left:3px;
+text-align:center;
+  background-color: #ffff00;
+}
+
+.sev_warn { // WARNING
+padding-left:3px;
+text-align:center;
+  background-color: #ffff00;
+}
+
+.sev_error { // ERROR
+padding-left:3px;
+text-align:center;
+  background-color: #ff8f00;
+}
+
+.sev_err { // ERROR
+padding-left:3px;
+text-align:center;
+  background-color: #ff8f00;
+}
+
+.sev_critical { // CRIT
+padding-left:3px;
+text-align:center;
+  background-color: #ffa0a0;
+}
+
+.sev_crit { // CRIT
+padding-left:3px;
+text-align:center;
+  background-color: #ffa0a0;
+}
+
+.sev_alert { //  ALERT
+padding-left:3px;
+text-align:center;
+  background-color: #ff0000;
+}
+
+.sev_emerg { // EMERG
+padding-left:3px;
+text-align:center;
+  background-color: #ff00ff;
+}
+
+.SyslogListColHeaderLeftNoWrap{text-align:left; padding-left:3px; padding-right:3px; white-space:nowrap;}
+.SyslogListColLeftNoWrap{text-align:left; padding-left:3px; padding-right:3px; white-space:nowrap;}
+
+.SyslogListColHeaderRightNoWrap{text-align:right; padding-left:3px; padding-right:3px; white-space:nowrap;}
+.SyslogListColRightNoWrap{text-align:right; padding-left:3px; padding-right:3px; white-space:nowrap;}
+
+.SyslogListColHeaderCenterNoWrap{text-align:center; padding-left:3px; padding-right:3px; white-space:nowrap;}
+.SyslogListColCenterNoWrap{text-align:center; padding-left:3px; padding-right:3px; white-space:nowrap;}
+

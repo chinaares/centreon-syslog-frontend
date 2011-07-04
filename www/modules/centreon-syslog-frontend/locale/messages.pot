@@ -1,0 +1,276 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-05-28 18:17+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: /merethis/centreon-syslog/svn/www/include/export/ssh2/ssh2_export.php:118
+msgid "Unable to connect on distant server."
+msgstr ""
+
+#: /merethis/centreon-syslog/svn/www/include/export/ssh2/ssh2_export.php:129
+msgid "Authentification failed."
+msgstr ""
+
+#: /merethis/centreon-syslog/svn/www/include/export/ssh2/ssh2_export.php:136
+msgid ""
+"Unable to export configuration file. Rights may be not correct on distant "
+"directory."
+msgstr ""
+
+#: /merethis/centreon-syslog/svn/www/include/export/ssh2/ssh2_export.php:142
+msgid "Configuration file was exported with succes"
+msgstr ""
+
+#: /merethis/centreon-syslog/svn/www/include/pagination/pagination_syslog.php:231
+msgid "previous"
+msgstr ""
+
+#: /merethis/centreon-syslog/svn/www/include/pagination/pagination_syslog.php:232
+msgid "next"
+msgstr ""
+
+#: /merethis/centreon-syslog/svn/www/include/pagination/pagination_syslog.php:256
+msgid "Lines: "
+msgstr ""
+
+#: /merethis/centreon-syslog/svn/www/include/pagination/pagination_syslog.php:276
+msgid "Pages : "
+msgstr ""
+
+#: /merethis/centreon-syslog/svn/www/include/monitoring/xml/syslog_xml.php:138
+#: /merethis/centreon-syslog/svn/www/include/search/syslog_search.php:281
+msgid "Date / Time"
+msgstr ""
+
+#: /merethis/centreon-syslog/svn/www/include/monitoring/xml/syslog_xml.php:139
+#: /merethis/centreon-syslog/svn/www/include/monitoring/xml/syslog_filters_xml.php:147
+#: /merethis/centreon-syslog/svn/www/include/search/syslog_search.php:282
+msgid "Host"
+msgstr ""
+
+#: /merethis/centreon-syslog/svn/www/include/monitoring/xml/syslog_xml.php:140
+#: /merethis/centreon-syslog/svn/www/include/monitoring/xml/syslog_filters_xml.php:148
+#: /merethis/centreon-syslog/svn/www/include/search/syslog_search.php:283
+msgid "Facility"
+msgstr ""
+
+#: /merethis/centreon-syslog/svn/www/include/monitoring/xml/syslog_xml.php:141
+#: /merethis/centreon-syslog/svn/www/include/monitoring/xml/syslog_filters_xml.php:149
+#: /merethis/centreon-syslog/svn/www/include/search/syslog_search.php:284
+msgid "Severity"
+msgstr ""
+
+#: /merethis/centreon-syslog/svn/www/include/monitoring/xml/syslog_xml.php:142
+#: /merethis/centreon-syslog/svn/www/include/monitoring/xml/syslog_filters_xml.php:150
+#: /merethis/centreon-syslog/svn/www/include/search/syslog_search.php:285
+msgid "Program"
+msgstr ""
+
+#: /merethis/centreon-syslog/svn/www/include/monitoring/xml/syslog_xml.php:143
+#: /merethis/centreon-syslog/svn/www/include/search/syslog_search.php:286
+msgid "Message"
+msgstr ""
+
+#: /merethis/centreon-syslog/svn/www/include/monitoring/xml/syslog_filters_xml.php:143
+#: /merethis/centreon-syslog/svn/www/include/search/syslog_search.php:280
+msgid "Syslog filters parameters :"
+msgstr ""
+
+#: /merethis/centreon-syslog/svn/www/include/monitoring/xml/syslog_filters_xml.php:154
+#: /merethis/centreon-syslog/svn/www/include/monitoring/syslog.php:127
+#: /merethis/centreon-syslog/svn/www/include/monitoring/javascript/syslog_js.php:64
+msgid "stop"
+msgstr ""
+
+#: /merethis/centreon-syslog/svn/www/include/monitoring/syslog.php:132
+msgid "Refresh:"
+msgstr ""
+
+#: /merethis/centreon-syslog/svn/www/include/monitoring/javascript/syslog_js.php:63
+msgid "start"
+msgstr ""
+
+#: /merethis/centreon-syslog/svn/www/include/search/syslog_search.php:278
+msgid "Export"
+msgstr ""
+
+#: /merethis/centreon-syslog/svn/www/include/search/syslog_search.php:279
+msgid "Syslog"
+msgstr ""
+
+#: /merethis/centreon-syslog/svn/www/include/search/syslog_search.php:326
+msgid "From"
+msgstr ""
+
+#: /merethis/centreon-syslog/svn/www/include/search/syslog_search.php:328
+msgid "To"
+msgstr ""
+
+#: /merethis/centreon-syslog/svn/www/include/search/syslog_search.php:344
+msgid "filter"
+msgstr ""
+
+#: /merethis/centreon-syslog/svn/www/include/search/syslog_search.php:345
+msgid "reset"
+msgstr ""
+
+#: /merethis/centreon-syslog/svn/www/include/administration/formSyslogAdmin.php:89
+msgid "Syslog Options"
+msgstr ""
+
+#: /merethis/centreon-syslog/svn/www/include/administration/formSyslogAdmin.php:92
+#: /merethis/centreon-syslog/svn/www/include/administration/formSyslogAdmin.php:102
+msgid "IP or DNS name"
+msgstr ""
+
+#: /merethis/centreon-syslog/svn/www/include/administration/formSyslogAdmin.php:93
+msgid "Database name"
+msgstr ""
+
+#: /merethis/centreon-syslog/svn/www/include/administration/formSyslogAdmin.php:94
+msgid "Database user"
+msgstr ""
+
+#: /merethis/centreon-syslog/svn/www/include/administration/formSyslogAdmin.php:95
+msgid "Password of Database user"
+msgstr ""
+
+#: /merethis/centreon-syslog/svn/www/include/administration/formSyslogAdmin.php:96
+msgid "Logs table name"
+msgstr ""
+
+#: /merethis/centreon-syslog/svn/www/include/administration/formSyslogAdmin.php:97
+msgid "Logs Merge table name"
+msgstr ""
+
+#: /merethis/centreon-syslog/svn/www/include/administration/formSyslogAdmin.php:98
+msgid "Cache table name"
+msgstr ""
+
+#: /merethis/centreon-syslog/svn/www/include/administration/formSyslogAdmin.php:99
+msgid "Cache Merge table name"
+msgstr ""
+
+#: /merethis/centreon-syslog/svn/www/include/administration/formSyslogAdmin.php:103
+msgid "Username for SSH connection"
+msgstr ""
+
+#: /merethis/centreon-syslog/svn/www/include/administration/formSyslogAdmin.php:104
+msgid "Password for SSH connection"
+msgstr ""
+
+#: /merethis/centreon-syslog/svn/www/include/administration/formSyslogAdmin.php:105
+msgid "SSH port"
+msgstr ""
+
+#: /merethis/centreon-syslog/svn/www/include/administration/formSyslogAdmin.php:108
+msgid "Configuration directory"
+msgstr ""
+
+#: /merethis/centreon-syslog/svn/www/include/administration/formSyslogAdmin.php:109
+msgid "Duration of retention of data"
+msgstr ""
+
+#: /merethis/centreon-syslog/svn/www/include/administration/formSyslogAdmin.php:110
+msgid "Refresh Interval for monitoring"
+msgstr ""
+
+#: /merethis/centreon-syslog/svn/www/include/administration/formSyslogAdmin.php:111
+msgid "Refresh Interval for filters"
+msgstr ""
+
+#: /merethis/centreon-syslog/svn/www/include/administration/formSyslogAdmin.php:120
+#: /merethis/centreon-syslog/svn/www/include/administration/formSyslogAdmin.php:121
+#: /merethis/centreon-syslog/svn/www/include/administration/formSyslogAdmin.php:122
+#: /merethis/centreon-syslog/svn/www/include/administration/formSyslogAdmin.php:123
+#: /merethis/centreon-syslog/svn/www/include/administration/formSyslogAdmin.php:124
+#: /merethis/centreon-syslog/svn/www/include/administration/formSyslogAdmin.php:125
+#: /merethis/centreon-syslog/svn/www/include/administration/formSyslogAdmin.php:126
+#: /merethis/centreon-syslog/svn/www/include/administration/formSyslogAdmin.php:127
+#: /merethis/centreon-syslog/svn/www/include/administration/formSyslogAdmin.php:128
+#: /merethis/centreon-syslog/svn/www/include/administration/formSyslogAdmin.php:129
+#: /merethis/centreon-syslog/svn/www/include/administration/formSyslogAdmin.php:130
+#: /merethis/centreon-syslog/svn/www/include/administration/formSyslogAdmin.php:131
+#: /merethis/centreon-syslog/svn/www/include/administration/formSyslogAdmin.php:132
+#: /merethis/centreon-syslog/svn/www/include/administration/formSyslogAdmin.php:133
+#: /merethis/centreon-syslog/svn/www/include/administration/formSyslogAdmin.php:134
+#: /merethis/centreon-syslog/svn/www/include/administration/formSyslogAdmin.php:135
+msgid "Required Field"
+msgstr ""
+
+#: /merethis/centreon-syslog/svn/www/include/administration/formSyslogAdmin.php:172
+msgid "Save"
+msgstr ""
+
+#: /merethis/centreon-syslog/svn/www/include/administration/formSyslogAdmin.php:173
+msgid "Reset"
+msgstr ""
+
+#: /merethis/centreon-syslog/svn/www/include/administration/formSyslogAdmin.php:178
+msgid "Export configuration"
+msgstr ""
+
+#: /merethis/centreon-syslog/svn/www/include/administration/formSyslogAdmin.php:185
+msgid "Modify"
+msgstr ""
+
+#: /merethis/centreon-syslog/svn/www/include/administration/formSyslogAdmin.php:198
+msgid "General DB information"
+msgstr ""
+
+#: /merethis/centreon-syslog/svn/www/include/administration/formSyslogAdmin.php:199
+msgid "Logs tables"
+msgstr ""
+
+#: /merethis/centreon-syslog/svn/www/include/administration/formSyslogAdmin.php:200
+msgid "Cache tables"
+msgstr ""
+
+#: /merethis/centreon-syslog/svn/www/include/administration/formSyslogAdmin.php:201
+msgid "SSH information"
+msgstr ""
+
+#: /merethis/centreon-syslog/svn/www/include/administration/formSyslogAdmin.php:202
+msgid "Configuration of syslog collector"
+msgstr ""
+
+#: /merethis/centreon-syslog/svn/www/include/administration/formSyslogAdmin.php:203
+msgid "Frontend configuration"
+msgstr ""
+
+#: /merethis/centreon-syslog/svn/www/include/administration/formSyslogAdmin.php:204
+msgid "days"
+msgstr ""
+
+#: /merethis/centreon-syslog/svn/www/include/administration/formSyslogAdmin.php:205
+msgid "seconds"
+msgstr ""
+
+#: /merethis/centreon-syslog/svn/www/include/administration/formSyslogAdmin.php:206
+msgid "Database"
+msgstr ""
+
+#: /merethis/centreon-syslog/svn/www/include/administration/formSyslogAdmin.php:207
+msgid "SSH"
+msgstr ""
+
+#: /merethis/centreon-syslog/svn/www/include/administration/formSyslogAdmin.php:208
+msgid "Configuration"
+msgstr ""
+
+#: /merethis/centreon-syslog/svn/www/class/syslogDB.class.php:118
+msgid "Connection failed, please contact your administrator"
+msgstr ""

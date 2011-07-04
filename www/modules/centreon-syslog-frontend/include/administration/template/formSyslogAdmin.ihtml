@@ -1,0 +1,64 @@
+{$form.javascript}
+<form {$form.attributes}>
+	<div>
+	<ul id="mainnav">
+		<li class="a" id='c1'><a href="#" onclick="javascript:displayTab('1');">{$sort1}</a></li>
+		<li class="b" id='c2'><a href="#" onclick="javascript:displayTab('2');">{$sort2}</a></li>
+		<li class="b" id='c3'><a href="#" onclick="javascript:displayTab('3');">{$sort3}</a></li>
+	</ul>
+	</div>
+	<div id="validFormTop">
+	{if $o == "m"}
+		<p class="oreonbutton">{$form.submitC.html}&nbsp;&nbsp;&nbsp;{$form.reset.html}</p>
+	{else if $o == "f"}
+		<p class="oreonbutton">{$form.modify.html}&nbsp;&nbsp;&nbsp;{$form.export.html}</p>
+	{/if}
+	</div>
+	<div id='tab1' class='tab'>
+	 <table class="ListTable">
+	 	<tr class="ListHeader"><td class="FormHeader" colspan="2">&nbsp;<img src='./img/icones/16x16/text_code_colored.gif'>&nbsp;&nbsp;{$form.header.title}</td></tr>
+	 	<tr class="list_lvl_1"><td class="ListColLvl1_name" colspan="2"><img src='./img/icones/16x16/note.gif'>&nbsp;&nbsp;{$syslog_db_general}</td></tr>
+		<tr class="list_one"><td class="FormRowField">{$form.syslog_db_server.label}</td><td class="FormRowValue">{$form.syslog_db_server.html}</td></tr>
+		<tr class="list_two"><td class="FormRowField">{$form.syslog_db_name.label}</td><td class="FormRowValue">{$form.syslog_db_name.html}</td></tr>
+		<tr class="list_one"><td class="FormRowField">{$form.syslog_db_user.label}</td><td class="FormRowValue">{$form.syslog_db_user.html}</td></tr>
+		<tr class="list_two"><td class="FormRowField">{$form.syslog_db_password.label}</td><td class="FormRowValue">{$form.syslog_db_password.html}</td></tr>
+		<tr class="list_lvl_1"><td class="ListColLvl1_name" colspan="2"><img src='./img/icones/16x16/note.gif'>&nbsp;&nbsp;{$syslog_db_logs}</td></tr>
+		<tr class="list_one"><td class="FormRowField">{$form.syslog_db_logs.label}</td><td class="FormRowValue">{$form.syslog_db_logs.html}</td></tr>
+		<tr class="list_two"><td class="FormRowField">{$form.syslog_db_logs_merge.label}</td><td class="FormRowValue">{$form.syslog_db_logs_merge.html}</td></tr>
+	 	<tr class="list_lvl_1"><td class="ListColLvl1_name" colspan="2"><img src='./img/icones/16x16/note.gif'>&nbsp;&nbsp;{$syslog_db_cache}</td></tr>
+		<tr class="list_one"><td class="FormRowField">{$form.syslog_db_cache.label}</td><td class="FormRowValue">{$form.syslog_db_cache.html}</td></tr>
+		<tr class="list_two"><td class="FormRowField">{$form.syslog_db_cache_merge.label}</td><td class="FormRowValue">{$form.syslog_db_cache_merge.html}</td></tr>
+	</table>
+	</div>	
+	<div id='tab2' class='tab'>
+	<table class="ListTable">
+		<tr class="ListHeader"><td class="FormHeader" colspan="2">&nbsp;<img src='./img/icones/16x16/text_code_colored.gif'>&nbsp;&nbsp;{$form.header.title}</td></tr>
+	 	<tr class="list_lvl_1"><td class="ListColLvl1_name" colspan="2"><img src='./img/icones/16x16/note.gif'>&nbsp;&nbsp;{$syslog_ssh}</td></tr>
+		<tr class="list_one"><td class="FormRowField">{$form.syslog_ssh_server.label}</td><td class="FormRowValue">{$form.syslog_ssh_server.html}</td></tr>
+		<tr class="list_two"><td class="FormRowField">{$form.syslog_ssh_user.label}</td><td class="FormRowValue">{$form.syslog_ssh_user.html}</td></tr>
+		<tr class="list_one"><td class="FormRowField">{$form.syslog_ssh_pass.label}</td><td class="FormRowValue">{$form.syslog_ssh_pass.html}</td></tr>
+		<tr class="list_two"><td class="FormRowField">{$form.syslog_ssh_port.label}</td><td class="FormRowValue">{$form.syslog_ssh_port.html}</td></tr>
+	</table>
+	</div>	
+	<div id='tab3' class='tab'>
+	<table class="ListTable">
+		<tr class="ListHeader"><td class="FormHeader" colspan="2">&nbsp;<img src='./img/icones/16x16/text_code_colored.gif'>&nbsp;&nbsp;{$form.header.title}</td></tr>
+	 	<tr class="list_lvl_1"><td class="ListColLvl1_name" colspan="2"><img src='./img/icones/16x16/note.gif'>&nbsp;&nbsp;{$syslog_server_configuration}</td></tr>
+		<tr class="list_one"><td class="FormRowField">{$form.syslog_conf_dir.label}</td><td class="FormRowValue">{$form.syslog_conf_dir.html}</td></tr>
+		<tr class="list_two"><td class="FormRowField">{$form.syslog_db_rotate.label}</td><td class="FormRowValue">{$form.syslog_db_rotate.html}&nbsp;&nbsp;{$days}</td></tr>
+		<tr class="list_lvl_1"><td class="ListColLvl1_name" colspan="2"><img src='./img/icones/16x16/note.gif'>&nbsp;&nbsp;{$syslog_monitoring_configuration}</td></tr>
+		<tr class="list_one"><td class="FormRowField">{$form.syslog_refresh_monitoring.label}</td><td class="FormRowValue">{$form.syslog_refresh_monitoring.html}&nbsp;&nbsp;{$seconds}</td></tr>
+		<tr class="list_two"><td class="FormRowField">{$form.syslog_refresh_filters.label}</td><td class="FormRowValue">{$form.syslog_refresh_filters.html}&nbsp;&nbsp;{$seconds}</td></tr>
+	</table>
+	</div>
+	<div id="validForm">
+		<p>{$form.action.html}</p>
+		{if $o == "m"}
+			<p class="oreonbutton">{$form.submitC.html}&nbsp;&nbsp;&nbsp;{$form.reset.html}</p>
+		{else if $o == "f"}
+			<p class="oreonbutton">{$form.modify.html}&nbsp;&nbsp;&nbsp;{$form.export.html}</p>
+		{/if}
+	</div>
+	{$form.hidden}
+</form>
+

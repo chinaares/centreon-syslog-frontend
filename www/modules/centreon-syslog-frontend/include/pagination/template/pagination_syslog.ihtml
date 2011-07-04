@@ -1,0 +1,26 @@
+{$select_form.javascript}
+{$javascript}
+<table class="ToolbarTable">
+	<tr class="ToolbarTR">
+		<td colspan="2" width="200">&nbsp;</td>
+		<td class="ToolbarPagination">
+			{if $pagePrev}
+				&nbsp;<a href="{$pagePrev}{if $host_name}&host_name={$host_name}{/if}"><img src="./img/icones/16x16/arrow_left_blue.gif"  alt='{$previous}' title='{$previous}'></a>
+			{/if}
+			{foreach key=key item=item from=$pageArr }
+				{if $pageArr[$key].num != $num}
+				&nbsp;<a href="{$pageArr[$key].url_page}" class="otherPageNumber">{$pageArr[$key].label_page}</a>&nbsp;
+				{else}
+				&nbsp;<b class="currentPageNumber">{$pageArr[$key].label_page}</b>&nbsp;
+				{/if}
+			{/foreach}
+			{if $pageNext}&nbsp;
+				<a href="{$pageNext}"><img src="./img/icones/16x16/arrow_right_blue.gif" alt='{$next}' title='{$next}'></a>
+			{/if}	
+		</td>
+		<td class="Toolbar_pagelimit">
+			&nbsp;{$select_form.l.label}&nbsp;{$select_form.l.html}&nbsp;{$page}&nbsp;{$pageNumber}
+		</td>
+	</tr>
+</table>
+{$select_form.hidden}
