@@ -34,7 +34,7 @@
  * Project name : Centreon Syslog
  * Module name: Centreon-Syslog-Frontend
  * 
- * SVN : $URL
+ * SVN : $URL:$
  * SVN : $Id: syslogDB.class.php 378 2010-03-23 22:00:23Z lpinsivy $
  * 
  */

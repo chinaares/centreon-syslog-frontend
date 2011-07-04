@@ -1,4 +1,4 @@
-Syslog Module for Centreon 2.1.x
+Syslog Module for Centreon 2.2.x
 
 Customize your options in 'Administration -> Modules -> Syslog -> Configuration' menu.
 
