@@ -12,16 +12,16 @@ INSERT INTO `mod_syslog_opt` VALUES (NULL, '10', '240');
 INSERT INTO `topology` (`topology_id`, `topology_name`, `topology_icone`, `topology_parent`, `topology_page`, `topology_order`, `topology_group`, `topology_url`, `topology_url_opt`, `topology_popup`, `topology_modules`, `topology_show`, `topology_style_class`, `topology_style_id`, `topology_OnClick`) 
 VALUES ('', 'Modules', NULL, 507, NULL, NULL, 1, NULL, NULL, NULL, NULL, '1', NULL, NULL, NULL) ,
 ('', 'Syslog', NULL, 507, NULL, NULL, 2, NULL, NULL, NULL, NULL, '1', NULL, NULL, NULL) ,
-('', 'Configuration', './img/icones/16x16/text_view.gif', 507, 50710, 10, 2, './modules/centreon-syslog/include/administration/formSyslogAdmin.php', '&o=f', '0', '0', '1', NULL, NULL, NULL) ,
-('', 'Syslog', NULL, 2, 204, 40, 1, './modules/centreon-syslog/include/monitoring/syslog.php', NULL, '0', '1', '1', NULL, NULL, NULL) ,
-('', 'Monitoring', './img/icones/16x16/text_view.gif', 204, 20401, 40, 1, './modules/centreon-syslog/include/monitoring/syslog.php', NULL, '0', '1', '1', NULL, NULL, NULL) ,
-('', 'Search', './img/icones/16x16/text_view.gif', 204, 20402, 40, 1, './modules/centreon-syslog/include/search/syslog_search.php', NULL, '0', '1', '1', NULL, NULL, NULL) ;
+('', 'Configuration', './img/icones/16x16/text_view.gif', 507, 50710, 10, 2, './modules/centreon-syslog-frontend/include/administration/formSyslogAdmin.php', '&o=f', '0', '0', '1', NULL, NULL, NULL) ,
+('', 'Syslog', NULL, 2, 204, 40, 1, './modules/centreon-syslog-frontend/include/monitoring/syslog.php', NULL, '0', '1', '1', NULL, NULL, NULL) ,
+('', 'Monitoring', './img/icones/16x16/text_view.gif', 204, 20401, 40, 1, './modules/centreon-syslog-frontend/include/monitoring/syslog.php', NULL, '0', '1', '1', NULL, NULL, NULL) ,
+('', 'Search', './img/icones/16x16/text_view.gif', 204, 20402, 40, 1, './modules/centreon-syslog-frontend/include/search/syslog_search.php', NULL, '0', '1', '1', NULL, NULL, NULL) ;
 
 -- Administration Javascript topology
 INSERT INTO `topology_JS` (`id_t_js`, `id_page`, `o`, `PathName_js`, `Init`) 
-VALUES (NULL, '50710', NULL, './modules/centreon-syslog/include/administration/javascript/changetab.js', NULL ) ,
-(NULL, '50710', NULL, './modules/centreon-syslog/include/administration/javascript/exportConf.js', NULL ) ,
-(NULL, '20402', NULL, './modules/centreon-syslog/include/search/javascript/exportCSV.js', NULL ) ,
+VALUES (NULL, '50710', NULL, './modules/centreon-syslog-frontend/include/administration/javascript/changetab.js', NULL ) ,
+(NULL, '50710', NULL, './modules/centreon-syslog-frontend/include/administration/javascript/exportConf.js', NULL ) ,
+(NULL, '20402', NULL, './modules/centreon-syslog-frontend/include/search/javascript/exportCSV.js', NULL ) ,
 (NULL, '20402', NULL, './include/common/javascript/datePicker.js', NULL ) ,
 (NULL, '20402', NULL, './include/common/javascript/tool.js', NULL ) ;
 
@@ -86,29 +86,33 @@ CREATE TABLE IF NOT EXISTS `mod_syslog_hosts` (
 INSERT INTO `topology` (`topology_id`, `topology_name`, `topology_icone`, `topology_parent`, `topology_page`, `topology_order`, `topology_group`, `topology_url`, `topology_url_opt`, `topology_popup`, `topology_modules`, `topology_show`, `topology_style_class`, `topology_style_id`, `topology_OnClick`) 
 VALUES ('', 'Syslog', './img/icones/16x16/text_view.gif', 6, 605, 91, 1, NULL, NULL, '0', '0', '1', NULL, NULL, NULL) ,
 ('', 'Hosts', NULL, 605, NULL, NULL, 1, NULL, NULL, NULL, NULL, '1', NULL, NULL, NULL) ,
-('', 'Hosts', './img/icones/16x16/server_network.gif', 605, 60501, 10, 1, './modules/centreon-syslog/include/configuration/configHosts/hosts.php', '&o=l', '0', '1', '1', NULL, NULL, NULL) ,
+('', 'Hosts', './img/icones/16x16/server_network.gif', 605, 60501, 10, 1, './modules/centreon-syslog-frontend/include/configuration/configHosts/hosts.php', '&o=l', '0', '1', '1', NULL, NULL, NULL) ,
 ('', 'Collectors', NULL, 605, NULL, NULL, 3, NULL, NULL, '0', '0', '1', NULL, NULL, NULL) ,
-('', 'Collectors', './img/icones/16x16/server_network.gif', 605, 60502, 10, 3, './modules/centreon-syslog/include/configuration/configCollectors/collectors.php', '&o=l', '0', '1', '1', NULL, NULL, NULL) ;
+('', 'Collectors', './img/icones/16x16/server_network.gif', 605, 60502, 10, 3, './modules/centreon-syslog-frontend/include/configuration/configCollectors/collectors.php', '&o=l', '0', '1', '1', NULL, NULL, NULL) ;
 
 INSERT INTO `topology_JS` (`id_t_js`, `id_page`, `o`, `PathName_js`, `Init`) 
-VALUES (NULL, '60501', NULL, './modules/centreon-syslog/include/configuration/configHosts/javascript/syslogImport.js', NULL ) ;
+VALUES (NULL, '60501', NULL, './modules/centreon-syslog-frontend/include/configuration/configHosts/javascript/syslogImport.js', NULL ) ;
 
 CREATE TABLE IF NOT EXISTS `mod_syslog_collector` (
-  `id` int(11) NOT NULL auto_increment,
-  `collector_name` varchar(255) NOT NULL,
-  `db_server_address` varchar(255) default NULL,
-  `db_name` varchar(255) default 'syslog',
-  `db_table_logs` varchar(255) default 'logs',
-  `db_table_logs_merge` varchar(255) default 'all_logs',
-  `db_table_cache` varchar(255) default 'cache',
-  `db_table_cache_merge` varchar(255) default 'all_cache',
-  `db_user` varchar(255) default 'syslogadmin',
-  `db_password` varchar(255) default 'syslogapass',
-  `ssh_server_address` varchar(255) default NULL,
-  `ssh_port` int(11) default '22',
-  `ssh_user` varchar(255) default 'syslog',
-  `ssh_pass` varchar(255) default 'syslog',
+  `collector_id` int(11) NOT NULL auto_increment,
+  `collector_name` varchar(255) default NULL,
+  `db_server_address` varchar(45) default NULL,
+  `db_server_port` int(11) default '3306',
+  `db_type` varchar(45) default 'mysql',
+  `db_name` varchar(45) default 'centreon_syslog',
+  `db_username` varchar(45) default 'centreon_syslog',
+  `db_password` varchar(45) default 'syslogapass',
+  `db_table_logs` varchar(45) default 'logs',
+  `db_table_logs_merge` varchar(45) default 'all_logs',
+  `db_table_cache` varchar(45) default 'cache',
+  `db_table_cache_merge` varchar(45) default 'all_cache',
+  `ssh_server_address` varchar(45) default NULL,
+  `ssh_server_port` int(11) default '22',
+  `ssh_username` varchar(45) default 'syslog',
+  `ssh_password` varchar(45) default NULL,
+  `configuration_dir` varchar(255) default '/etc/centreon-syslog',
   `retention_days` int(11) default '31',
-  `conf_dir` varchar(255) default '/etc/centreon-syslog',
-  PRIMARY KEY  (`id`)
+  `enable` enum('0','1') default '1',
+  `comment` varchar(255) default NULL,
+  PRIMARY KEY  (`collector_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;

@@ -27,42 +27,46 @@ INSERT INTO `topology_JS` (`id_t_js`, `id_page`, `o`, `PathName_js`, `Init`)
 VALUES (NULL, '60501', NULL, './modules/centreon-syslog-frontend/include/configuration/configHosts/javascript/syslogImport.js', NULL ) ;
 
 CREATE TABLE IF NOT EXISTS `mod_syslog_collector` (
-  `id` int(11) NOT NULL auto_increment,
-  `collector_name` varchar(255) NOT NULL,
-  `db_server_address` varchar(255) default NULL,
-  `db_name` varchar(255) default 'centreon_syslog',
-  `db_table_logs` varchar(255) default 'logs',
-  `db_table_logs_merge` varchar(255) default 'all_logs',
-  `db_table_cache` varchar(255) default 'cache',
-  `db_table_cache_merge` varchar(255) default 'all_cache',
-  `db_user` varchar(255) default 'syslogadmin',
-  `db_password` varchar(255) default 'syslogapass',
-  `ssh_server_address` varchar(255) default NULL,
-  `ssh_port` int(11) default '22',
-  `ssh_user` varchar(255) default 'syslog',
-  `ssh_pass` varchar(255) default 'syslog',
+  `collector_id` int(11) NOT NULL auto_increment,
+  `collector_name` varchar(255) default NULL,
+  `db_server_address` varchar(45) default NULL,
+  `db_server_port` int(11) default '3306',
+  `db_type` varchar(45) default 'mysql',
+  `db_name` varchar(45) default 'centreon_syslog',
+  `db_username` varchar(45) default 'centreon_syslog',
+  `db_password` varchar(45) default 'syslogapass',
+  `db_table_logs` varchar(45) default 'logs',
+  `db_table_logs_merge` varchar(45) default 'all_logs',
+  `db_table_cache` varchar(45) default 'cache',
+  `db_table_cache_merge` varchar(45) default 'all_cache',
+  `ssh_server_address` varchar(45) default NULL,
+  `ssh_server_port` int(11) default '22',
+  `ssh_username` varchar(45) default 'syslog',
+  `ssh_password` varchar(45) default NULL,
+  `configuration_dir` varchar(255) default '/etc/centreon-syslog',
   `retention_days` int(11) default '31',
-  `conf_dir` varchar(255) default '/etc/centreon-syslog',
-  PRIMARY KEY  (`id`)
+  `enable` enum('0','1') default '1',
+  `comment` varchar(255) default NULL,
+  PRIMARY KEY  (`collector_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
 
-INSERT INTO `mod_syslog_collector` VALUES ('', 'collector 1', '0.0.0.0', 'centreon_syslog', 'logs', 'all_logs', 'cache', 'all_cache', 'syslogadmin', 'syslogapass', '0.0.0.0', '22', 'syslog', 'syslog', '31', '/etc/centreon-syslog') ;
+INSERT INTO `mod_syslog_collector` VALUES ('', 'collector-1', '0.0.0.0', '3306', 'mysql', 'centreon_syslog', 'centreon_syslog', 'syslogapass', 'logs', 'all_logs', 'cache', 'all_cache', '0.0.0.0', '22', 'syslog', 'syslog', '/etc/centreon-syslog', '31', '1', 'Default configuration') ;
 UPDATE `mod_syslog_collector` SET `db_server_address` = (SELECT `syslog_db_server` FROM `mod_syslog_opt` WHERE 1) WHERE `db_server_address` = '0.0.0.0' ;
 UPDATE `mod_syslog_collector` SET `db_name` = (SELECT `syslog_db_name` FROM `mod_syslog_opt` WHERE 1) WHERE `db_name` = 'centreon_syslog' ;
 UPDATE `mod_syslog_collector` SET `db_table_logs` = (SELECT `syslog_db_logs` FROM `mod_syslog_opt` WHERE 1) WHERE `db_table_logs` = 'logs' ;
 UPDATE `mod_syslog_collector` SET `db_table_logs_merge` = (SELECT `syslog_db_logs_merge` FROM `mod_syslog_opt` WHERE 1) WHERE `db_table_logs_merge` = 'all_logs' ;
 UPDATE `mod_syslog_collector` SET `db_table_cache` = (SELECT `syslog_db_cache` FROM `mod_syslog_opt` WHERE 1) WHERE `db_table_cache` = 'cache' ;
 UPDATE `mod_syslog_collector` SET `db_table_cache_merge` = (SELECT `syslog_db_cache_merge` FROM `mod_syslog_opt` WHERE 1) WHERE `db_table_cache_merge` = 'all_cache' ;
-UPDATE `mod_syslog_collector` SET `db_user` = (SELECT `syslog_db_user` FROM `mod_syslog_opt` WHERE 1) WHERE `db_user` = 'syslogadmin' ;
+UPDATE `mod_syslog_collector` SET `db_username` = (SELECT `syslog_db_user` FROM `mod_syslog_opt` WHERE 1) WHERE `db_username` = 'centreon_syslog' ;
 UPDATE `mod_syslog_collector` SET `db_password` = (SELECT `syslog_db_password` FROM `mod_syslog_opt` WHERE 1) WHERE `db_password` = 'syslogapass' ;
 
 UPDATE `mod_syslog_collector` SET `ssh_server_address` = (SELECT `syslog_db_server` FROM `mod_syslog_opt` WHERE 1) WHERE `ssh_server_address` = '0.0.0.0' ;
-UPDATE `mod_syslog_collector` SET `ssh_port` = (SELECT `syslog_ssh_port` FROM `mod_syslog_opt` WHERE 1) WHERE `ssh_port` = '22' ;
-UPDATE `mod_syslog_collector` SET `ssh_user` = (SELECT `syslog_ssh_user` FROM `mod_syslog_opt` WHERE 1) WHERE `ssh_user` = 'syslog' ;
-UPDATE `mod_syslog_collector` SET `ssh_pass` = (SELECT `syslog_ssh_pass` FROM `mod_syslog_opt` WHERE 1) WHERE `ssh_pass` = 'syslog' ;
+UPDATE `mod_syslog_collector` SET `ssh_server_port` = (SELECT `syslog_ssh_port` FROM `mod_syslog_opt` WHERE 1) WHERE `ssh_server_port` = '22' ;
+UPDATE `mod_syslog_collector` SET `ssh_username` = (SELECT `syslog_ssh_user` FROM `mod_syslog_opt` WHERE 1) WHERE `ssh_username` = 'syslog' ;
+UPDATE `mod_syslog_collector` SET `ssh_password` = (SELECT `syslog_ssh_pass` FROM `mod_syslog_opt` WHERE 1) WHERE `ssh_password` = 'syslog' ;
 
 UPDATE `mod_syslog_collector` SET `retention_days` = (SELECT `syslog_db_rotate` FROM `mod_syslog_opt` WHERE 1) WHERE `retention_days` = '31' ;
-UPDATE `mod_syslog_collector` SET `conf_dir` = (SELECT `syslog_conf_dir` FROM `mod_syslog_opt` WHERE 1) WHERE `conf_dir` = '/etc/centreon-syslog' ;
+UPDATE `mod_syslog_collector` SET `configuration_dir` = (SELECT `syslog_conf_dir` FROM `mod_syslog_opt` WHERE 1) WHERE `configuration_dir` = '/etc/centreon-syslog' ;
 
 ALTER TABLE `mod_syslog_opt`
 DROP `syslog_db_server`,
@@ -81,5 +85,5 @@ DROP `syslog_ssh_user`,
 DROP `syslog_ssh_pass`;
   
 ALTER TABLE `mod_syslog_opt` CHANGE `sopt_id` `id` INT( 11 ) NOT NULL AUTO_INCREMENT ;
-ALTER TABLE `mod_syslog_opt` CHANGE `syslog_refresh_monitoring`  `refresh_monitoring`  INT( 15 ) NOT NULL DEFAULT '10' ;
-ALTER TABLE `mod_syslog_opt` CHANGE `syslog_refresh_filters`  `refresh_filters`  INT( 15 ) NOT NULL DEFAULT '240' ;
+ALTER TABLE `mod_syslog_opt` CHANGE `syslog_refresh_monitoring` `refresh_monitoring` INT( 15 ) NOT NULL DEFAULT '10' ;
+ALTER TABLE `mod_syslog_opt` CHANGE `syslog_refresh_filters` `refresh_filters` INT( 15 ) NOT NULL DEFAULT '240' ;
