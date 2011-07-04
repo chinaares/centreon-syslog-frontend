@@ -64,7 +64,7 @@
 	 * PHP functions
 	 */
 	require_once $syslog_mod_path. "include/common/common-Func.php";
-	require_once $centreon_path . "include/common/common-Func.php";
+	require_once $centreon_path . "www/include/common/common-Func.php";
 
 	/*
 	 * Database retrieve information for Centreon-Syslog
@@ -74,7 +74,7 @@
 	$cfg_syslog = getSyslogOption();
 
 	# QuickSearch form
-	include_once($centreon_path ".include/common/quickSearch.php");
+	include_once($centreon_path . "www/include/common/quickSearch.php");
 
 	# Set limit & num
 	$DBRESULT =& $pearCentreonDB->query("SELECT maxViewMonitoring FROM general_opt LIMIT 1");
