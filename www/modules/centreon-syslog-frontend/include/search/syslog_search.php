@@ -34,8 +34,8 @@
  * Project name : Centreon Syslog
  * Module name: Centreon-Syslog-Frontend
  * 
- * SVN : $URL:$
- * SVN : $Id:$
+ * SVN : $URL$
+ * SVN : $Id$
  * 
  */
     require_once $centreon_path . "www/modules/centreon-syslog-frontend/include/common/header.php";
@@ -64,7 +64,7 @@
 	 * PHP functions
 	 */
 	require_once $syslog_mod_path. "include/common/common-Func.php";
-	require_once $centreon_path ".include/common/common-Func.php";
+	require_once $centreon_path . "include/common/common-Func.php";
 
 	/*
 	 * Database retrieve information for Centreon-Syslog
