@@ -47,8 +47,8 @@
 		<tr class="list_one"><td class="FormRowField">{$form.syslog_conf_dir.label}</td><td class="FormRowValue">{$form.syslog_conf_dir.html}</td></tr>
 		<tr class="list_two"><td class="FormRowField">{$form.syslog_db_rotate.label}</td><td class="FormRowValue">{$form.syslog_db_rotate.html}&nbsp;&nbsp;{$days}</td></tr>
 		<tr class="list_lvl_1"><td class="ListColLvl1_name" colspan="2"><img src='./img/icones/16x16/note.gif'>&nbsp;&nbsp;{$syslog_monitoring_configuration}</td></tr>
-		<tr class="list_one"><td class="FormRowField">{$form.syslog_refresh_monitoring.label}</td><td class="FormRowValue">{$form.syslog_refresh_monitoring.html}&nbsp;&nbsp;{$seconds}</td></tr>
-		<tr class="list_two"><td class="FormRowField">{$form.syslog_refresh_filters.label}</td><td class="FormRowValue">{$form.syslog_refresh_filters.html}&nbsp;&nbsp;{$seconds}</td></tr>
+		<tr class="list_one"><td class="FormRowField">{$form.refresh_monitoring.label}</td><td class="FormRowValue">{$form.refresh_monitoring.html}&nbsp;&nbsp;{$seconds}</td></tr>
+		<tr class="list_two"><td class="FormRowField">{$form.refresh_filters.label}</td><td class="FormRowValue">{$form.refresh_filters.html}&nbsp;&nbsp;{$seconds}</td></tr>
 	</table>
 	</div>
 	<div id="validForm">
