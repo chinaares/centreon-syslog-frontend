@@ -1,7 +1,7 @@
-UPDATE `topology` SET `topology_url` = './modules/centreon-syslog-frontend/include/monitoring/syslog.php' WHERE `topology_url` = 'modules/Syslog/include/monitoring/syslog.php' AND `topology_name` = 'Syslog';
+UPDATE `topology` SET `topology_url` = './modules/centreon-syslog-frontend/include/monitoring/syslog.php' WHERE `topology_url` = './modules/Syslog/include/monitoring/syslog.php' AND `topology_name` = 'Syslog';
 UPDATE `topology` SET `topology_url` = './modules/centreon-syslog-frontend/include/administration/formSyslogAdmin.php' WHERE `topology_url` = './modules/Syslog/include/administration/formSyslogAdmin.php' AND `topology_name` = 'Configuration';
-UPDATE `topology` SET `topology_url` = 'modules/centreon-syslog-frontend/include/monitoring/syslog.php' WHERE `topology_url` = 'modules/Syslog/include/monitoring/syslog.php' AND `topology_name` = 'Monitoring';
-UPDATE `topology` SET `topology_url` = 'modules/centreon-syslog-frontend/include/search/syslog_search.php' WHERE `topology_url` = 'modules/Syslog/include/search/syslog_search.php' AND `topology_name` = 'Search';
+UPDATE `topology` SET `topology_url` = './modules/centreon-syslog-frontend/include/monitoring/syslog.php' WHERE `topology_url` = './modules/Syslog/include/monitoring/syslog.php' AND `topology_name` = 'Monitoring';
+UPDATE `topology` SET `topology_url` = './modules/centreon-syslog-frontend/include/search/syslog_search.php' WHERE `topology_url` = './modules/Syslog/include/search/syslog_search.php' AND `topology_name` = 'Search';
 
 UPDATE `topology_JS` SET `PathName_js` = './modules/centreon-syslog-frontend/include/administration/javascript/changetab.js' WHERE `PathName_js` = './modules/Syslog/include/administration/javascript/changetab.js' AND `id_page` = '50710';
 UPDATE `topology_JS` SET `PathName_js` = './modules/centreon-syslog-frontend/include/administration/javascript/exportConf.js' WHERE `PathName_js` = './modules/Syslog/include/administration/javascript/exportConf.js' AND `id_page` = '50710';
