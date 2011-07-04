@@ -549,6 +549,15 @@ function install_module_web() {
 		echo_failure "Setting owner/group" "$fail"
 		exit 1
 	fi
+	
+	${RM} -Rf $CENTREON_DIR/www/modules/Syslog
+	if [ "$?" -eq 0 ] ; then
+		echo_success "Delete old install module" "$ok"
+	else 
+		echo_failure "Delete old install module" "$fail"
+		exit 1
+	fi
+	
 
 	${MKDIR} -p $INSTALL_DIR_MODULE >> $LOG_FILE 2>> $LOG_FILE
 	${CP} -Rf --preserve $TEMP_D/www/* $INSTALL_DIR_MODULE >> $LOG_FILE 2>> $LOG_FILE

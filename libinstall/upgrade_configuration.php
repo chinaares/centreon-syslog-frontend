@@ -34,8 +34,8 @@
  * Project name : Centreon Syslog
  * Module name: Centreon-Syslog-Frontend
  * 
- * SVN : $URL:$
- * SVN : $Id:$
+ * SVN : $URL$
+ * SVN : $Id$
  * 
  */
  
@@ -50,5 +50,6 @@
 	
 	$requete = "UPDATE `".$conf_centreon['db']."`.`modules_informations` SET `name` = 'centreon-syslog-frontend' WHERE `modules_informations`.`name` = 'Syslog';";
 	mysql_query($requete);
-	
+	$requete = "UPDATE `".$conf_centreon['db']."`.`modules_informations` SET `rname` = 'Centreon Syslog Frontend' WHERE `modules_informations`.`rname` = 'Syslog  Module';";
+	mysql_query($requete);
 ?>
