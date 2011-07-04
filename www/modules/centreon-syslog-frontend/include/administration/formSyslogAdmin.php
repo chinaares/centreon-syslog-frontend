@@ -34,7 +34,7 @@
  * Project name : Centreon Syslog
  * Module name: Centreon-Syslog-Frontend
  * 
- * SVN : $URL:$
+ * SVN : $URL$
  * SVN : $Id$
  * 
  */
@@ -56,7 +56,7 @@
 	/*
 	 * Defined path
 	 */
-	$syslog_mod_path = $centreon_path . "www/modules/Syslog/";
+	$syslog_mod_path = $centreon_path . "www/modules/centreon-syslog-frontend/";
 
 	/*
 	 * Pear library
@@ -107,8 +107,8 @@
 	# Configuration
 	$form->addElement('text', 'syslog_conf_dir', _("Configuration directory"), $attrsText);
 	$form->addElement('text', 'syslog_db_rotate', _("Duration of retention of data"), $attrsText3);
-	$form->addElement('text', 'syslog_refresh_monitoring', _("Refresh Interval for monitoring"), $attrsText3);
-	$form->addElement('text', 'syslog_refresh_filters', _("Refresh Interval for filters"), $attrsText3);
+	$form->addElement('text', 'refresh_monitoring', _("Refresh Interval for monitoring"), $attrsText3);
+	$form->addElement('text', 'refresh_filters', _("Refresh Interval for filters"), $attrsText3);
 
 	$redirect =& $form->addElement('hidden', 'o');
 	$redirect->setValue($o);
@@ -131,8 +131,8 @@
 	$form->addRule('syslog_ssh_user', _("Required Field"), 'required');
 	$form->addRule('syslog_conf_dir', _("Required Field"), 'required');
 	$form->addRule('syslog_db_rotate', _("Required Field"), 'required');
-	$form->addRule('syslog_refresh_monitoring', _("Required Field"), 'required');
-	$form->addRule('syslog_refresh_filters', _("Required Field"), 'required');
+	$form->addRule('refresh_monitoring', _("Required Field"), 'required');
+	$form->addRule('refresh_filters', _("Required Field"), 'required');
 
 	if (isset($cfg_syslog)) {
 		$form->setDefaults($cfg_syslog);
@@ -148,8 +148,8 @@
 		"syslog_ssh_port"=>'22',
 		"syslog_conf_dir"=>'/usr/local/syslog/etc/',
 		"syslog_db_rotate"=>'31',
-		"syslog_refresh_monitoring"=>'10',
-		"syslog_refresh_filters"=>'240'));
+		"refresh_monitoring"=>'10',
+		"refresh_filters"=>'240'));
 	}
 	#End of form definition
 

@@ -34,7 +34,7 @@
  * Project name : Centreon Syslog
  * Module name: Centreon-Syslog-Frontend
  * 
- * SVN : $URL:$
+ * SVN : $URL$
  * SVN : $Id$
  * 
  */
@@ -43,7 +43,7 @@
 	/*
 	 * Make PEAR DB object to connect to MySQL DB
 	 */
-	require_once $centreon_path . "www/modules/Syslog/class/syslogDB.class.php";
+	require_once $centreon_path . "www/modules/centreon-syslog-frontend/class/syslogDB.class.php";
 	$pearDB = new SyslogDB("centreon");
 	
 	/*
@@ -119,11 +119,11 @@
 		isset($ret["syslog_db_rotate"]) && $ret["syslog_db_rotate"] != NULL ? $rq .= "'".htmlentities($ret["syslog_db_rotate"], ENT_QUOTES)."', ": $rq .= "NULL, ";
 
 		# Update Configuration of syslog collector
-		$rq .= "syslog_refresh_monitoring = ";
-		isset($ret["syslog_refresh_monitoring"]) && $ret["syslog_refresh_monitoring"] != NULL ? $rq .= "'".htmlentities($ret["syslog_refresh_monitoring"], ENT_QUOTES)."', ": $rq .= "NULL;";
+		$rq .= "refresh_monitoring = ";
+		isset($ret["refresh_monitoring"]) && $ret["refresh_monitoring"] != NULL ? $rq .= "'".htmlentities($ret["refresh_monitoring"], ENT_QUOTES)."', ": $rq .= "NULL;";
 		
-		$rq .= "syslog_refresh_filters = ";
-		isset($ret["syslog_refresh_filters"]) && $ret["syslog_refresh_filters"] != NULL ? $rq .= "'".htmlentities($ret["syslog_refresh_filters"], ENT_QUOTES)."';": $rq .= "NULL;";
+		$rq .= "refresh_filters = ";
+		isset($ret["refresh_filters"]) && $ret["refresh_filters"] != NULL ? $rq .= "'".htmlentities($ret["refresh_filters"], ENT_QUOTES)."';": $rq .= "NULL;";
 
 		$DBRESULT =& $pearDB->query($rq);
 		if (PEAR::isError($DBRESULT)) {
