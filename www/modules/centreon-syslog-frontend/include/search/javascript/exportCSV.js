@@ -1,5 +1,5 @@
 /*
- * Copyright 2005-2010 MERETHIS
+ * Copyright 2005-2011 MERETHIS
  * Centreon is developped by : Julien Mathis and Romain Le Merlus under
  * GPL Licence 2.0.
  * 
@@ -33,8 +33,8 @@
  * Project name : Centreon Syslog
  * Module name: Centreon-Syslog-Frontend
  * 
- * SVN : $URL$
- * SVN : $Id$
+ * SVN : $URL:$
+ * SVN : $Id:$
  * 
  */
 
@@ -80,7 +80,7 @@ function ajax_generateCSV_XML(value)
 	var end_date = document.getElementById('EndDate').value;
 	var end_time = document.getElementById('EndTime').value;
 
-	var _addr = "./modules/centreon-syslog/include/export/csv/csv_export.php?type=" + value + '&host=' + filter_host + '&facility=' + filter_facility + '&Ffacility=' + filter_Ffacility + '&severity=' + filter_severity + '&Fseverity=' + filter_Fseverity + '&program=' + filter_program + '&start_date=' + start_date + '&start_time=' + start_time + '&end_date=' + end_date + '&end_time=' + end_time
+	var _addr = "./modules/centreon-syslog-frontendinclude/export/csv/csv_export.php?type=" + value + '&host=' + filter_host + '&facility=' + filter_facility + '&Ffacility=' + filter_Ffacility + '&severity=' + filter_severity + '&Fseverity=' + filter_Fseverity + '&program=' + filter_program + '&start_date=' + start_date + '&start_time=' + start_time + '&end_date=' + end_date + '&end_time=' + end_time
 	window.open(_addr);
 }
 
@@ -126,6 +126,6 @@ function ajax_generateODT(value)
 	var end_date = document.getElementById('EndDate').value;
 	var end_time = document.getElementById('EndTime').value;
 
-	var _addr = "./modules/centreon-syslog/include/export/odtPHP/odtPHP_export.php?type=" + value + '&host=' + filter_host + '&facility=' + filter_facility + '&Ffacility=' + filter_Ffacility + '&severity=' + filter_severity + '&Fseverity=' + filter_Fseverity + '&program=' + filter_program + '&start_date=' + start_date + '&start_time=' + start_time + '&end_date=' + end_date + '&end_time=' + end_time
+	var _addr = "./modules/centreon-syslog-frontendinclude/export/odtPHP/odtPHP_export.php?type=" + value + '&host=' + filter_host + '&facility=' + filter_facility + '&Ffacility=' + filter_Ffacility + '&severity=' + filter_severity + '&Fseverity=' + filter_Fseverity + '&program=' + filter_program + '&start_date=' + start_date + '&start_time=' + start_time + '&end_date=' + end_date + '&end_time=' + end_time
 	window.open(_addr);
 }

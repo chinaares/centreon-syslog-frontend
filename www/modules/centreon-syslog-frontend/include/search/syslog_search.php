@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2005-2010 MERETHIS
+ * Copyright 2005-2011 MERETHIS
  * Centreon is developped by : Julien Mathis and Romain Le Merlus under
  * GPL Licence 2.0.
  * 
@@ -31,18 +31,14 @@
  * 
  * For more information : contact@centreon.com
  * 
- * Module name: Syslog
+ * Project name : Centreon Syslog
+ * Module name: Centreon-Syslog-Frontend
  * 
- * First developpement by : Jean Marc Grisard - Christophe Coraboeuf
- * 
- * Adaptation for Centreon 2.0 by : Merethis team 
- * 
- * SVN : $URL
- * SVN : $Id: syslog_search.php 351 2010-03-05 16:21:34Z lpinsivy $
+ * SVN : $URL:$
+ * SVN : $Id:$
  * 
  */
-	require_once ($centreon_path . "www/class/Session.class.php");
-	require_once ($centreon_path . "www/class/Oreon.class.php");
+    require_once $centreon_path . "www/modules/centreon-syslog-frontend/include/common/header.php";
 
 	/*
 	 * Set language
@@ -50,17 +46,12 @@
 	$locale = $oreon->user->get_lang();
 	putenv("LANG=$locale");
 	setlocale(LC_ALL, $locale);
-	bindtextdomain("messages", "./modules/centreon-syslog/locale/");
+	bindtextdomain("messages", $syslog_mod_path . "locale/");
 	bind_textdomain_codeset("messages", "UTF-8");
 	textdomain("messages");
 
 	# Pagination
 	include("./include/common/autoNumLimit.php");
-
-	/*
-	 * Defined path
-	 */
-	$syslog_mod_path = $centreon_path . "www/modules/centreon-syslog/";
 
 	/*
 	 * Pear library
@@ -72,8 +63,8 @@
 	/*
 	 * PHP functions
 	 */
-	require_once "./modules/centreon-syslog/include/common/common-Func.php";
-	require_once "./include/common/common-Func.php";
+	require_once $syslog_mod_path. "include/common/common-Func.php";
+	require_once $centreon_path ".include/common/common-Func.php";
 
 	/*
 	 * Database retrieve information for Centreon-Syslog
@@ -83,7 +74,7 @@
 	$cfg_syslog = getSyslogOption();
 
 	# QuickSearch form
-	include_once("./include/common/quickSearch.php");
+	include_once($centreon_path ".include/common/quickSearch.php");
 
 	# Set limit & num
 	$DBRESULT =& $pearCentreonDB->query("SELECT maxViewMonitoring FROM general_opt LIMIT 1");
@@ -183,7 +174,7 @@
 		array_push($sql_filter ," (host = '". htmlentities($filter_host , ENT_QUOTES) ."')  ");
 
 	if (isset($filter_facility)) {
-		if ((strcmp($filter_Ffacility, "") == 0) || (strcmp($filter_Ffacility, "=") == 0)) {
+		if ((strcmp($filter_Ffacility, "") == 0) || (strcmp($filter_Ffacility, "eq") == 0)) {
 			array_push($sql_filter ," (facility = '". htmlentities($filter_facility , ENT_QUOTES) ."')  ");
 		} else {
 			$list_facilities = getListOfFacilities($filter_facility, $filter_Ffacility);
@@ -200,7 +191,7 @@
 	}
 
 	if (isset($filter_severity)) {
-		if ((strcmp($filter_Fseverity, "") == 0) || (strcmp($filter_Fseverity, "=") == 0)) {
+		if ((strcmp($filter_Fseverity, "") == 0) || (strcmp($filter_Fseverity, "eq") == 0)) {
 			array_push($sql_filter ," (priority = '". htmlentities($filter_severity , ENT_QUOTES) ."')  ");
 		} else {
 			$list_priorities = getListOfSeverities($filter_severity, $filter_Fseverity);

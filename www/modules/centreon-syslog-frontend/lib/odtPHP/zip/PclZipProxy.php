@@ -11,7 +11,7 @@ class PclZipProxyException extends Exception
  * Last commit by $Author: neveldo $
  * Date - $Date: 2009-05-29 10:05:11 +0200 (ven., 29 mai 2009) $
  * SVN Revision - $Rev: 28 $
- * Id : $Id: odf.php 28 2009-05-29 08:05:11Z neveldo $
+ * Id : $Id$
  *
  * @copyright  GPL License 2008 - Julien Pauli - Cyril PIERRE de GEYER - Anaska (http://www.anaska.com)
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL License

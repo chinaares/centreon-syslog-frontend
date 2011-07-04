@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2005-2010 MERETHIS
+ * Copyright 2005-2011 MERETHIS
  * Centreon is developped by : Julien Mathis and Romain Le Merlus under
  * GPL Licence 2.0.
  * 
@@ -34,8 +34,8 @@
  * Project name : Centreon Syslog
  * Module name: Centreon-Syslog-Frontend
  * 
- * SVN : $URL
- * SVN : $Id: syslog.php 440 2010-09-03 14:22:31Z lpinsivy $
+ * SVN : $URL:$
+ * SVN : $Id:$
  * 
  */
  
@@ -43,42 +43,43 @@
 	 * Control user identity
 	 */
 	if (!isset ($oreon))
-                exit ();
+        exit ();
 
-        include ("@CENTREON_ETC@centreon.conf.php");
+    include ("@CENTREON_ETC@centreon.conf.php");
 
-        global $cfg_syslog;
+    global $cfg_syslog;
 
-        /*
-         * Set language
-         */
-        $locale = $oreon->user->get_lang();
-        putenv("LANG=$locale");
-        setlocale(LC_ALL, $locale);
-        bindtextdomain("messages", "./modules/centreon-syslog/locale/");
-        bind_textdomain_codeset("messages", "UTF-8");
-        textdomain("messages");
+    $syslog_mod_path = $centreon_path . "www/modules/centreon-syslog-frontend/";
+    
+    /*
+     * Set language
+     */
+    $locale = $oreon->user->get_lang();
+    putenv("LANG=$locale");
+    setlocale(LC_ALL, $locale);
+    bindtextdomain("messages", $syslog_mod_path . "locale/");
+    bind_textdomain_codeset("messages", "UTF-8");
+    textdomain("messages");
 
-        /*
-         * Defined path
-         */
-        $syslog_mod_path = $centreon_path . "www/modules/centreon-syslog/";
-        require $syslog_mod_path. "include/monitoring/javascript/syslog_js.php";
+    /*
+     * Defined path
+     */
+    require $syslog_mod_path. "include/monitoring/javascript/syslog_js.php";
 
-        /*
-         * Add ajax button and div
-         */
-        echo "<link href=\"./modules/centreon-syslog/css/syslog.css\" type=\"text/css\" rel=\"stylesheet\">";
-        echo "<table width=\"100%\">";
-        echo "  <tr class=\"list_two\" align=\"center\">";
-        echo "          <td class=\"ListColCenter\">";
-        echo "                  "._("Refresh:")."&nbsp;&nbsp;&nbsp;<input onclick=\"javascript:ajax_handler(this.value)\" name=\"ajax\" id=\"ajaxBtn\" value=\""._("stop")."\" type=\"button\" />";
-        echo "          </td>";
-        echo "  </tr>";
-        echo "</table>";
-        echo "<div id=\"ajaxFilters\"></div>";
-        echo "<br>";
-        echo "<div id=\"ajaxLog\"></div>";
+    /*
+     * Add ajax button and div
+     */
+    echo "<link href=\"./modules/centreon-syslog-frontend/css/syslog.css\" type=\"text/css\" rel=\"stylesheet\">";
+    echo "<table width=\"100%\">";
+    echo "  <tr class=\"list_two\" align=\"center\">";
+    echo "          <td class=\"ListColCenter\">";
+    echo "                  "._("Refresh:")."&nbsp;&nbsp;&nbsp;<input onclick=\"javascript:ajax_handler(this.value)\" name=\"ajax\" id=\"ajaxBtn\" value=\""._("stop")."\" type=\"button\" />";
+    echo "          </td>";
+    echo "  </tr>";
+    echo "</table>";
+    echo "<div id=\"ajaxFilters\"></div>";
+    echo "<br>";
+    echo "<div id=\"ajaxLog\"></div>";
 ?>
 <script type="text/javascript">
 setTimeout('build_ajaxFilters()', 500);

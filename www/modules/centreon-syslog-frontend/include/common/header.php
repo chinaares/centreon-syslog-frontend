@@ -1,3 +1,4 @@
+<?php
 /*
  * Copyright 2005-2011 MERETHIS
  * Centreon is developped by : Julien Mathis and Romain Le Merlus under
@@ -34,50 +35,39 @@
  * Module name: Centreon-Syslog-Frontend
  * 
  * SVN : $URL:$
- * SVN : $Id$
+ * SVN : $Id:$
  * 
  */
+	
+	include ("@CENTREON_ETC@centreon.conf.php");
 
-function ajax_generate()
-{
-	var xhr=null;
-	
-	if (window.XMLHttpRequest) { 
-		xhr = new XMLHttpRequest();
+	if (is_file($centreon_path . "www/class/centreonSession.class.php")) {
+	    require_once ($centreon_path . "www/class/centreonSession.class.php");
+	} elseif (is_file($centreon_path . "www/class/Session.class.php")) {
+	    require_once ($centreon_path . "www/class/Session.class.php");
 	}
-	else if (window.ActiveXObject) 
-	{
-		xhr = new ActiveXObject("Microsoft.XMLHTTP");
-	}
-	
-	xhr.onreadystatechange = function() 
-	{
-		if (xhr.readyState <= 3)
-		{
-			if (!document.getElementById("centreonMsg_img"))
-			{
-				_setAlign("centreonMsg", "center");
-				_setTextStyle("centreonMsg", "bold");
-				_setImage("centreonMsg", "./img/misc/ajax-loader.gif");
-				_setText("centreonMsg", " Loading...");
-				_setValign("centreonMsg", "bottom");
-			}
-		} 
-		else if (xhr.readyState == 4 && xhr.status == 200)
-		{
-			_clear("centreonMsg");
-			alert_ajax(xhr);
-		}
-	}
-	
-	xhr.open('GET', "./modules/Syslog/include/export/ssh2/ssh2_export.php", true);
-	xhr.send(null);
-}
+	if (is_file($centreon_path . "www/class/centreon.class.php")) {
+	    require_once ($centreon_path . "www/class/centreon.class.php");
+	    if(!isset($_SESSION['centreon'])) {
+	        CentreonSession::start();
+	    }
+	} elseif (is_file($centreon_path . "www/class/Oreon.class.php")) {
+	    require_once ($centreon_path . "www/class/Oreon.class.php");
+	    if(!isset($_SESSION['oreon'])) {
+	        Session::start();
+	    }
+	}	
 
-function alert_ajax(xhr)
-{
-	var docXML= xhr.responseXML;
-	var items = docXML.getElementsByTagName("status");
+	if (isset($_SESSION['centreon'])) {
+	    $oreon = $_SESSION['centreon']; 
+	} elseif (isset($_SESSION['oreon'])) {
+	    $oreon = $_SESSION['oreon'];
+	} else {
+	    exit;
+	}
 	
-	alert (items.item(0).firstChild.data);
-}
+	/*
+	 * Defined path
+	 */
+	$syslog_mod_path = $centreon_path . "www/modules/centreon-syslog-frontend/";
+?>

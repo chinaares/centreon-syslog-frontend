@@ -34,7 +34,7 @@
  * Module name: Centreon-Syslog-Frontend
  * 
  * SVN : $URL
- * SVN : $Id: exportConf.js 351 2010-03-05 16:21:34Z lpinsivy $
+ * SVN : $Id$
  * 
  */
 

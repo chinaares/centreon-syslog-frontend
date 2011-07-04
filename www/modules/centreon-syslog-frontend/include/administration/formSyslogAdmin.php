@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2005-2010 MERETHIS
+ * Copyright 2005-2011 MERETHIS
  * Centreon is developped by : Julien Mathis and Romain Le Merlus under
  * GPL Licence 2.0.
  * 
@@ -34,8 +34,8 @@
  * Project name : Centreon Syslog
  * Module name: Centreon-Syslog-Frontend
  * 
- * SVN : $URL
- * SVN : $Id: formSyslogAdmin.php 378 2010-03-23 22:00:23Z lpinsivy $
+ * SVN : $URL:$
+ * SVN : $Id$
  * 
  */
 
@@ -49,14 +49,14 @@
 	$locale = $oreon->user->get_lang();
 	putenv("LANG=$locale");
 	setlocale(LC_ALL, $locale);
-	bindtextdomain("messages", "./modules/centreon-syslog/locale/");
+	bindtextdomain("messages", "./modules/Syslog/locale/");
 	bind_textdomain_codeset("messages", "UTF-8"); 
 	textdomain("messages");
 
 	/*
 	 * Defined path
 	 */
-	$syslog_mod_path = $centreon_path . "www/modules/centreon-syslog/";
+	$syslog_mod_path = $centreon_path . "www/modules/Syslog/";
 
 	/*
 	 * Pear library
@@ -146,7 +146,7 @@
 		"syslog_db_cache_merge"=>'all_cache',
 		"syslog_ssh_user"=>'syslog',
 		"syslog_ssh_port"=>'22',
-		"syslog_conf_dir"=>'//etc/centreon-syslog/',
+		"syslog_conf_dir"=>'/usr/local/syslog/etc/',
 		"syslog_db_rotate"=>'31',
 		"syslog_refresh_monitoring"=>'10',
 		"syslog_refresh_filters"=>'240'));

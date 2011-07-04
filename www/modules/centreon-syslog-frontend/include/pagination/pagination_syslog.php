@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2005-2009 MERETHIS
+ * Copyright 2005-2011 MERETHIS
  * Centreon is developped by : Julien Mathis and Romain Le Merlus under
  * GPL Licence 2.0.
  * 
@@ -31,14 +31,11 @@
  * 
  * For more information : contact@centreon.com
  * 
- * Module name: Syslog
+ * Project name : Centreon Syslog
+ * Module name: Centreon-Syslog-Frontend
  * 
- * First developpement by : Jean Marc Grisard - Christophe Coraboeuf
- * 
- * Adaptation for Centreon 2.0 by : Merethis team 
- * 
- * SVN : $URL
- * SVN : $Id: pagination_syslog.php 351 2010-03-05 16:21:34Z lpinsivy $
+ * SVN : $URL:$
+ * SVN : $Id:$
  * 
  */
 
@@ -47,8 +44,8 @@
 	/*
 	 * Defined path
 	 */
-	$syslog_mod_path = $centreon_path . "www/modules/centreon-syslog/";
-	$path = $syslog_mod_path."include/pagination/";	
+	$syslog_mod_path = $centreon_path . "www/modules/centreon-syslog-frontend/";
+	$path = $syslog_mod_path . "include/pagination/";	
 
 	global $num, $limit, $search, $url, $pearDB;
 	global $search_type_service, $search_type_host, $host_name;

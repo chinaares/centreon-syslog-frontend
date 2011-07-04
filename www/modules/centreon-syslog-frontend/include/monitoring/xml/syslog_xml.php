@@ -35,7 +35,7 @@
  * Module name: Centreon-Syslog-Frontend
  * 
  * SVN : $URL
- * SVN : $Id: syslog_xml.php 389 2010-05-28 16:51:46Z lpinsivy $
+ * SVN : $Id$
  * 
  */
  	# PHP functions

@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2005-2010 MERETHIS
+ * Copyright 2005-2011 MERETHIS
  * Centreon is developped by : Julien Mathis and Romain Le Merlus under
  * GPL Licence 2.0.
  * 
@@ -31,11 +31,8 @@
  * 
  * For more information : contact@centreon.com
  * 
- * Module name: Centreon-Syslog
- * 
- * First developpement by : Jean Marc Grisard - Christophe Coraboeuf
- * 
- * Adaptation for Centreon 2.0 by : Merethis team 
+ * Project name : Centreon Syslog
+ * Module name: Centreon-Syslog-Frontend
  * 
  * SVN : $URL:$
  * SVN : $Id:$

@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2005-2010 MERETHIS
+ * Copyright 2005-2011 MERETHIS
  * Centreon is developped by : Julien Mathis and Romain Le Merlus under
  * GPL Licence 2.0.
  * 
@@ -34,8 +34,8 @@
  * Project name : Centreon Syslog
  * Module name: Centreon-Syslog-Frontend
  * 
- * SVN : $URL
- * SVN : $Id: syslog_js.php 378 2010-03-23 22:00:23Z lpinsivy $
+ * SVN : $URL:$
+ * SVN : $Id:$
  * 
  */
 
@@ -51,7 +51,7 @@ if ($cfg_syslog["syslog_refresh_filters"] == 0) {
 }
 ?>
 
-<script type="text/javascript" src="./modules/centreon-syslog/include/monitoring/javascript/xslt.js"></script>
+<script type="text/javascript" src="./modules/centreon-syslog-frontend/include/monitoring/javascript/xslt.js"></script>
 <script type="text/javascript">
 	var _sid = '<?php echo session_id(); ?>';
 	var _mySyslogtime_reload = <?php echo $refresh_time; ?>;
@@ -75,8 +75,8 @@ if ($cfg_syslog["syslog_refresh_filters"] == 0) {
 			var filter_Fseverity = document.getElementById('filter_Fseverity').value;
 			var filter_program = escape(document.getElementById('filter_program').value);
 
-			var addrXML = "./modules/centreon-syslog/include/monitoring/xml/syslog_xml.php?sid=" + _sid + '&host=' + filter_host + '&facility=' + filter_facility + '&Ffacility=' + filter_Ffacility + '&severity=' + filter_severity + '&Fseverity=' + filter_Fseverity + '&program=' + filter_program;
-			var addrXSL = "./modules/centreon-syslog/include/monitoring/xsl/syslog.xsl";
+			var addrXML = "./modules/centreon-syslog-frontend/include/monitoring/xml/syslog_xml.php?sid=" + _sid + '&host=' + filter_host + '&facility=' + filter_facility + '&Ffacility=' + filter_Ffacility + '&severity=' + filter_severity + '&Fseverity=' + filter_Fseverity + '&program=' + filter_program;
+			var addrXSL = "./modules/centreon-syslog-frontend/include/monitoring/xsl/syslog.xsl";
 
 			proc.setXml(addrXML);
 			proc.setXslt(addrXSL);
@@ -100,8 +100,8 @@ if ($cfg_syslog["syslog_refresh_filters"] == 0) {
 			var filter_program = escape(document.getElementById('filter_program').options[document.getElementById('filter_program').selectedIndex].value);
 		}
 
-		var addrXML = "./modules/centreon-syslog/include/monitoring/xml/syslog_filters_xml.php?sid=" + _sid + '&host=' + filter_host + '&facility=' + filter_facility + '&Ffacility=' + filter_Ffacility + '&severity=' + filter_severity + '&Fseverity=' + filter_Fseverity + '&program=' + filter_program;
-		var addrXSL = "./modules/centreon-syslog/include/monitoring/xsl/syslog_filters.xsl";
+		var addrXML = "./modules/centreon-syslog-frontend/include/monitoring/xml/syslog_filters_xml.php?sid=" + _sid + '&host=' + filter_host + '&facility=' + filter_facility + '&Ffacility=' + filter_Ffacility + '&severity=' + filter_severity + '&Fseverity=' + filter_Fseverity + '&program=' + filter_program;
+		var addrXSL = "./modules/centreon-syslog-frontend/include/monitoring/xsl/syslog_filters.xsl";
 
 		proc.setXml(addrXML);
 		proc.setXslt(addrXSL);

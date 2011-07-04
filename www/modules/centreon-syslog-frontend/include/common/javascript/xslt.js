@@ -79,7 +79,7 @@ var xslt_js = {
  * Constructor for client-side XSLT transformations.
  *
  * @author <a href="mailto:jb@eaio.com">Johann Burkard</a>
- * @version $Id: xslt.js 351 2010-03-05 16:21:34Z lpinsivy $
+ * @version $Id$
  * @constructor
  */
 

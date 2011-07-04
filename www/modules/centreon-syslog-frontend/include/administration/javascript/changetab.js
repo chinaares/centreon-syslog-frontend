@@ -1,5 +1,5 @@
 /*
- * Copyright 2005-2010 MERETHIS
+ * Copyright 2005-2011 MERETHIS
  * Centreon is developped by : Julien Mathis and Romain Le Merlus under
  * GPL Licence 2.0.
  * 
@@ -33,8 +33,8 @@
  * Project name : Centreon Syslog
  * Module name: Centreon-Syslog-Frontend
  * 
- * SVN : $URL
- * SVN : $Id: changetab.js 351 2010-03-05 16:21:34Z lpinsivy $
+ * SVN : $URL:$
+ * SVN : $Id$
  * 
  */
 

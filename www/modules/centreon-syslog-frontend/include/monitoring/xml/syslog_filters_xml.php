@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2005-2010 MERETHIS
+ * Copyright 2005-2011 MERETHIS
  * Centreon is developped by : Julien Mathis and Romain Le Merlus under
  * GPL Licence 2.0.
  * 
@@ -34,44 +34,34 @@
  * Project name : Centreon Syslog
  * Module name: Centreon-Syslog-Frontend
  * 
- * SVN : $URL
- * SVN : $Id$
+ * SVN : $URL:$
+ * SVN : $Id:$
  * 
  */
 	/*
 	 * PHP require
 	 */
 	require_once "@CENTREON_ETC@centreon.conf.php";
-	require_once $centreon_path . "www/modules/centreon-syslog/include/common/common-Func.php";
+	require_once $centreon_path . "www/modules/centreon-syslog-frontend/include/common/header.php";
+	require_once $syslog_mod_path . "/include/common/common-Func.php";
 	require_once $centreon_path . "www/include/common/common-Func.php";
 
-	/*
-	 * Path to the configuration dir
-	 */
-	global $path;
-	$path = $centreon_path . "www/modules/centreon-syslog/";
+	require_once $syslog_mod_path . "/class/syslogDB.class.php";
+	require_once $syslog_mod_path . "/class/syslogXML.class.php";
 
-	require_once $path."/class/syslogDB.class.php";
-	require_once $path."/class/syslogXML.class.php";
-
-	require_once ($centreon_path . "www/class/Session.class.php");
-	require_once ($centreon_path . "www/class/Oreon.class.php");
-	Session::start();
-	
 	/*
 	 * Database retrieve information for Centreon-Syslog
 	 */
 	$pearSyslogDB = new SyslogDB("syslog");
 	$cfg_syslog = getSyslogOption();
-
+	
 	/*
 	 * Get language 
 	 */
-	$oreon = $_SESSION['oreon'];
 	$locale = $oreon->user->get_lang();
 	putenv("LANG=$locale");
 	setlocale(LC_ALL, $locale);
-	bindtextdomain("messages",  $path . "locale/");
+	bindtextdomain("messages",  $syslog_mod_path . "locale/");
 	bind_textdomain_codeset("messages", "UTF-8"); 
 	textdomain("messages");
 	
@@ -108,7 +98,7 @@
 	else
 		$Fseverity_selected = "";
 
-	$FilterHosts = getFilterHostsMerge();
+    $FilterHosts = getFilterHostsMerge();
 	$FilterFacilities = getAllFacilities();
 	$FilterFFacilities = array("" => "", "gt" => ">", "ge" => ">=", "eq" => "=", "le" => "<=", "lt" => "<", "ne" => "!=");
 	$FilterPriorities = getAllSeverities();

@@ -1,4 +1,4 @@
-<link href="./modules/centreon-syslog/css/syslog.css" type="text/css" rel="stylesheet">
+<link href="./modules/centreon-syslog-frontend/css/syslog.css" type="text/css" rel="stylesheet">
 <link href="./include/common/javascript/datePicker.css" rel="stylesheet" type="text/css"/>
 
 {$Formfilterhidden.javascript}
@@ -12,9 +12,9 @@
 			</td>
 			<td align=right>
 				{$export}&nbsp;&nbsp;:
-				&nbsp;&nbsp;<a href="javascript:ajax_generateCSV_XML('CSV')"><img src="./modules/centreon-syslog/img/office_excel.png" alt="export CSV"/></a>
-				&nbsp;&nbsp;<a href="javascript:ajax_generateCSV_XML('XML')"><img src="./modules/centreon-syslog/img/xml.png" alt="export XML"/></a>
-				&nbsp;&nbsp;<a href="javascript:ajax_generateODT('ODT')"><img src="./modules/centreon-syslog/img/openoffice_writer.gif" alt="export ODT"/></a>
+				&nbsp;&nbsp;<a href="javascript:ajax_generateCSV_XML('CSV')"><img src="./modules/centreon-syslog-frontend/img/office_excel.png" alt="export CSV"/></a>
+				&nbsp;&nbsp;<a href="javascript:ajax_generateCSV_XML('XML')"><img src="./modules/centreon-syslog-frontend/img/xml.png" alt="export XML"/></a>
+				&nbsp;&nbsp;<a href="javascript:ajax_generateODT('ODT')"><img src="./modules/centreon-syslog-frontend/img/openoffice_writer.gif" alt="export ODT"/></a>
 			</td>
 		</tr>
 		<tr class='ListColLeft'>
@@ -55,7 +55,7 @@
 <br>
 <form {$Formfilterhidden.attributes}>
 	{php}
-	   include('./modules/centreon-syslog/include/pagination/pagination_syslog.php');
+	   include('./modules/centreon-syslog-frontend/include/pagination/pagination_syslog.php');
 	{/php}
 	<table class="ListTable">
 		<tr class='ListHeader'>
@@ -80,7 +80,7 @@
 	<table class="Toolbar_TableBottom">
 		<tr>
 			{php}
-			   include('./modules/centreon-syslog/include/pagination/pagination_syslog.php');
+			   include('./modules/centreon-syslog-frontend/include/pagination/pagination_syslog.php');
 			{/php}
 		</tr>
 	</table>

@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2005-2010 MERETHIS
+ * Copyright 2005-2011 MERETHIS
  * Centreon is developped by : Julien Mathis and Romain Le Merlus under
  * GPL Licence 2.0.
  * 
@@ -34,35 +34,21 @@
  * Project name : Centreon Syslog
  * Module name: Centreon-Syslog-Frontend
  * 
- * SVN : $URL
- * SVN : $Id:$
+ * SVN : $URL:$
+ * SVN : $Id$
  * 
  */
 	//ini_set("display_errors", "Off"); 
 
 	include ("@CENTREON_ETC@centreon.conf.php");
 
-	require_once ($centreon_path . "www/class/Session.class.php");
-	require_once ($centreon_path . "www/class/Oreon.class.php");
-	
-	/*
-	 * Path to the configuration dir
-	 */
-	global $path;
-	$path = $centreon_path . "www/modules/centreon-syslog/";
-	require_once $path."/class/syslogXML.class.php";
-	
-	Session::start();
-
-	/*
-	 * Defined path
-	 */
-	$syslog_mod_path = $centreon_path . "www/modules/centreon-syslog/";
+	require_once $centreon_path . "www/modules/centreon-syslog-frontend/include/common/header.php";
 	
 	/*
 	 * Common functions
 	 */
 	require_once $syslog_mod_path . 'class/syslogDB.class.php';
+	require_once $syslog_mod_path . 'class/syslogXML.class.php';
 	require_once $syslog_mod_path . 'include/common/common-Func.php';
 	require_once $centreon_path . 'www/include/common/common-Func.php';
 

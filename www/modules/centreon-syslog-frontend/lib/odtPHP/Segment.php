@@ -10,7 +10,7 @@ class SegmentException extends Exception
  * Last commit by $Author: neveldo $
  * Date - $Date: 2009-06-17 12:12:59 +0200 (mer., 17 juin 2009) $
  * SVN Revision - $Rev: 44 $
- * Id : $Id: Segment.php 44 2009-06-17 10:12:59Z neveldo $
+ * Id : $Id$
  *
  * @copyright  GPL License 2008 - Julien Pauli - Cyril PIERRE de GEYER - Anaska (http://www.anaska.com)
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL License

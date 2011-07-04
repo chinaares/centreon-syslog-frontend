@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2005-2010 MERETHIS
+ * Copyright 2005-2011 MERETHIS
  * Centreon is developped by : Julien Mathis and Romain Le Merlus under
  * GPL Licence 2.0.
  * 
@@ -34,8 +34,8 @@
  * Project name : Centreon Syslog
  * Module name: Centreon-Syslog-Frontend
  * 
- * SVN : $URL
- * SVN : $Id: common-Func.php 378 2010-03-23 22:00:23Z lpinsivy $
+ * SVN : $URL:$
+ * SVN : $Id$
  * 
  */
 	include ("@CENTREON_ETC@centreon.conf.php");
@@ -43,7 +43,7 @@
 	/*
 	 * Make PEAR DB object to connect to MySQL DB
 	 */
-	require_once $centreon_path . "www/modules/centreon-syslog/class/syslogDB.class.php";
+	require_once $centreon_path . "www/modules/Syslog/class/syslogDB.class.php";
 	$pearDB = new SyslogDB("centreon");
 	
 	/*
@@ -154,6 +154,9 @@
 		return $FilterHosts;
 	}
 	
+	/*
+	 * Get list of Hosts from merge table
+	 */
 	function getFilterHostsMerge() {
 		global $pearSyslogDB, $cfg_syslog;
 
@@ -196,6 +199,9 @@
 		return $FilterFacilities;
 	}
 	
+	/*
+	 * Get list of Facilities from merge table
+	 */
 	function getFilterFacilitiesMerge() {
 		global $pearSyslogDB, $cfg_syslog;
 
@@ -237,6 +243,9 @@
 		return $FilterPriorities;
 	}
 	
+	/*
+	 * Get list of Priotirites from merge table
+	 */
 	function getFilterPrioritiesMerge() {
 		global $pearSyslogDB, $cfg_syslog;
 
@@ -278,6 +287,9 @@
 		return $FilterLevels;
 	}
 	
+	/*
+	 * Get list of Levels from merge table
+	 */
 	function getFilterLevelsMerge() {
 		global $pearSyslogDB, $cfg_syslog;
 
@@ -322,6 +334,9 @@
 		return $FilterPrograms ;
 	}
 	
+	/*
+	 * Get list of Programs from merge table
+	 */
 	function getFilterProgramsMerge() {
 		global $pearSyslogDB, $cfg_syslog;
 
@@ -410,8 +425,9 @@
 		}
 
 		$list_priorities = array();
-		while ($tab =&$res->fetchRow())
-				$list_priorities[$tab['key']] = $tab['value'] ;
+		while ($tab =&$res->fetchRow()) {
+            $list_priorities[$tab['key']] = $tab['value'] ;
+		}
 		$res->free();
 		return $list_priorities;
 	}
@@ -437,7 +453,7 @@
 		if (strcmp($Fseverity, "") == 0) {
 			$math = "=";
 		} else {
-			$math = $Fseverity;
+		    $math = $Fseverity;
 		}
 
 		$query = "SELECT * FROM `mod_syslog_filters_priority` WHERE `value` ".$math." ".$intSeverity["value"];
@@ -448,12 +464,16 @@
 		}
 		
 		$list_severities = array();
-		while ($tab =&$res->fetchRow())
+		while ($tab =&$res->fetchRow()) {
 				$list_severities[$tab['key']] = $tab['value'] ;
+		}
 		$res->free();
 		return $list_severities;
 	}
-
+	
+	/*
+	 * Get list of Facilities from specific table
+	 */
 	function getAllFacilities() {
 		global $pearDB;
 
@@ -471,7 +491,10 @@
 		return $FilterFacilities;
 	}
 	
-	function getAllSeverity() {
+	/*
+	 * Get list of Facilities from specific table
+	 */
+	function getAllSeverities() {
 		global $pearDB;
 
 		$res =& $pearDB->query("SELECT * FROM mod_syslog_filters_priority ORDER BY CAST( value AS UNSIGNED) ASC");
@@ -486,22 +509,5 @@
 			
 		$FilterSeverities = array_map("myDecode",$FilterSeverities );
 		return $FilterSeverities;
-	}
-
-	/*
-	 * Get Host Name and ID from Centreon database
-	 */
-	function getHostNameAndID() {
-		global $pearDB;
-		
-		$hostsList = array();
-
-		$DBRESULT =& $pearDB->query("SELECT `host_id`, `host_name` FROM `host` WHERE `host_register` = '1'");
-		/*
-		 * Set base value
-		 */
-		$hostsList = array_map("myDecode", $DBRESULT->fetchRow());
-		$DBRESULT->free();
-		return $hostsList;
 	}
 ?>

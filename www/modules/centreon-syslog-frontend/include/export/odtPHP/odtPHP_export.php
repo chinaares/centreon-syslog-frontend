@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2005-2010 MERETHIS
+ * Copyright 2005-2011 MERETHIS
  * Centreon is developped by : Julien Mathis and Romain Le Merlus under
  * GPL Licence 2.0.
  * 
@@ -34,21 +34,13 @@
  * Project name : Centreon Syslog
  * Module name: Centreon-Syslog-Frontend
  * 
- * SVN : $URL
+ * SVN : $URL:$
  * SVN : $Id:$
  * 
  */
 	include ("@CENTREON_ETC@centreon.conf.php");
 
-	require_once ($centreon_path . "www/class/Session.class.php");
-	require_once ($centreon_path . "www/class/Oreon.class.php");
-	
-	Session::start();
-	
-	/*
-	 * Defined path
-	 */
-	$syslog_mod_path = $centreon_path . "www/modules/centreon-syslog/";
+	require_once $centreon_path . "www/modules/centreon-syslog-frontend/include/common/header.php";
 	
 	/*
 	 * Common functions
@@ -61,7 +53,6 @@
 	/*
 	 * Set language
 	 */ 
-	$oreon = $_SESSION['oreon'];
 	$locale = $oreon->user->get_lang();
 	putenv("LANG=$locale");
 	setlocale(LC_ALL, $locale);
@@ -191,7 +182,7 @@
 	$odf->setVars('tfacility',_("Facility"), true, 'UTF-8');
 	$odf->setVars('tseverity',_("Severity"), true, 'UTF-8');
 	$odf->setVars('tprogram',_("Program"), true, 'UTF-8');
-	$odf->setVars('tmessage',_("Message"), true, 'UTF-8');
+	$odf->setVars('tmessage',_("Message"));
 		
 	$resource = $odf->setSegment('s');
 
