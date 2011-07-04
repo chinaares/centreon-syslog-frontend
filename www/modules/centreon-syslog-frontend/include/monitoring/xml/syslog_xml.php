@@ -40,12 +40,12 @@
  */
  	# PHP functions
  	require_once "@CENTREON_ETC@centreon.conf.php";
-	require_once $centreon_path . "www/modules/centreon-syslog/include/common/common-Func.php";
+	require_once $centreon_path . "www/modules/centreon-syslog-frontend/include/common/common-Func.php";
 	require_once $centreon_path . "www/include/common/common-Func.php";
 
 	# Path to the configuration dir
 	global $path;
-	$path = $centreon_path . "www/modules/centreon-syslog/";
+	$path = $centreon_path . "www/modules/centreon-syslog-frontend/";
 
 	require_once $path."/class/syslogDB.class.php";
 	require_once $path."/class/syslogXML.class.php";
@@ -59,7 +59,7 @@
 	$locale = $oreon->user->get_lang();
 	putenv("LANG=$locale");
 	setlocale(LC_ALL, $locale);
-	bindtextdomain("messages",  $centreon_path . "www/modules/centreon-syslog/locale/");
+	bindtextdomain("messages",  $centreon_path . "www/modules/centreon-syslog-frontend/locale/");
 	bind_textdomain_codeset("messages", "UTF-8"); 
 	textdomain("messages");
 
