@@ -34,8 +34,8 @@
  * Project name : Centreon Syslog
  * Module name: Centreon-Syslog-Frontend
  * 
- * SVN : $URL:$
- * SVN : $Id:$
+ * SVN : $URL$
+ * SVN : $Id$
  * 
  */
  
@@ -65,6 +65,9 @@
      * Defined path
      */
     require $syslog_mod_path. "include/monitoring/javascript/syslog_js.php";
+    require $syslog_mod_path. "include/common/common-Func.php";
+    
+    $collectorList = getCollectorList();
 
     /*
      * Add ajax button and div
@@ -72,6 +75,14 @@
     echo "<link href=\"./modules/centreon-syslog-frontend/css/syslog.css\" type=\"text/css\" rel=\"stylesheet\">";
     echo "<table width=\"100%\">";
     echo "  <tr class=\"list_two\" align=\"center\">";
+    echo "          <td class=\"ListColCenter\">";
+    echo "                  "._("Collector:")."&nbsp;&nbsp;&nbsp;";
+    echo "                  <select onChange=\"javascript:rebuild_page();\" name=\"collector_id\" id=\"collector_id\" >";
+    foreach ($collectorList as $key => $value) {
+        echo "				<option value=\"".$key."\">".$value."</option>";
+    }
+    echo "					</select>";
+    echo "          </td>";
     echo "          <td class=\"ListColCenter\">";
     echo "                  "._("Refresh:")."&nbsp;&nbsp;&nbsp;<input onclick=\"javascript:ajax_handler(this.value)\" name=\"ajax\" id=\"ajaxBtn\" value=\""._("stop")."\" type=\"button\" />";
     echo "          </td>";

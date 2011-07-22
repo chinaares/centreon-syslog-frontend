@@ -58,6 +58,12 @@
 	/*
 	 * Get selected option in lists
 	 */
+	if (isset($_GET['collector_id']) && $_GET['collector_id'] != "" )
+		$collector_id = $_GET['collector_id'];
+	else
+		$collector_id = "";
+		
+	
 	if (isset($_GET['Ffacility']) && $_GET['Ffacility'] != "")
 		$Ffacility_selected = $_GET['Ffacility'];
 	else
@@ -68,12 +74,21 @@
 	else
 		$Fseverity_selected = "";
 
+		
+	if (!preg_match('/^\d+$/', $collector_id)) {
+	    header('Content-Type: text/xml');
+    	header('Pragma: no-cache');
+    	header('Expires: 0');
+    	header('Cache-Control: no-cache, must-revalidate'); 
+    	$buffer->output();
+    	exit;
+	}
 	/*
 	 * Build SQL request
 	 */
 	$pearDB = new syslogDB("centreon");
-	$pearDB_syslog = new SyslogDB("syslog");
-	$syslogOpt = getSyslogOption();
+	$pearDB_syslog = new SyslogDB("syslog", $collector_id);
+	
 	$sql_filter = array();
 	if (isset($_GET['program']) && $_GET['program'] != "" )
 		array_push($sql_filter ," (program = '". htmlentities($_GET['program'] , ENT_QUOTES) ."')  ");

@@ -34,8 +34,8 @@
  * Project name : Centreon Syslog
  * Module name: Centreon-Syslog-Frontend
  * 
- * SVN : $URL:$
- * SVN : $Id:$
+ * SVN : $URL$
+ * SVN : $Id$
  * 
  */
 	/*
@@ -43,18 +43,11 @@
 	 */
 	require_once "@CENTREON_ETC@centreon.conf.php";
 	require_once $centreon_path . "www/modules/centreon-syslog-frontend/include/common/header.php";
-	require_once $syslog_mod_path . "/include/common/common-Func.php";
 	require_once $centreon_path . "www/include/common/common-Func.php";
-
-	require_once $syslog_mod_path . "/class/syslogDB.class.php";
+	
+	require_once $syslog_mod_path . "/include/common/common-Func.php";
 	require_once $syslog_mod_path . "/class/syslogXML.class.php";
 
-	/*
-	 * Database retrieve information for Centreon-Syslog
-	 */
-	$pearSyslogDB = new SyslogDB("syslog");
-	$cfg_syslog = getSyslogOption();
-	
 	/*
 	 * Get language 
 	 */
@@ -68,6 +61,11 @@
 	/*
 	 * Get selected option in lists
 	 */
+	if (isset($_GET['collector_id']) && $_GET['collector_id'] != "" )
+		$collector_id = $_GET['collector_id'];
+	else
+		$collector_id = "";
+
 	if (isset($_GET['program']) && $_GET['program'] != "" )
 		$program_selected = $_GET['program'];
 	else
@@ -98,12 +96,20 @@
 	else
 		$Fseverity_selected = "";
 
-    $FilterHosts = getFilterHostsMerge();
+	/*
+	 * Build SQL request
+	 */
+	if (is_numeric($collector_id)) {
+	    $pearDB_syslog = new SyslogDB("syslog", $collector_id);
+	    $cfg_syslog = getSyslogOption($collector_id);
+	    $FilterHosts = getFilterHostsMerge($pearDB_syslog, $cfg_syslog);
+	    $FilterPrograms = getFilterProgramsMerge($pearDB_syslog, $cfg_syslog);
+	}
+	
 	$FilterFacilities = getAllFacilities();
 	$FilterFFacilities = array("" => "", "gt" => ">", "ge" => ">=", "eq" => "=", "le" => "<=", "lt" => "<", "ne" => "!=");
 	$FilterPriorities = getAllSeverities();
 	$FilterFPriorities = array("" => "", "gt" => ">", "ge" => ">=", "eq" => "=", "le" => "<=", "lt" => "<", "ne" => "!=");
-	$FilterPrograms = getFilterProgramsMerge();
 
 	/*
 	 * Generate XML ouput
@@ -133,12 +139,16 @@
 
  	# For hosts select box
  	echo "<hosts>";
- 	foreach ($FilterHosts as $key=>$value) {
- 		if (strcmp($value, $host_selected) == 0) {
- 			echo "<host selected=\"Y\">".$value."</host>";
- 		} else {
- 			echo "<host>".$value."</host>";
- 		}
+ 	if (preg_match('/^\d+$/', $collector_id)) {
+     	foreach ($FilterHosts as $key=>$value) {
+     		if (strcmp($value, $host_selected) == 0) {
+     			echo "<host selected=\"Y\">".$value."</host>";
+     		} else {
+     			echo "<host>".$value."</host>";
+     		}
+     	}
+ 	} else {
+ 	    echo "<host></host>";
  	}
  	echo "</hosts>";
  	
@@ -188,12 +198,16 @@
  	
  	# For programs select box
  	echo "<programs>";
- 	foreach ($FilterPrograms as $key=>$value) {
- 		if (strcmp($value, $program_selected) == 0) {
- 			echo "<program selected=\"Y\">".$value."</program>";
- 		} else {
- 			echo "<program>".$value."</program>";
- 		}
+ 	if (preg_match('/^\d+$/', $collector_id)) {
+     	foreach ($FilterPrograms as $key=>$value) {
+     		if (strcmp($value, $program_selected) == 0) {
+     			echo "<program selected=\"Y\">".$value."</program>";
+     		} else {
+     			echo "<program>".$value."</program>";
+     		}
+     	}
+ 	} else {
+ 	    echo "<program></program>";
  	}
  	echo "</programs>";
  	

@@ -63,26 +63,30 @@ if ($cfg_syslog["refresh_filters"] == 0) {
 	var _start_label = "<?php echo _("start");?>";
 	var _stop_label = "<?php echo _("stop");?>";
 
+	function rebuild_page() {
+		build_ajaxFilters();
+		build_ajax();
+	}
+	
 	function build_ajax() {
 		_lock = 1;
 		var proc = new Transformation();
 
-		if (document.getElementById('filter_host')) {
-			var filter_host = document.getElementById('filter_host').value;
-			var filter_facility = document.getElementById('filter_facility').value;
-			var filter_Ffacility = document.getElementById('filter_Ffacility').value;
-			var filter_severity = document.getElementById('filter_severity').value;
-			var filter_Fseverity = document.getElementById('filter_Fseverity').value;
-			var filter_program = escape(document.getElementById('filter_program').value);
+		if (document.getElementById('collector_id')) var collector_id = document.getElementById('collector_id').value;
+		if (document.getElementById('filter_host')) var filter_host = document.getElementById('filter_host').value;
+		if (document.getElementById('filter_facility')) var filter_facility = document.getElementById('filter_facility').value;
+		if (document.getElementById('filter_Ffacility')) var filter_Ffacility = document.getElementById('filter_Ffacility').value;
+		if (document.getElementById('filter_severity')) var filter_severity = document.getElementById('filter_severity').value;
+		if (document.getElementById('filter_Fseverity')) var filter_Fseverity = document.getElementById('filter_Fseverity').value;
+		if (document.getElementById('filter_program')) var filter_program = escape(document.getElementById('filter_program').value);
 
-			var addrXML = "./modules/centreon-syslog-frontend/include/monitoring/xml/syslog_xml.php?sid=" + _sid + '&host=' + filter_host + '&facility=' + filter_facility + '&Ffacility=' + filter_Ffacility + '&severity=' + filter_severity + '&Fseverity=' + filter_Fseverity + '&program=' + filter_program;
-			var addrXSL = "./modules/centreon-syslog-frontend/include/monitoring/xsl/syslog.xsl";
+		var addrXML = "./modules/centreon-syslog-frontend/include/monitoring/xml/syslog_xml.php?sid=" + _sid + '&collector_id=' + collector_id + '&host=' + filter_host + '&facility=' + filter_facility + '&Ffacility=' + filter_Ffacility + '&severity=' + filter_severity + '&Fseverity=' + filter_Fseverity + '&program=' + filter_program;
+		var addrXSL = "./modules/centreon-syslog-frontend/include/monitoring/xsl/syslog.xsl";
 
-			proc.setXml(addrXML);
-			proc.setXslt(addrXSL);
-			proc.transform("ajaxLog");
-			_lock = 0;
-		}
+		proc.setXml(addrXML);
+		proc.setXslt(addrXSL);
+		proc.transform("ajaxLog");
+		_lock = 0;
 
 		_mySyslogTimeOut = setTimeout('build_ajax()', _mySyslogtime_reload);
 	}
@@ -91,16 +95,15 @@ if ($cfg_syslog["refresh_filters"] == 0) {
 		_lockFilter = 1;
 		var proc = new Transformation();
 
-		if (document.getElementById('filter_host')) {
-			var filter_host = document.getElementById('filter_host').options[document.getElementById('filter_host').selectedIndex].value;
-			var filter_facility = document.getElementById('filter_facility').options[document.getElementById('filter_facility').selectedIndex].value;
-			var filter_Ffacility = document.getElementById('filter_Ffacility').options[document.getElementById('filter_Ffacility').selectedIndex].value;
-			var filter_severity = document.getElementById('filter_severity').options[document.getElementById('filter_severity').selectedIndex].value;
-			var filter_Fseverity = document.getElementById('filter_Fseverity').options[document.getElementById('filter_Fseverity').selectedIndex].value;
-			var filter_program = escape(document.getElementById('filter_program').options[document.getElementById('filter_program').selectedIndex].value);
-		}
+		if (document.getElementById('collector_id')) var collector_id = document.getElementById('collector_id').value;
+		if (document.getElementById('filter_host')) var filter_host = document.getElementById('filter_host').options[document.getElementById('filter_host').selectedIndex].value;
+		if (document.getElementById('filter_facility')) var filter_facility = document.getElementById('filter_facility').options[document.getElementById('filter_facility').selectedIndex].value;
+		if (document.getElementById('filter_Ffacility')) var filter_Ffacility = document.getElementById('filter_Ffacility').options[document.getElementById('filter_Ffacility').selectedIndex].value;
+		if (document.getElementById('filter_severity')) var filter_severity = document.getElementById('filter_severity').options[document.getElementById('filter_severity').selectedIndex].value;
+		if (document.getElementById('filter_Fseverity')) var filter_Fseverity = document.getElementById('filter_Fseverity').options[document.getElementById('filter_Fseverity').selectedIndex].value;
+		if (document.getElementById('filter_program')) var filter_program = escape(document.getElementById('filter_program').options[document.getElementById('filter_program').selectedIndex].value);
 
-		var addrXML = "./modules/centreon-syslog-frontend/include/monitoring/xml/syslog_filters_xml.php?sid=" + _sid + '&host=' + filter_host + '&facility=' + filter_facility + '&Ffacility=' + filter_Ffacility + '&severity=' + filter_severity + '&Fseverity=' + filter_Fseverity + '&program=' + filter_program;
+		var addrXML = "./modules/centreon-syslog-frontend/include/monitoring/xml/syslog_filters_xml.php?sid=" + _sid + '&collector_id=' + collector_id + '&host=' + filter_host + '&facility=' + filter_facility + '&Ffacility=' + filter_Ffacility + '&severity=' + filter_severity + '&Fseverity=' + filter_Fseverity + '&program=' + filter_program;
 		var addrXSL = "./modules/centreon-syslog-frontend/include/monitoring/xsl/syslog_filters.xsl";
 
 		proc.setXml(addrXML);

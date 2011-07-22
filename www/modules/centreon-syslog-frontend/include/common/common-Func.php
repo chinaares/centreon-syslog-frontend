@@ -49,12 +49,12 @@
 	/*
 	 * Get Syslog module options
 	 */
-	function getSyslogOption() {
+	function getSyslogOption($collector_id) {
 		global $pearDB;
 		
 		$cfg_syslog = array();
 
-		$DBRESULT =& $pearDB->query("SELECT * FROM mod_syslog_opt LIMIT 1");
+		$DBRESULT =& $pearDB->query("SELECT * FROM `mod_syslog_collector` WHERE `collector_id` = '".$collector_id."'");
 		/*
 		 * Set base value
 		 */
@@ -66,6 +66,8 @@
 	/*
 	 * Update Syslog configuration options
 	 */
+	//TODO : change function to update correct collector
+	//function updateSyslogConfigData($collector_id) {
 	function updateSyslogConfigData() {
 		global $form, $pearDB;
 		
@@ -93,10 +95,10 @@
 		isset($ret["syslog_db_logs_merge"]) && $ret["syslog_db_logs_merge"] != NULL ? $rq .= "'".htmlentities($ret["syslog_db_logs_merge"], ENT_QUOTES)."', ": $rq .= "NULL, ";
 		
 		$rq .= "syslog_db_cache = ";
-		isset($ret["syslog_db_cache"]) && $ret["syslog_db_cache"] != NULL ? $rq .= "'".htmlentities($ret["syslog_db_cache"], ENT_QUOTES)."', ": $rq .= "NULL, ";
+		isset($ret["db_table_cache"]) && $ret["db_table_cache"] != NULL ? $rq .= "'".htmlentities($ret["db_table_cache"], ENT_QUOTES)."', ": $rq .= "NULL, ";
 		
 		$rq .= "syslog_db_cache_merge = ";
-		isset($ret["syslog_db_cache_merge"]) && $ret["syslog_db_cache_merge"] != NULL ? $rq .= "'".htmlentities($ret["syslog_db_cache_merge"], ENT_QUOTES)."', ": $rq .= "NULL, ";
+		isset($ret["	db_table_cache_merge"]) && $ret["	db_table_cache_merge"] != NULL ? $rq .= "'".htmlentities($ret["	db_table_cache_merge"], ENT_QUOTES)."', ": $rq .= "NULL, ";
 		
 		# Update SSH information
 		$rq .= "syslog_ssh_server = ";
@@ -137,7 +139,7 @@
 	function getFilterHosts() {
 		global $pearSyslogDB, $cfg_syslog;
 
-		$query = "SELECT distinct(value) as host FROM " . $cfg_syslog["syslog_db_cache"] . " WHERE type= \"HOST\" ORDER BY host ASC";
+		$query = "SELECT distinct(value) as host FROM " . $cfg_syslog["db_table_cache"] . " WHERE type= \"HOST\" ORDER BY host ASC";
 			
 		$res =& $pearSyslogDB->query($query);
 		if (PEAR::isError($pearSyslogDB)) {
@@ -157,10 +159,8 @@
 	/*
 	 * Get list of Hosts from merge table
 	 */
-	function getFilterHostsMerge() {
-		global $pearSyslogDB, $cfg_syslog;
-
-		$query = "SELECT distinct(value) as host FROM " . $cfg_syslog["syslog_db_cache_merge"] . " WHERE type= \"HOST\" ORDER BY host ASC";
+	function getFilterHostsMerge($pearSyslogDB, $cfg_syslog) {
+		$query = "SELECT distinct(value) as host FROM " . $cfg_syslog["db_table_cache_merge"] . " WHERE type= \"HOST\" ORDER BY host ASC";
 		
 		$res =& $pearSyslogDB->query($query);
 		if (PEAR::isError($pearSyslogDB)) {
@@ -183,7 +183,7 @@
 	function getFilterFacilities() {
 		global $pearSyslogDB, $cfg_syslog;
 
-		$query = "SELECT distinct(value) as facility FROM " . $cfg_syslog["syslog_db_cache"] . " WHERE type= \"FACILITY\"  ORDER BY facility ASC";
+		$query = "SELECT distinct(value) as facility FROM " . $cfg_syslog["db_table_cache"] . " WHERE type= \"FACILITY\"  ORDER BY facility ASC";
 
 		$res =& $pearSyslogDB->query($query);
 		if (PEAR::isError($pearSyslogDB)) {
@@ -205,7 +205,7 @@
 	function getFilterFacilitiesMerge() {
 		global $pearSyslogDB, $cfg_syslog;
 
-		$query = "SELECT distinct(value) as facility FROM " . $cfg_syslog["syslog_db_cache_merge"] . " WHERE type= \"FACILITY\"  ORDER BY facility ASC";
+		$query = "SELECT distinct(value) as facility FROM " . $cfg_syslog["db_table_cache_merge"] . " WHERE type= \"FACILITY\"  ORDER BY facility ASC";
 
 		$res =& $pearSyslogDB->query($query);
 		if (PEAR::isError($pearSyslogDB)) {
@@ -227,7 +227,7 @@
 	function getFilterPriorities() {
 		global $pearSyslogDB, $cfg_syslog;
 
-		$query = "SELECT distinct(value) as priority FROM " . $cfg_syslog["syslog_db_cache"] . " WHERE type= \"PRIORITY\"  ORDER BY priority ASC";
+		$query = "SELECT distinct(value) as priority FROM " . $cfg_syslog["db_table_cache"] . " WHERE type= \"PRIORITY\"  ORDER BY priority ASC";
 
 		$res =& $pearSyslogDB->query($query);
 		if (PEAR::isError($pearSyslogDB)) {
@@ -249,7 +249,7 @@
 	function getFilterPrioritiesMerge() {
 		global $pearSyslogDB, $cfg_syslog;
 
-		$query = "SELECT distinct(value) as priority FROM " . $cfg_syslog["syslog_db_cache_merge"] . " WHERE type= \"PRIORITY\"  ORDER BY priority ASC";
+		$query = "SELECT distinct(value) as priority FROM " . $cfg_syslog["db_table_cache_merge"] . " WHERE type= \"PRIORITY\"  ORDER BY priority ASC";
 
 		$res =& $pearSyslogDB->query($query);
 		if (PEAR::isError($pearSyslogDB)) {
@@ -271,7 +271,7 @@
 	function getFilterLevels() {
 		global $pearSyslogDB, $cfg_syslog;
 
-		$query = "SELECT distinct(value) as level FROM " . $cfg_syslog["syslog_db_cache"] . " WHERE type= \"LEVEL\"  ORDER BY level ASC";
+		$query = "SELECT distinct(value) as level FROM " . $cfg_syslog["db_table_cache"] . " WHERE type= \"LEVEL\"  ORDER BY level ASC";
 
 		$res =& $pearSyslogDB->query($query);
 		if (PEAR::isError($pearSyslogDB)) {
@@ -293,7 +293,7 @@
 	function getFilterLevelsMerge() {
 		global $pearSyslogDB, $cfg_syslog;
 
-		$query = "SELECT distinct(value) as level FROM " . $cfg_syslog["syslog_db_cache_merge"] . " WHERE type= \"LEVEL\"  ORDER BY level ASC";
+		$query = "SELECT distinct(value) as level FROM " . $cfg_syslog["db_table_cache_merge"] . " WHERE type= \"LEVEL\"  ORDER BY level ASC";
 
 		$res =& $pearSyslogDB->query($query);
 		if (PEAR::isError($pearSyslogDB)) {
@@ -315,7 +315,7 @@
 	function getFilterPrograms() {
 		global $pearSyslogDB, $cfg_syslog;
 
-		$query = "SELECT distinct(value) as program FROM " . $cfg_syslog["syslog_db_cache"] . " WHERE type= \"PROGRAM\"  ORDER BY program ASC";
+		$query = "SELECT distinct(value) as program FROM " . $cfg_syslog["db_table_cache"] . " WHERE type= \"PROGRAM\"  ORDER BY program ASC";
 
 		$res =& $pearSyslogDB->query($query);
 		
@@ -337,10 +337,9 @@
 	/*
 	 * Get list of Programs from merge table
 	 */
-	function getFilterProgramsMerge() {
-		global $pearSyslogDB, $cfg_syslog;
+	function getFilterProgramsMerge($pearSyslogDB, $cfg_syslog) {
 
-		$query = "SELECT distinct(value) as program FROM " . $cfg_syslog["syslog_db_cache_merge"] . " WHERE type= \"PROGRAM\"  ORDER BY program ASC";
+		$query = "SELECT distinct(value) as program FROM " . $cfg_syslog["db_table_cache_merge"] . " WHERE type= \"PROGRAM\"  ORDER BY program ASC";
 
 		$res =& $pearSyslogDB->query($query);
 		
@@ -367,7 +366,7 @@
 		
 		$cfg_syslog_facility = array();
 
-		$DBRESULT =& $pearDB->query("SELECT * FROM mod_syslog_filters_facility");
+		$DBRESULT =& $pearDB->query("SELECT * FROM `mod_syslog_filters_facility`");
 		/*
 		 * Set base value
 		 */
@@ -384,7 +383,7 @@
 		
 		$cfg_syslog_priority = array();
 
-		$DBRESULT =& $pearDB->query("SELECT * FROM mod_syslog_filters_priority");
+		$DBRESULT =& $pearDB->query("SELECT * FROM `mod_syslog_filters_priority`");
 		/*
 		 * Set base value
 		 */
@@ -477,7 +476,7 @@
 	function getAllFacilities() {
 		global $pearDB;
 
-		$res =& $pearDB->query("SELECT * FROM mod_syslog_filters_facility ORDER BY CAST( value AS UNSIGNED) ASC");
+		$res =& $pearDB->query("SELECT * FROM mod_syslog_filters_facility ORDER BY CAST(value AS UNSIGNED) ASC");
 		if (PEAR::isError($pearDB)) {
 			print "Mysql Error : ". $pearDB->getMessage()."\n";
 		}
@@ -497,7 +496,7 @@
 	function getAllSeverities() {
 		global $pearDB;
 
-		$res =& $pearDB->query("SELECT * FROM mod_syslog_filters_priority ORDER BY CAST( value AS UNSIGNED) ASC");
+		$res =& $pearDB->query("SELECT * FROM mod_syslog_filters_priority ORDER BY CAST(value AS UNSIGNED) ASC");
 		if (PEAR::isError($pearDB)) {
 			print "Mysql Error : ". $pearDB->getMessage()."\n";
 		}
@@ -509,5 +508,25 @@
 			
 		$FilterSeverities = array_map("myDecode",$FilterSeverities );
 		return $FilterSeverities;
+	}
+
+	/*
+	 * Get list of syslog collector define into database
+	 */
+	function getCollectorList() {
+	    global $pearDB;
+
+		$res =& $pearDB->query("SELECT `collector_id`, `collector_name` FROM `mod_syslog_collector` ");
+		if (PEAR::isError($pearDB)) {
+			print "Mysql Error : ". $pearDB->getMessage()."\n";
+		}
+		# Set base value
+		$collectorsList =  array("" => "");
+		
+		while ($element =& $res->fetchRow()) {
+			$collectorsList[$element['collector_id']] = $element['collector_name']; 
+		}
+
+		return $collectorsList;
 	}
 ?>

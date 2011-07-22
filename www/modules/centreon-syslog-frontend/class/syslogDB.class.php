@@ -34,7 +34,7 @@
  * Project name : Centreon Syslog
  * Module name: Centreon-Syslog-Frontend
  * 
- * SVN : $URL:$
+ * SVN : $URL$
  * SVN : $Id$
  * 
  */
@@ -66,7 +66,7 @@ class SyslogDB {
 	 *  - ndo
 	 *	- syslog
 	 */
-    function SyslogDB($db = "centreon", $retry = 3) {	
+    function SyslogDB($db = "centreon", $collector = 0, $retry = 3) {	
 
 		include("@CENTREON_ETC@/centreon.conf.php");
 			
@@ -94,7 +94,7 @@ class SyslogDB {
 			case "syslog" : 
 				$this->connectToCentreon($conf_centreon);
 				$this->connect();
-				$this->connectToSyslog($conf_centreon);
+				$this->connectToSyslog($conf_centreon, $collector);
 				$this->connect();
 				break;
 			case "default" : 
@@ -167,19 +167,22 @@ class SyslogDB {
 	/*
      *  Get info to connect to Syslog collector DB
      */
-    private function connectToSyslog($conf_centreon) {		
-		$DBRESULT =& $this->privatePearDB->query("SELECT syslog_db_server, syslog_db_name, syslog_db_user, syslog_db_password FROM mod_syslog_opt LIMIT 1;");
+    private function connectToSyslog($conf_centreon, $collector) {	
+        $query =  "SELECT `db_server_address`, `db_type`, `db_name`, `db_username`, `db_password` ";
+        $query .= "FROM `mod_syslog_collector` ";
+        $query .= "WHERE `collector_id`= '".$collector."' ";	
+		$DBRESULT =& $this->privatePearDB->query($query);
 		if (PEAR::isError($DBRESULT))
 			print "DB Error : ".$DBRESULT->getDebugInfo()."<br />";
 		$confSyslog = $DBRESULT->fetchRow();
 		unset($DBRESULT);
 		
 		$this->dsn = array(
-	    	'phptype'  => $this->db_type,
-	    	'username' => $confSyslog['syslog_db_user'],
-	    	'password' => $confSyslog['syslog_db_password'],
-	    	'hostspec' => $confSyslog['syslog_db_server'],
-	    	'database' => $confSyslog['syslog_db_name'],
+	    	'phptype'  => $confSyslog['db_type'],
+	    	'username' => $confSyslog['db_username'],
+	    	'password' => $confSyslog['db_password'],
+	    	'hostspec' => $confSyslog['db_server_address'],
+	    	'database' => $confSyslog['db_name'],
 		);
     }
     
