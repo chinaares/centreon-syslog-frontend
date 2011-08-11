@@ -104,18 +104,18 @@
 		$selectedElements = $form->addElement('checkbox', "select[".$config['collector_id']."]");	
 		$moptions = "";
 		if ($config["enable"] == 1)
-			$moptions .= "<a href='main.php?p=".$p."&id=".$config['id']."&o=u&limit=".$limit."&num=".$num."&search=".$search."'><img src='img/icones/16x16/element_previous.gif' border='0' alt='"._("Disabled")."'></a>&nbsp;&nbsp;";
+			$moptions .= "<a href='main.php?p=".$p."&id=".$config['collector_id']."&o=u&limit=".$limit."&num=".$num."&search=".$search."'><img src='img/icones/16x16/element_previous.gif' border='0' alt='"._("Disabled")."'></a>&nbsp;&nbsp;";
 		else
-			$moptions .= "<a href='main.php?p=".$p."&id=".$config['id']."&o=s&limit=".$limit."&num=".$num."&search=".$search."'><img src='img/icones/16x16/element_next.gif' border='0' alt='"._("Enabled")."'></a>&nbsp;&nbsp;";
+			$moptions .= "<a href='main.php?p=".$p."&id=".$config['collector_id']."&o=s&limit=".$limit."&num=".$num."&search=".$search."'><img src='img/icones/16x16/element_next.gif' border='0' alt='"._("Enabled")."'></a>&nbsp;&nbsp;";
 		$moptions .= "&nbsp;<input onKeypress=\"if(event.keyCode > 31 && (event.keyCode < 45 || event.keyCode > 57)) event.returnValue = false; if(event.which > 31 && (event.which < 45 || event.which > 57)) return false;\" maxlength=\"3\" size=\"3\" value='1' style=\"margin-bottom:0px;\" name='dupNbr[".$config['collector_id']."]'></input>";
 		$elemArr[$i] = array("MenuClass"=>"list_".$style, 
 						"RowMenu_select"=>$selectedElements->toHtml(),
 						"RowMenu_name"=>$config["collector_name"],
 						"RowMenu_db_address"=>$config["db_server_address"],
 						"RowMenu_interface_type"=>$config["db_type"],
-						"RowMenu_link"=>"?p=".$p."&o=c&id=".$config['id'],
+						"RowMenu_link"=>"?p=".$p."&o=c&id=".$config['collector_id'],
 						"RowMenu_status"=>$config["enable"] ? _("Enabled") : _("Disabled"),
-						"RowMenu_comment"=>substr($nagios_servers[$config["comment"]], 0, 40),
+						"RowMenu_comment"=>substr($config["comment"], 0, 40),
 						"RowMenu_options"=>$moptions);;
 		$style != "two" ? $style = "two" : $style = "one";	
 	}
