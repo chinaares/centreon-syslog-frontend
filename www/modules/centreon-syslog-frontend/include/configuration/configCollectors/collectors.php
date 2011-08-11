@@ -31,19 +31,28 @@
  * 
  * For more information : contact@centreon.com
  * 
- * Module name: Syslog
+ * Project name : Centreon Syslog
+ * Module name: Centreon-Syslog-Frontend
  * 
- * First developpement by : Jean Marc Grisard - Christophe Coraboeuf
- * 
- * Adaptation for Centreon 2.0 by : Merethis team 
- * 
- * SVN : $URL:$
- * SVN : $Id:$
+ * SVN : $URL$
+ * SVN : $Id$
  * 
  */
  
 	if (!isset($oreon))
 		exit ();
+
+	isset($_GET["id"]) ? $cG = $_GET["id"] : $cG = NULL;
+	isset($_POST["id"]) ? $cP = $_POST["id"] : $cP = NULL;
+	$cG ? $id = $cG : $id = $cP;
+
+	isset($_GET["select"]) ? $cG = $_GET["select"] : $cG = NULL;
+	isset($_POST["select"]) ? $cP = $_POST["select"] : $cP = NULL;
+	$cG ? $select = $cG : $select = $cP;
+
+	isset($_GET["dupNbr"]) ? $cG = $_GET["dupNbr"] : $cG = NULL;
+	isset($_POST["dupNbr"]) ? $cP = $_POST["dupNbr"] : $cP = NULL;
+	$cG ? $dupNbr = $cG : $dupNbr = $cP;
 
 	/*
 	 * Pear library
@@ -53,31 +62,60 @@
 	require_once 'HTML/QuickForm/Renderer/ArraySmarty.php';
 	
 	/*
+	 * Path to the configuration dir
+	 */
+	$syslog_mod_path = $centreon_path . "www/modules/centreon-syslog-frontend/";
+	$path = $syslog_mod_path . "include/configuration/configCollectors/";
+	
+	/*
 	 * Set language
 	 */
 	$locale = $oreon->user->get_lang();
 	putenv("LANG=$locale");
 	setlocale(LC_ALL, $locale);
-	bindtextdomain("messages", "./modules/centreon-syslog/locale/");
+	bindtextdomain("messages", $syslog_mod_path . "locale/");
 	bind_textdomain_codeset("messages", "UTF-8");
 	textdomain("messages");
-
-	/*
-	 * Path to the configuration dir
-	 */
-	global $syslog_mod_path;
-	$syslog_mod_path = $centreon_path . "www/modules/centreon-syslog/";
-	$syslog_configuration_path = $syslog_mod_path . "include/configuration/configCollectors/";
-
 	
-	if (isset($_POST["o"]))
-		$o = $_POST["o"];
+	/*
+	 * PHP functions
+	 */
+	require_once $path."DB-Func.php";
+	require_once "./include/common/common-Func.php";
 
-	switch ($o)     {
-		case "a"	: require_once($syslog_configuration_path."formCollector.php"); break; #Add a host
-		case "w"	: require_once($syslog_configuration_path."formCollector.php"); break; #Watch a host
-		case "m"	: require_once($syslog_configuration_path."formCollector.php"); break; #Modify a host
-		case "l"	: require_once($syslog_configuration_path."listCollectors.php"); break; #List hosts
-		default		: require_once($syslog_configuration_path."listCollectors.php"); break;
+	/* Set the real page */
+	if ($ret['topology_page'] != "" && $p != $ret['topology_page'])
+		$p = $ret['topology_page'];
+	
+	switch ($o)	{
+		case "a" : 
+			require_once($path."formCollector.php"); 
+			break; #Add Collector.cfg
+		case "w" : 
+			require_once($path."formCollector.php"); 
+			break; #Watch Collector.cfg
+		case "c" : 
+			require_once($path."formCollector.php"); 
+			break; #Modify Collector.cfg
+		case "s" : 
+			enablePollerInDB($id); 
+			require_once($path."listCollectors.php"); 
+			break; #Activate a Collector
+		case "u" : 
+			disablePollerInDB($id); 
+			require_once($path."listCollectors.php"); 
+			break; #Desactivate a Collector
+		case "m" : 
+			multiplePollerInDB(isset($select) ? $select : array(), $dupNbr); 
+			require_once($path."listCollectors.php"); 
+			break; #Duplicate a Collector
+		case "d" : 
+			deletePollerInDB(isset($select) ? $select : array()); 
+			require_once($path."listCollectors.php"); 
+			break; #Delete a Collector
+		default : 
+			require_once($path."listCollectors.php"); 
+			break;
 	}
  ?>
+ 

@@ -31,77 +31,146 @@
  * 
  * For more information : contact@centreon.com
  * 
- * Module name: Syslog
+ * Project name : Centreon Syslog
+ * Module name: Centreon-Syslog-Frontend
  * 
- * First developpement by : Jean Marc Grisard - Christophe Coraboeuf
- * 
- * Adaptation for Centreon 2.0 by : Merethis team 
- * 
- * SVN : $URL:$
- * SVN : $Id:$
+ * SVN : $URL$
+ * SVN : $Id$
  * 
  */
 
 	if (!isset($oreon))
 		exit();
 
-	# Pagination
 	include("./include/common/autoNumLimit.php");
 
+	# start quickSearch form
+	$advanced_search = 0;
 	include_once("./include/common/quickSearch.php");
+	# end quickSearch form
 
-	if (isset($search))
-		$DBRESULT = & $pearDB->query("SELECT COUNT(*) FROM mod_syslog_collector WHERE (mod_syslog_collector.collector_name LIKE '%".htmlentities($search, ENT_QUOTES)."%')");
-	else
-		$DBRESULT = & $pearDB->query("SELECT COUNT(*) FROM mod_syslog_collector");
+	$SearchTool = NULL;
+	if (isset($search) && $search)
+		$SearchTool = " WHERE `collector_name` LIKE '%".htmlentities($search, ENT_QUOTES, "UTF-8")."%' ";
 
-	$tmp = & $DBRESULT->fetchRow();
+	$DBRESULT = $pearDB->query("SELECT COUNT(*) FROM `mod_syslog_collector` $SearchTool");
+
+	$tmp = $DBRESULT->fetchRow();
 	$rows = $tmp["COUNT(*)"];
 
 	include("./include/common/checkPagination.php");
 
-	# Smarty template Init
+	/*
+	 * Smarty template Init
+	 */
 	$tpl = new Smarty();
 	$tpl = initSmartyTpl($path, $tpl);
 
-	# start header menu
-	$tpl->assign("headerMenu_collector_name", _("Collector Name"));
-	$tpl->assign("headerMenu_colletor_db_address", _("Collector Database Address"));
-	$tpl->assign("headerMenu_db_name", _("Database Name"));
-	$tpl->assign("headerMenu_colletor_ssh_address", _("Collector SSH Address"));
-	# end header menu
+	/* Access level */
+	($centreon->user->access->page($p) == 1) ? $lvl_access = 'w' : $lvl_access = 'r'; 
+	$tpl->assign('mode_access', $lvl_access);
 
-	#Host list
-	if ($search)
-		$rq = "SELECT * FROM mod_syslog_collector WHERE (mod_syslog_collector.collector_name LIKE '%".htmlentities($search, ENT_QUOTES)."%') LIMIT ".$num * $limit.", ".$limit;
-	else
-		$rq = "SELECT * FROM mod_syslog_collector LIMIT ".$num * $limit.", ".$limit;
-	$DBRESULT =& $pearDB->query($rq);
+	/*
+	 * start header menu
+	 */
+	$tpl->assign("headerMenu_icone", "<img src='./img/icones/16x16/pin_red.gif'>");
+	$tpl->assign("headerMenu_name", _("Name"));
+	$tpl->assign("headerMenu_db_address", _("Database Address"));
+	$tpl->assign("headerMenu_interface_type", _("Database Type"));
+	$tpl->assign("headerMenu_status", _("Status"));
+	$tpl->assign("headerMenu_comment", _("Comment"));
+	$tpl->assign("headerMenu_options", _("Options"));
+	
+	/*
+	 * Nagios list
+	 */
+	
+		
+	$rq = "SELECT `collector_id`, `collector_name`, `db_server_address`, `db_type`, `enable`, `comment` FROM `mod_syslog_collector` $SearchTool ORDER BY `collector_name` LIMIT ".$num * $limit.", ".$limit;
+	$DBRESULT = $pearDB->query($rq);
 
 	$form = new HTML_QuickForm('select_form', 'POST', "?p=".$p);
-	#Different style between each lines
-	$style = "one";
-	#Fill a tab with a mutlidimensionnal Array we put in $tpl
-	$elemArr = array();
-	for ($i = 0; $host =& $DBRESULT->fetchRow(); $i++) {
-		$elemArr[$i] = array("MenuClass"=>"list_".$style,
-						"collector_name"=>$host['collector_name'],
-						"colletor_db_address"=>$host['db_server_address'],
-						"colletor_db_name"=>$host['db_name'],
-						"colletor_ssh_address"=>$host['ssh_server_address']);
-		$style != "two" ? $style = "two" : $style = "one";
-	}
-	#Different messages we put in the template
-	$tpl->assign('msg', array ("addL"=>"?p=".$p."&o=a", "addT"=>_("Add")));
 
+	/*
+	 * Different style between each lines
+	 */
+	$style = "one";
+	
+	/*
+	 * Fill a tab with a mutlidimensionnal Array we put in $tpl
+	 */
+	$elemArr = array();
+	for ($i = 0; $config = $DBRESULT->fetchRow(); $i++) {		
+		$selectedElements = $form->addElement('checkbox', "select[".$config['collector_id']."]");	
+		$moptions = "";
+		if ($config["enable"] == 1)
+			$moptions .= "<a href='main.php?p=".$p."&id=".$config['id']."&o=u&limit=".$limit."&num=".$num."&search=".$search."'><img src='img/icones/16x16/element_previous.gif' border='0' alt='"._("Disabled")."'></a>&nbsp;&nbsp;";
+		else
+			$moptions .= "<a href='main.php?p=".$p."&id=".$config['id']."&o=s&limit=".$limit."&num=".$num."&search=".$search."'><img src='img/icones/16x16/element_next.gif' border='0' alt='"._("Enabled")."'></a>&nbsp;&nbsp;";
+		$moptions .= "&nbsp;<input onKeypress=\"if(event.keyCode > 31 && (event.keyCode < 45 || event.keyCode > 57)) event.returnValue = false; if(event.which > 31 && (event.which < 45 || event.which > 57)) return false;\" maxlength=\"3\" size=\"3\" value='1' style=\"margin-bottom:0px;\" name='dupNbr[".$config['collector_id']."]'></input>";
+		$elemArr[$i] = array("MenuClass"=>"list_".$style, 
+						"RowMenu_select"=>$selectedElements->toHtml(),
+						"RowMenu_name"=>$config["collector_name"],
+						"RowMenu_db_address"=>$config["db_server_address"],
+						"RowMenu_interface_type"=>$config["db_type"],
+						"RowMenu_link"=>"?p=".$p."&o=c&id=".$config['id'],
+						"RowMenu_status"=>$config["enable"] ? _("Enabled") : _("Disabled"),
+						"RowMenu_comment"=>substr($nagios_servers[$config["comment"]], 0, 40),
+						"RowMenu_options"=>$moptions);;
+		$style != "two" ? $style = "two" : $style = "one";	
+	}
 	$tpl->assign("elemArr", $elemArr);
+	/*
+	 * Different messages we put in the template
+	 */
+	$tpl->assign('msg', array ("addL"=>"?p=".$p."&o=a", "addT"=>_("Add"), "delConfirm"=>_("Do you confirm the deletion ?")));
+
+	/*
+	 * Toolbar select 
+	 */
+	?>
+	<script type="text/javascript">
+	function setO(_i) {
+		document.forms['form'].elements['o'].value = _i;
+	}
+	</SCRIPT>
+	<?php
+	$attrs = array(
+		'onchange'=>"javascript: " .
+				"if (this.form.elements['o1'].selectedIndex == 1 && confirm('"._("Do you confirm the duplication ?")."')) {" .
+				" 	setO(this.form.elements['o1'].value); submit();} " .
+				"else if (this.form.elements['o1'].selectedIndex == 2 && confirm('"._("Do you confirm the deletion ?")."')) {" .
+				" 	setO(this.form.elements['o1'].value); submit();} " .
+				"else if (this.form.elements['o1'].selectedIndex == 3) {" .
+				" 	setO(this.form.elements['o1'].value); submit();} " .
+				"");	  
+    $form->addElement('select', 'o1', NULL, array(NULL=>_("More actions..."), "m"=>_("Duplicate"), "d"=>_("Delete")), $attrs);
+	$form->setDefaults(array('o1' => NULL));
+	$o1 = $form->getElement('o1');
+	$o1->setValue(NULL);
+	
+	$attrs = array(
+		'onchange'=>"javascript: " .
+				"if (this.form.elements['o2'].selectedIndex == 1 && confirm('"._("Do you confirm the duplication ?")."')) {" .
+				" 	setO(this.form.elements['o2'].value); submit();} " .
+				"else if (this.form.elements['o2'].selectedIndex == 2 && confirm('"._("Do you confirm the deletion ?")."')) {" .
+				" 	setO(this.form.elements['o2'].value); submit();} " .
+				"else if (this.form.elements['o2'].selectedIndex == 3) {" .
+				" 	setO(this.form.elements['o2'].value); submit();} " .
+				"");
+    $form->addElement('select', 'o2', NULL, array(NULL=>_("More actions..."), "m"=>_("Duplicate"), "d"=>_("Delete")), $attrs);
+	$form->setDefaults(array('o2' => NULL));
+
+	$o2 = $form->getElement('o2');
+	$o2->setValue(NULL);
+	
 	$tpl->assign('limit', $limit);
 
-	#
-	##Apply a template definition
-	#
-	$renderer =& new HTML_QuickForm_Renderer_ArraySmarty($tpl);
-	$form->accept($renderer);
+	/*
+	 * Apply a template definition
+	 */
+	$renderer = new HTML_QuickForm_Renderer_ArraySmarty($tpl);
+	$form->accept($renderer);	
 	$tpl->assign('form', $renderer->toArray());
-	$tpl->display($syslog_configuration_path . "template/listCollectors.php.ihtml");
+	$tpl->display("listCollectors.ihtml");
 ?>
