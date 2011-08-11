@@ -108,30 +108,36 @@
 		return ($id);
 	}
 	
-	function insertNdomod($ret = array())	{
+	function insertPoller($ret = array())	{
 		global $form, $pearDB, $oreon;
 		if (!count($ret))
 			$ret = $form->getSubmitValues();
 		
-		$rq = "INSERT INTO `cfg_ndomod` (" .
-				"`description` , `ns_nagios_server` , `instance_name` , `output_type` , `output` , `buffer_file` , " .
-				"`tcp_port` , `output_buffer_items`, `file_rotation_interval` , `file_rotation_command` , `file_rotation_timeout` , `reconnect_interval` , " .
-				"`reconnect_warning_interval` , `data_processing_options` , `config_output_options`, `activate`) ";
+		$rq = "INSERT INTO `mod_syslog_collector` (" .
+				"`collector_name`, `db_server_address`, `db_server_port`, `db_type`, `db_name`," .
+				" `db_username`, `db_password`, `db_table_logs`, `db_table_logs_merge`, `db_table_cache`, " .
+				"`db_table_cache_merge`, `ssh_server_address`, `ssh_server_port`,  `ssh_username`, " .
+				"`ssh_password`, `configuration_dir`, `retention_days`, `enable`, `comment`) ";
 		$rq .= "VALUES (";
-		isset($ret["description"]) && $ret["description"] != NULL ? $rq .= "'".htmlentities($ret["description"], ENT_QUOTES, "UTF-8")."', " : $rq .= "NULL, ";
-		isset($ret["output_type"]) && $ret["output_type"] != NULL ? $rq .= "'".htmlentities($ret["output_type"], ENT_QUOTES, "UTF-8")."',  " : $rq .= "NULL, ";
-        isset($ret["output"]) && $ret["output"] != NULL ? $rq .= "'".htmlentities($ret["output"], ENT_QUOTES, "UTF-8")."',  " : $rq .= "NULL, ";
-        isset($ret["buffer_file"]) && $ret["buffer_file"] != NULL ? $rq .= "'".htmlentities($ret["buffer_file"], ENT_QUOTES, "UTF-8")."',  " : $rq .= "NULL, ";
-        isset($ret["tcp_port"]) && $ret["tcp_port"] != NULL ? $rq .= "'".htmlentities($ret["tcp_port"], ENT_QUOTES, "UTF-8")."',  " : $rq .= "NULL, ";
-        isset($ret["output_buffer_items"]) && $ret["output_buffer_items"] != 2 ? $rq .= "'".$ret["output_buffer_items"]."',  "  : $rq .= "NULL, ";
-        isset($ret["file_rotation_interval"]) && $ret["file_rotation_interval"] != NULL ? $rq .= "'".htmlentities($ret["file_rotation_interval"], ENT_QUOTES, "UTF-8")."',  " : $rq .= "NULL, ";
- 	    isset($ret["file_rotation_command"]) && $ret["file_rotation_command"] != NULL ? $rq .= "'".htmlentities($ret["file_rotation_command"], ENT_QUOTES, "UTF-8")."',  " : $rq .= "NULL, ";
-        isset($ret["file_rotation_timeout"]) && $ret["file_rotation_timeout"] != NULL ? $rq .= "'".htmlentities($ret["file_rotation_timeout"], ENT_QUOTES, "UTF-8")."',  " : $rq .= "NULL, ";
-        isset($ret["reconnect_interval"]) && $ret["reconnect_interval"] != 2 ? $rq .= "'".$ret["reconnect_interval"]."',  " : $rq .= "NULL, ";
-        isset($ret["reconnect_warning_interval"]) && $ret["reconnect_warning_interval"] != 2 ? $rq .= "'".$ret["reconnect_warning_interval"]."',  " : $rq .= "NULL, ";
-        isset($ret["data_processing_options"]) && $ret["data_processing_options"] != 2 ? $rq .= "'".$ret["data_processing_options"]."',  " : $rq .= "NULL, ";
-        isset($ret["config_output_options"]) && $ret["config_output_options"] != 2 ? $rq .= "'".$ret["config_output_options"]."',  " : $rq .= "NULL, ";
-        isset($ret["activate"]) && $ret["activate"]["activate"] != NULL ? $rq .= "'".$ret["activate"]["activate"]."')" : $rq .= "NULL )";
+		isset($ret["collector_name"]) && $ret["collector_name"] != NULL ? $rq .= "'".htmlentities($ret["collector_name"], ENT_QUOTES, "UTF-8")."', " : $rq .= "NULL, ";
+		isset($ret["db_server_address"]) && $ret["db_server_address"] != NULL ? $rq .= "'".htmlentities($ret["db_server_address"], ENT_QUOTES, "UTF-8")."',  " : $rq .= "NULL, ";
+        isset($ret["db_server_port"]) && $ret["db_server_port"] != NULL ? $rq .= "'".htmlentities($ret["db_server_port"], ENT_QUOTES, "UTF-8")."',  " : $rq .= "NULL, ";
+        isset($ret["db_type"]) && $ret["db_type"] != NULL ? $rq .= "'".htmlentities($ret["db_type"], ENT_QUOTES, "UTF-8")."',  " : $rq .= "NULL, ";
+        isset($ret["db_name"]) && $ret["db_name"] != NULL ? $rq .= "'".htmlentities($ret["db_name"], ENT_QUOTES, "UTF-8")."',  " : $rq .= "NULL, ";
+        isset($ret["db_username"]) && $ret["db_username"] != NULL ? $rq .= "'".$ret["db_username"]."',  "  : $rq .= "NULL, ";
+        isset($ret["db_password"]) && $ret["db_password"] != NULL ? $rq .= "'".htmlentities($ret["db_password"], ENT_QUOTES, "UTF-8")."',  " : $rq .= "NULL, ";
+ 	    isset($ret["db_table_logs"]) && $ret["db_table_logs"] != NULL ? $rq .= "'".htmlentities($ret["db_table_logs"], ENT_QUOTES, "UTF-8")."',  " : $rq .= "NULL, ";
+        isset($ret["db_table_logs_merge"]) && $ret["db_table_logs_merge"] != NULL ? $rq .= "'".htmlentities($ret["db_table_logs_merge"], ENT_QUOTES, "UTF-8")."',  " : $rq .= "NULL, ";
+        isset($ret["db_table_cache"]) && $ret["db_table_cache"] != NULL ? $rq .= "'".$ret["db_table_cache"]."',  " : $rq .= "NULL, ";
+        isset($ret["db_table_cache_merge"]) && $ret["db_table_cache_merge"] != NULL ? $rq .= "'".$ret["db_table_cache_merge"]."',  " : $rq .= "NULL, ";
+        isset($ret["ssh_server_address"]) && $ret["ssh_server_address"] != NULL ? $rq .= "'".$ret["ssh_server_address"]."',  " : $rq .= "NULL, ";
+        isset($ret["ssh_server_port"]) && $ret["ssh_server_port"] != NULL ? $rq .= "'".$ret["ssh_server_port"]."',  " : $rq .= "NULL, ";
+        isset($ret["ssh_username"]) && $ret["ssh_username"] != NULL ? $rq .= "'".$ret["ssh_username"]."',  " : $rq .= "NULL, ";
+        isset($ret["ssh_password"]) && $ret["ssh_password"] != NULL ? $rq .= "'".$ret["ssh_password"]."',  " : $rq .= "NULL, ";
+        isset($ret["configuration_dir"]) && $ret["configuration_dir"] != NULL ? $rq .= "'".$ret["configuration_dir"]."',  " : $rq .= "NULL, ";
+        isset($ret["retention_days"]) && $ret["retention_days"] != NULL ? $rq .= "'".$ret["retention_days"]."',  " : $rq .= "NULL, ";
+        isset($ret["comment"]) && $ret["comment"] != NULL ? $rq .= "'".$ret["comment"]."',  " : $rq .= "NULL, ";
+        isset($ret["enable"]) && $ret["enable"]["enable"] != NULL ? $rq .= "'".$ret["enable"]["enable"]."')" : $rq .= "NULL )";
        	$DBRESULT = $pearDB->query($rq);
 		$DBRESULT = $pearDB->query("SELECT MAX(id) FROM `cfg_ndomod`");
 		$ndomod_id = $DBRESULT->fetchRow();
@@ -141,29 +147,34 @@
 	
 	function updatePoller($id = null)	{
 		global $form, $pearDB;
+		print "toto<BR\>";
 		if (!$id) 
 			return;
 		
 		$ret = array();
 		$ret = $form->getSubmitValues();
-		$rq = "UPDATE `cfg_ndomod` SET ";
-        isset($ret["description"]) && $ret["description"] != NULL ? $rq .= "description = '".htmlentities($ret["description"], ENT_QUOTES, "UTF-8")."', " : $rq .= "description = NULL, ";
-        
-        $rq .= "instance_name = '".$nagios_servers[$ret["ns_nagios_server"]]."', ";
-		isset($ret["output_type"]) && $ret["output_type"] != NULL ? $rq .= "output_type = '".htmlentities($ret["output_type"], ENT_QUOTES, "UTF-8")."',  " : $rq .= "output_type = NULL, ";
-       	isset($ret["output"]) && $ret["output"] != NULL ? $rq .= "output = '".htmlentities($ret["output"], ENT_QUOTES, "UTF-8")."',  " : $rq .= "output = NULL, ";
-        isset($ret["buffer_file"]) && $ret["buffer_file"] != NULL ? $rq .= "buffer_file = '".htmlentities($ret["buffer_file"], ENT_QUOTES, "UTF-8")."',  " : $rq .= "buffer_file = NULL, ";
-        isset($ret["tcp_port"]) && $ret["tcp_port"] != NULL ? $rq .= "tcp_port = '".htmlentities($ret["tcp_port"], ENT_QUOTES, "UTF-8")."',  " : $rq .= "tcp_port = NULL, ";
-        isset($ret["output_buffer_items"]) && $ret["output_buffer_items"] != NULL ? $rq .= "output_buffer_items = '".htmlentities($ret["output_buffer_items"], ENT_QUOTES, "UTF-8")."',  " : $rq .= "output_buffer_items = NULL, ";
- 	    isset($ret["file_rotation_interval"]) && $ret["file_rotation_interval"] != NULL ? $rq .= "file_rotation_interval = '".htmlentities($ret["file_rotation_interval"], ENT_QUOTES, "UTF-8")."',  " : $rq .= "file_rotation_interval = NULL, ";
-        isset($ret["file_rotation_command"]) && $ret["file_rotation_command"] != NULL ? $rq .= "file_rotation_command = '".htmlentities($ret["file_rotation_command"], ENT_QUOTES, "UTF-8")."',  " : $rq .= "file_rotation_command = NULL, ";
-        isset($ret["file_rotation_timeout"]) && $ret["file_rotation_timeout"] != 2 ? $rq .= "file_rotation_timeout = '".$ret["file_rotation_timeout"]."',  " : $rq .= "file_rotation_timeout = '2', ";
-        isset($ret["reconnect_interval"]) && $ret["reconnect_interval"] != NULL ? $rq .= "reconnect_interval = '".htmlentities($ret["reconnect_interval"], ENT_QUOTES, "UTF-8")."',  " : $rq .= "reconnect_interval = NULL, ";
-        isset($ret["reconnect_warning_interval"]) && $ret["reconnect_warning_interval"] != NULL ? $rq .= "reconnect_warning_interval = '".htmlentities($ret["reconnect_warning_interval"], ENT_QUOTES, "UTF-8")."',  " : $rq .= "reconnect_warning_interval = NULL, ";
-        isset($ret["data_processing_options"]) && $ret["data_processing_options"] != NULL ? $rq .= "data_processing_options = '".htmlentities($ret["data_processing_options"], ENT_QUOTES, "UTF-8")."',  " : $rq .= "data_processing_options = NULL, ";
-        isset($ret["config_output_options"]) && $ret["config_output_options"] != NULL ? $rq .= "config_output_options = '".htmlentities($ret["config_output_options"], ENT_QUOTES, "UTF-8")."',  " : $rq .= "config_output_options = NULL, ";
-        $rq .= "activate = '".$ret["activate"]["activate"]."' ";
-		$rq .= "WHERE id = '".$id."'";
+		$rq = "UPDATE `mod_syslog_collector` SET ";
+        isset($ret["collector_name"]) && $ret["collector_name"] != NULL ? $rq .= "collector_name = '".htmlentities($ret["collector_name"], ENT_QUOTES, "UTF-8")."', " : $rq .= "collector_name = NULL, ";
+       	isset($ret["db_server_address"]) && $ret["db_server_address"] != NULL ? $rq .= "db_server_address = '".htmlentities($ret["db_server_address"], ENT_QUOTES, "UTF-8")."',  " : $rq .= "db_server_address = NULL, ";
+       	isset($ret["db_server_port"]) && $ret["db_server_port"] != NULL ? $rq .= "db_server_port = '".htmlentities($ret["db_server_port"], ENT_QUOTES, "UTF-8")."',  " : $rq .= "db_server_port = NULL, ";
+       	isset($ret["db_type"]) && $ret["db_type"] != NULL ? $rq .= "db_type = '".htmlentities($ret["db_type"], ENT_QUOTES, "UTF-8")."',  " : $rq .= "db_type = NULL, ";
+		isset($ret["db_name"]) && $ret["db_name"] != NULL ? $rq .= "db_name = '".htmlentities($ret["db_name"], ENT_QUOTES, "UTF-8")."',  " : $rq .= "db_name = NULL, ";
+		isset($ret["db_username"]) && $ret["db_username"] != NULL ? $rq .= "db_username = '".htmlentities($ret["db_username"], ENT_QUOTES, "UTF-8")."',  " : $rq .= "db_username = NULL, ";
+		isset($ret["db_password"]) && $ret["db_password"] != NULL ? $rq .= "db_password = '".htmlentities($ret["db_password"], ENT_QUOTES, "UTF-8")."',  " : $rq .= "db_password = NULL, ";
+		isset($ret["db_table_logs"]) && $ret["db_table_logs"] != NULL ? $rq .= "db_table_logs = '".htmlentities($ret["db_table_logs"], ENT_QUOTES, "UTF-8")."',  " : $rq .= "db_table_logs = NULL, ";
+		isset($ret["db_table_logs_merge"]) && $ret["db_table_logs_merge"] != NULL ? $rq .= "db_table_logs_merge = '".htmlentities($ret["db_table_logs_merge"], ENT_QUOTES, "UTF-8")."',  " : $rq .= "db_table_logs_merge = NULL, ";
+		isset($ret["db_table_cache"]) && $ret["db_table_cache"] != NULL ? $rq .= "db_table_cache = '".htmlentities($ret["db_table_cache"], ENT_QUOTES, "UTF-8")."',  " : $rq .= "db_table_cache = NULL, ";
+		isset($ret["db_table_cache_merge"]) && $ret["db_table_cache_merge"] != NULL ? $rq .= "db_table_cache_merge = '".htmlentities($ret["db_table_cache_merge"], ENT_QUOTES, "UTF-8")."',  " : $rq .= "db_table_cache_merge = NULL, ";
+		isset($ret["ssh_server_address"]) && $ret["ssh_server_address"] != NULL ? $rq .= "ssh_server_address = '".htmlentities($ret["ssh_server_address"], ENT_QUOTES, "UTF-8")."',  " : $rq .= "ssh_server_address = NULL, ";
+		isset($ret["ssh_server_port"]) && $ret["ssh_server_port"] != NULL ? $rq .= "ssh_server_port = '".htmlentities($ret["ssh_server_port"], ENT_QUOTES, "UTF-8")."',  " : $rq .= "ssh_server_port = NULL, ";
+		isset($ret["ssh_username"]) && $ret["ssh_username"] != NULL ? $rq .= "ssh_username = '".htmlentities($ret["ssh_username"], ENT_QUOTES, "UTF-8")."',  " : $rq .= "ssh_username = NULL, ";
+		isset($ret["ssh_password"]) && $ret["ssh_password"] != NULL ? $rq .= "ssh_password = '".htmlentities($ret["ssh_password"], ENT_QUOTES, "UTF-8")."',  " : $rq .= "ssh_password = NULL, ";
+		isset($ret["configuration_dir"]) && $ret["configuration_dir"] != NULL ? $rq .= "configuration_dir = '".htmlentities($ret["configuration_dir"], ENT_QUOTES, "UTF-8")."',  " : $rq .= "configuration_dir = NULL, ";
+		isset($ret["retention_days"]) && $ret["retention_days"] != NULL ? $rq .= "retention_days = '".htmlentities($ret["retention_days"], ENT_QUOTES, "UTF-8")."',  " : $rq .= "retention_days = NULL, ";
+		isset($ret["comment"]) && $ret["comment"] != NULL ? $rq .= "comment = '".htmlentities($ret["comment"], ENT_QUOTES, "UTF-8")."',  " : $rq .= "comment = NULL, ";
+		$rq .= "enable = '".$ret["enable"]["enable"]."' ";
+		$rq .= "WHERE collector_id = '".$id."'";
+		print $rq;
 		$DBRESULT = $pearDB->query($rq);
 	}
 ?>

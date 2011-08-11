@@ -33,7 +33,7 @@
  * Project name : Centreon Syslog
  * Module name: Centreon-Syslog-Frontend
  * 
- * SVN : $URL:$
+ * SVN : $URL$
  * SVN : $Id$
  * 
  */
