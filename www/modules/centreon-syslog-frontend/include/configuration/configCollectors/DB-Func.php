@@ -109,7 +109,7 @@
 	}
 	
 	function insertPoller($ret = array())	{
-		global $form, $pearDB, $oreon;
+		global $form, $pearDB;
 		if (!count($ret))
 			$ret = $form->getSubmitValues();
 		
@@ -136,9 +136,9 @@
         isset($ret["ssh_password"]) && $ret["ssh_password"] != NULL ? $rq .= "'".$ret["ssh_password"]."',  " : $rq .= "NULL, ";
         isset($ret["configuration_dir"]) && $ret["configuration_dir"] != NULL ? $rq .= "'".$ret["configuration_dir"]."',  " : $rq .= "NULL, ";
         isset($ret["retention_days"]) && $ret["retention_days"] != NULL ? $rq .= "'".$ret["retention_days"]."',  " : $rq .= "NULL, ";
-        isset($ret["comment"]) && $ret["comment"] != NULL ? $rq .= "'".$ret["comment"]."',  " : $rq .= "NULL, ";
-        isset($ret["enable"]) && $ret["enable"]["enable"] != NULL ? $rq .= "'".$ret["enable"]["enable"]."')" : $rq .= "NULL )";
-       	$DBRESULT = $pearDB->query($rq);
+        isset($ret["enable"]) && $ret["enable"]["enable"] != NULL ? $rq .= "'".$ret["enable"]["enable"]."', " : $rq .= "NULL, ";
+        isset($ret["comment"]) && $ret["comment"] != NULL ? $rq .= "'".$ret["comment"]."',  " : $rq .= "NULL )";
+        $DBRESULT = $pearDB->query($rq);
 		$DBRESULT = $pearDB->query("SELECT MAX(id) FROM `cfg_ndomod`");
 		$ndomod_id = $DBRESULT->fetchRow();
 		$DBRESULT->free();
@@ -147,7 +147,6 @@
 	
 	function updatePoller($id = null)	{
 		global $form, $pearDB;
-		print "toto<BR\>";
 		if (!$id) 
 			return;
 		
@@ -174,7 +173,6 @@
 		isset($ret["comment"]) && $ret["comment"] != NULL ? $rq .= "comment = '".htmlentities($ret["comment"], ENT_QUOTES, "UTF-8")."',  " : $rq .= "comment = NULL, ";
 		$rq .= "enable = '".$ret["enable"]["enable"]."' ";
 		$rq .= "WHERE collector_id = '".$id."'";
-		print $rq;
 		$DBRESULT = $pearDB->query($rq);
 	}
 ?>

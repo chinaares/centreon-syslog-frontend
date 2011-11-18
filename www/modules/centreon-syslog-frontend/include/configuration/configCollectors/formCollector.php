@@ -64,7 +64,7 @@
 	/*
 	 *  Form begin
 	 */
-	$form = new HTML_QuickForm('Form', 'post', "?p=".$p);
+	$form = new HTML_QuickForm('Form', 'post', "?p=".$p."&id=".$id);
 	if ($o == "a")
 		$form->addElement('header', 'title', _("Add a Poller Configuration File"));
 	else if ($o == "c")
@@ -101,7 +101,7 @@
 	$Tab = array();
 	$Tab[] = HTML_QuickForm::createElement('radio', 'enable', null, _("Enabled"), '1');
 	$Tab[] = HTML_QuickForm::createElement('radio', 'enable', null, _("Disabled"), '0');
-	$form->addGroup($Tab, 'activate', _("Status"), '&nbsp;');	
+	$form->addGroup($Tab, 'enable', _("Status"), '&nbsp;');	
 
 	if (isset($_GET["o"]) && $_GET["o"] == 'a') {
 		$form->setDefaults(array(
@@ -120,10 +120,10 @@
 		"ssh_username "=>'syslog',
 		"ssh_password" =>'',
 		"ssh_server_port" =>'22',
-		"configuration_dir" =>'/usr/local/syslog/etc/',
+		"configuration_dir" =>'/etc/centreon-syslog',
 		"retention_days" =>'31',
 		"comment" =>'',
-		"activate"=>'1'));
+		"enable"=>'1'));
 	} else {
 		$form->setDefaults($cfg_poller);
 	}
@@ -195,7 +195,7 @@
 		if ($form->getSubmitValue("submitA"))
 			insertPollerInDB();
 		else if ($form->getSubmitValue("submitC"))
-			updatePollerInDB($pollerObj->getValue());
+			updatePollerInDB($id);
 		$o = NULL;
 		$valid = true;
 	}

@@ -51,7 +51,8 @@
 	 	<tr class="list_lvl_1"><td class="ListColLvl1_name" colspan="2"><img src='./img/icones/16x16/note.gif'>&nbsp;&nbsp;{$syslog_server_configuration}</td></tr>
 		<tr class="list_one"><td class="FormRowField">{$form.configuration_dir.label}</td><td class="FormRowValue">{$form.configuration_dir.html}</td></tr>
 		<tr class="list_two"><td class="FormRowField">{$form.retention_days.label}</td><td class="FormRowValue">{$form.retention_days.html}&nbsp;&nbsp;{$days}</td></tr>
-		<tr class="list_one"><td class="FormRowField">{$form.comment.label}</td><td class="FormRowValue">{$form.comment.html}</td></tr>
+		<tr class="list_one"><td class="FormRowField">{$form.enable.label}</td><td class="FormRowValue">{$form.enable.html}</td></tr>
+		<tr class="list_two"><td class="FormRowField">{$form.comment.label}</td><td class="FormRowValue">{$form.comment.html}</td></tr>
 		{if $o == "a" || $o == "c"}
 			<tr class="list_lvl_2"><td class="ListColLvl2_name" colspan="2">{$form.required_note}</td></tr>
 		{/if}
