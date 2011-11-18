@@ -7,24 +7,33 @@ UPDATE `topology_JS` SET `PathName_js` = './modules/centreon-syslog-frontend/inc
 UPDATE `topology_JS` SET `PathName_js` = './modules/centreon-syslog-frontend/include/administration/javascript/exportConf.js' WHERE `PathName_js` = './modules/Syslog/include/administration/javascript/exportConf.js' AND `id_page` = '50710';
 UPDATE `topology_JS` SET `PathName_js` = './modules/centreon-syslog-frontend/include/search/javascript/exportCSV.js' WHERE `PathName_js` = './modules/Syslog/include/search/javascript/exportCSV.js' AND `id_page` = '20402';
 
-CREATE TABLE IF NOT EXISTS `mod_syslog_hosts` (
-  `host_id` int(11) NOT NULL auto_increment,
-  `host_centreon_id` int(11) default NULL,
-  `host_name` varchar(255) collate utf8_unicode_ci NOT NULL,
-  `host_ipv4` varchar(15) collate utf8_unicode_ci NOT NULL,
-  PRIMARY KEY  (`host_id`),
-  KEY `host_centreon_id` (`host_centreon_id`),
-  KEY `host_name` (`host_name`),
-  KEY `host_ipv4` (`host_ipv4`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+DELETE FROM `topology` WHERE `topology`.`topology_page` = '50710';
+DELETE FROM `topology` WHERE `topology`.`topology_name` = 'Syslog' AND `topology`.`topology_parent` = '507';
+
+--CREATE TABLE IF NOT EXISTS `mod_syslog_hosts` (
+--  `host_id` int(11) NOT NULL auto_increment,
+--  `host_centreon_id` int(11) default NULL,
+--  `host_name` varchar(255) collate utf8_unicode_ci NOT NULL,
+--  `host_ipv4` varchar(15) collate utf8_unicode_ci NOT NULL,
+--  `collector_id` int(11) NOT NULL,
+--  PRIMARY KEY  (`host_id`),
+--  KEY `host_centreon_id` (`host_centreon_id`),
+--  KEY `host_name` (`host_name`),
+-- KEY `host_ipv4` (`host_ipv4`)
+--) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 INSERT INTO `topology` (`topology_id`, `topology_name`, `topology_icone`, `topology_parent`, `topology_page`, `topology_order`, `topology_group`, `topology_url`, `topology_url_opt`, `topology_popup`, `topology_modules`, `topology_show`, `topology_style_class`, `topology_style_id`, `topology_OnClick`) 
 VALUES ('', 'Syslog', './img/icones/16x16/text_view.gif', 6, 605, 91, 1, NULL, NULL, '0', '0', '1', NULL, NULL, NULL) ,
-('', 'Hosts', NULL, 605, NULL, NULL, 1, NULL, NULL, NULL, NULL, '1', NULL, NULL, NULL) ,
-('', 'Hosts', './img/icones/16x16/server_network.gif', 605, 60501, 10, 1, './modules/centreon-syslog-frontend/include/configuration/configHosts/hosts.php', '&o=l', '0', '1', '1', NULL, NULL, NULL) ;
+--('', 'Hosts', NULL, 605, NULL, NULL, 1, NULL, NULL, NULL, NULL, '1', NULL, NULL, NULL) ,
+--('', 'Hosts', './img/icones/16x16/server_network.gif', 605, 60501, 10, 1, './modules/centreon-syslog-frontend/include/configuration/configHosts/hosts.php', '&o=l', '0', '1', '1', NULL, NULL, NULL) ,
+('', 'Collectors', NULL, 605, NULL, NULL, 3, NULL, NULL, '0', '0', '1', NULL, NULL, NULL) ,
+('', 'Collectors', './img/icones/16x16/server_network.gif', 605, 60502, 10, 3, './modules/centreon-syslog-frontend/include/configuration/configCollectors/collectors.php', '&o=l', '0', '1', '1', NULL, NULL, NULL) ,
+('', 'General', NULL, 605, NULL, NULL, 4, NULL, NULL, '0', '0', '1', NULL, NULL, NULL) ,
+('', 'Resfresh', './img/icones/16x16/server_network.gif', 605, 60503, 10, 4, './modules/centreon-syslog-frontend/include/configuration/configOpt/refresh.php', '&o=w', '0', '1', '1', NULL, NULL, NULL) ;
 
-INSERT INTO `topology_JS` (`id_t_js`, `id_page`, `o`, `PathName_js`, `Init`) 
-VALUES (NULL, '60501', NULL, './modules/centreon-syslog-frontend/include/configuration/configHosts/javascript/syslogImport.js', NULL ) ;
+
+--INSERT INTO `topology_JS` (`id_t_js`, `id_page`, `o`, `PathName_js`, `Init`) 
+--VALUES (NULL, '60501', NULL, './modules/centreon-syslog-frontend/include/configuration/configHosts/javascript/syslogImport.js', NULL ) ;
 
 CREATE TABLE IF NOT EXISTS `mod_syslog_collector` (
   `collector_id` int(11) NOT NULL auto_increment,
