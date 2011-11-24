@@ -72,7 +72,7 @@
     /*
      * Add ajax button and div
      */
-    echo "<link href=\"".$syslog_mod_path."css/syslog.css\" type=\"text/css\" rel=\"stylesheet\">";
+    echo "<link href=\"./modules/centreon-syslog-frontend/css/syslog.css\" type=\"text/css\" rel=\"stylesheet\">";
     echo "<table width=\"100%\">";
     echo "  <tr class=\"list_two\" align=\"center\">";
     echo "          <td class=\"ListColCenter\">";
