@@ -39,15 +39,17 @@
  * 
  */
 
-if ($cfg_syslog["refresh_monitoring"] == 0) {
+$refresh_options = getRefreshInfo();
+
+if ($refresh_options["refresh_monitoring"] == 0) {
 	$refresh_time = 10000;
 } else {
-	$refresh_time = $cfg_syslog["refresh_monitoring"] * 1000;
+	$refresh_time = $refresh_options["refresh_monitoring"] * 1000;
 }
-if ($cfg_syslog["refresh_filters"] == 0) {
+if ($refresh_options["refresh_filters"] == 0) {
 	$refreshFilters_time = 10000;
 } else {
-	$refreshFilters_time = $cfg_syslog["refresh_filters"] * 1000;
+	$refreshFilters_time = $refresh_options["refresh_filters"] * 1000;
 }
 ?>
 

@@ -289,7 +289,7 @@
 	 * 
 	 * Get list of available programs from merge table
 	 * @param PEAR::DB $pearSyslogDB
-	 * @param array $cfg_syslog
+	 * @param array
 	 * @return array
 	 */
 	function getFilterProgramsMerge($pearSyslogDB, $cfg_syslog) {
@@ -314,7 +314,7 @@
 	/**
 	 * 
 	 * Get complete list of Facilities
-	 * @return array list of Facilities
+	 * @return array
 	 */
 	function getSyslogFacility() {
 		global $pearDB;
@@ -333,7 +333,7 @@
 	/**
 	 * 
 	 * Get complete list of Priorities
-	 * @return array list of Priorities
+	 * @return array
 	 */
 	function getSyslogPriority() {
 		global $pearDB;
@@ -354,7 +354,7 @@
 	 * Get list of selected facilities
 	 * @param string $severity
 	 * @param string $Fseverity
-	 * @return array list of selected facilities
+	 * @return array
 	 */
 	function getListOfFacilities($facility, $Ffacility) {
 		global $pearDB;
@@ -397,7 +397,7 @@
 	 * Get list of selected severities
 	 * @param string $severity
 	 * @param string $Fseverity
-	 * @return array list of selected severities
+	 * @return array
 	 */
 	function getListOfSeverities($severity, $Fseverity) {
 		global $pearDB;
@@ -438,7 +438,7 @@
 	/**
 	 * 
 	 * Get list of Facilities from specific table
-	 * @return array list of facilities
+	 * @return array
 	 */
 	function getAllFacilities() {
 		global $pearDB;
@@ -459,7 +459,7 @@
 	/**
 	 * 
 	 * Get list of Severities from specific table
-	 * @return array list of severities
+	 * @return array
 	 */
 	function getAllSeverities() {
 		global $pearDB;
@@ -481,7 +481,7 @@
 	/**
 	 * 
 	 * Enter description here ...
-	 * @return array list of collectors
+	 * @return array
 	 */
 	function getCollectorList() {
 	    global $pearDB;
@@ -539,5 +539,28 @@
 		);
 		
 		return $eventDetails;
+	}
+	
+	/**
+	 * 
+	 * Get refresh time
+	 * @return arry
+	 */
+	function getRefreshInfo() {
+		global $pearDB;
+		
+		$res =& $pearDB->query("SELECT `refresh_monitoring`, `refresh_filters` FROM `mod_syslog_opt` ");
+		if (PEAR::isError($pearDB)) {
+			print "Mysql Error : ". $pearDB->getMessage()."\n";
+		}
+		# Set base value
+		$refresh_options =  array("" => "");
+				
+		while ($element =& $res->fetchRow()) {
+			$refresh_options['refresh_monitoring'] = $element['refresh_monitoring'];
+			$refresh_options['refresh_filters'] = $element['refresh_filters'];
+		}
+		
+		return $refresh_options;
 	}
 ?>

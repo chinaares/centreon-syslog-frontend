@@ -47,7 +47,7 @@
 
     include ("@CENTREON_ETC@centreon.conf.php");
 
-    global $cfg_syslog;
+    global $cfg_syslog, $refresh_options;
 
     $syslog_mod_path = $centreon_path . "www/modules/centreon-syslog-frontend/";
     
@@ -61,12 +61,9 @@
     bind_textdomain_codeset("messages", "UTF-8");
     textdomain("messages");
 
-    /*
-     * Defined path
-     */
-    require $syslog_mod_path. "include/monitoring/javascript/syslog_js.php";
     require $syslog_mod_path. "include/common/common-Func.php";
-    
+    require $syslog_mod_path. "include/monitoring/javascript/syslog_js.php";
+
     $collectorList = getCollectorList();
 
     /*
