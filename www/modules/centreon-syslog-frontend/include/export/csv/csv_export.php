@@ -34,7 +34,7 @@
  * Project name : Centreon Syslog
  * Module name: Centreon-Syslog-Frontend
  * 
- * SVN : $URL:$
+ * SVN : $URL$
  * SVN : $Id$
  * 
  */
@@ -55,12 +55,15 @@
 	/*
 	 * Build PEAR DB object
 	 */
-	$pearSyslogDB = new SyslogDB("syslog");
+	if (isset($_GET['collector']) && $_GET['collector'] != "" )
+		$pearSyslogDB = new SyslogDB("syslog", $_GET['collector']);
+	else
+		exit(1);
 	
 	/*
 	 * Database retrieve information for Centreon-Syslog
 	 */
-	$cfg_syslog = getSyslogOption();
+	$cfg_syslog = getSyslogOption($_GET['collector']);
 
 	if (isset($_GET['type']) && $_GET['type'] != "" )
 		$type=$_GET['type'];
@@ -148,9 +151,9 @@
 		$end_sql = strftime("%Y-%m-%d " , $EndDate).$EndTime;
 
 	if (count( $sql_filter ) > 0 ) 
-		$req = "SELECT * FROM ".$cfg_syslog["syslog_db_logs_merge"] . " WHERE datetime > '$start_sql' AND datetime <= '$end_sql' AND " .  $req_sql_filter . " ORDER BY datetime";
+		$req = "SELECT * FROM ".$cfg_syslog["db_table_logs_merge"]." WHERE datetime > '$start_sql' AND datetime <= '$end_sql' AND ".$req_sql_filter." ORDER BY datetime";
 	else
-		$req = "SELECT * FROM ".$cfg_syslog["syslog_db_logs_merge"] . " WHERE datetime > '$start_sql' AND datetime <= '$end_sql' ORDER BY datetime";
+		$req = "SELECT * FROM ".$cfg_syslog["db_table_logs_merge"]." WHERE datetime > '$start_sql' AND datetime <= '$end_sql' ORDER BY datetime";
 
 	$nom = "syslog_events";
 

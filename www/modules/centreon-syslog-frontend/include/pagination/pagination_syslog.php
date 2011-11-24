@@ -34,8 +34,8 @@
  * Project name : Centreon Syslog
  * Module name: Centreon-Syslog-Frontend
  * 
- * SVN : $URL:$
- * SVN : $Id:$
+ * SVN : $URL$
+ * SVN : $Id$
  * 
  */
 
@@ -53,6 +53,8 @@
 	isset ($_GET["type"]) ? $type = $_GET["type"] : $stype = NULL;
 	isset ($_GET["o"]) ? $o = $_GET["o"] : $o = NULL;
 
+	( isset($_POST["collector"]) && ($_POST["collector"] != ""  )) ? $collectorP = $_POST["collector"] : $collectorP = NULL;
+	( isset($_GET["collector"]) && ($_GET["collector"] != ""  )) ? $collectorG = $_GET["collector"] : $collectorG = NULL;
 	( isset($_POST["filter_program"]) && ($_POST["filter_program"] != ""  )) ? $filter_programP = $_POST["filter_program"] : $filter_programP = NULL;
 	( isset($_GET["filter_program"]) && ($_GET["filter_program"] != ""  )) ? $filter_programG = $_GET["filter_program"] : $filter_programG = NULL;	
 	( isset($_POST["filter_host"]) && ($_POST["filter_host"] != "" )) ? $filter_hostP = $_POST["filter_host"] : $filter_hostP = NULL;
@@ -100,6 +102,7 @@
 		$EndTime = $_POST["end_time"];
 	} 
  	
+	$collector = ( isset($collectorP) ) ? $collector = $collectorP : $collector = $collectorG ;
 	$filter_program = ( isset($filter_programP) ) ? $filter_program = $filter_programP :$filter_program = $filter_programG ;
 	$filter_host = ( isset($filter_hostP)) ? $filter_host = $filter_hostP  : $filter_host = $filter_hostG;
 	$filter_facility = ( isset($filter_facilityP)) ? $filter_facility = $filter_facilityP  : $filter_facility = $filter_facilityG;
@@ -150,6 +153,8 @@
 		$sort_type = $_GET["sort_types"];
 	}
 	
+	if (isset($collector))
+		$url_var .= "&collector=".$collector;
 	if (isset($filter_program))
 		$url_var .= "&filter_program=".$filter_program;
 	if (isset($filter_host))
@@ -255,6 +260,7 @@
 		_l[0].value = _this;
 		_l[1].value = _this;
 				
+		document.forms['Formfilterhidden'].elements['collectors'].value = document.forms['Formfilter'].elements['collectors'].value  ;
 		document.forms['Formfilterhidden'].elements['filter_host'].value = document.forms['Formfilter'].elements['filter_host'].value  ;
 		document.forms['Formfilterhidden'].elements['filter_facility'].value = document.forms['Formfilter'].elements['filter_facility'].value  ;
 		document.forms['Formfilterhidden'].elements['filter_Ffacility'].value = document.forms['Formfilter'].elements['filter_Ffacility'].value  ;

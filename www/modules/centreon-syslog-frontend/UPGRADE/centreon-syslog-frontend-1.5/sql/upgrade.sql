@@ -1,7 +1,7 @@
 UPDATE `topology` SET `topology_url` = './modules/centreon-syslog-frontend/include/monitoring/syslog.php' WHERE `topology_url` = './modules/Syslog/include/monitoring/syslog.php' AND `topology_name` = 'Syslog';
 UPDATE `topology` SET `topology_url` = './modules/centreon-syslog-frontend/include/administration/formSyslogAdmin.php' WHERE `topology_url` = './modules/Syslog/include/administration/formSyslogAdmin.php' AND `topology_name` = 'Configuration';
 UPDATE `topology` SET `topology_url` = './modules/centreon-syslog-frontend/include/monitoring/syslog.php' WHERE `topology_url` = './modules/Syslog/include/monitoring/syslog.php' AND `topology_name` = 'Monitoring';
-UPDATE `topology` SET `topology_url` = './modules/centreon-syslog-frontend/include/search/syslog_search.php' WHERE `topology_url` = './modules/Syslog/include/search/syslog_search.php' AND `topology_name` = 'Search';
+UPDATE `topology` SET `topology_url` = './modules/centreon-syslog-frontend/include/search/search.php' WHERE `topology_url` = './modules/Syslog/include/search/syslog_search.php' AND `topology_name` = 'Search';
 
 UPDATE `topology_JS` SET `PathName_js` = './modules/centreon-syslog-frontend/include/administration/javascript/changetab.js' WHERE `PathName_js` = './modules/Syslog/include/administration/javascript/changetab.js' AND `id_page` = '50710';
 UPDATE `topology_JS` SET `PathName_js` = './modules/centreon-syslog-frontend/include/administration/javascript/exportConf.js' WHERE `PathName_js` = './modules/Syslog/include/administration/javascript/exportConf.js' AND `id_page` = '50710';
@@ -29,8 +29,8 @@ VALUES ('', 'Syslog', './img/icones/16x16/text_view.gif', 6, 605, 91, 1, NULL, N
 ('', 'Collectors', NULL, 605, NULL, NULL, 3, NULL, NULL, '0', '0', '1', NULL, NULL, NULL) ,
 ('', 'Collectors', './img/icones/16x16/server_network.gif', 605, 60502, 10, 3, './modules/centreon-syslog-frontend/include/configuration/configCollectors/collectors.php', '&o=l', '0', '1', '1', NULL, NULL, NULL) ,
 ('', 'General', NULL, 605, NULL, NULL, 4, NULL, NULL, '0', '0', '1', NULL, NULL, NULL) ,
-('', 'Resfresh', './img/icones/16x16/server_network.gif', 605, 60503, 10, 4, './modules/centreon-syslog-frontend/include/configuration/configOpt/refresh.php', '&o=w', '0', '1', '1', NULL, NULL, NULL) ;
-
+('', 'Resfresh', './img/icones/16x16/server_network.gif', 605, 60503, 10, 4, './modules/centreon-syslog-frontend/include/configuration/configOpt/refresh.php', '&o=w', '0', '1', '1', NULL, NULL, NULL) ,
+('', 'Details', NULL, 204, 20403, 40, 1, './modules/centreon-syslog-frontend/include/details/eventDetails.php', NULL, '0', '1', '0', NULL, NULL, NULL) ;
 
 --INSERT INTO `topology_JS` (`id_t_js`, `id_page`, `o`, `PathName_js`, `Init`) 
 --VALUES (NULL, '60501', NULL, './modules/centreon-syslog-frontend/include/configuration/configHosts/javascript/syslogImport.js', NULL ) ;

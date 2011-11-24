@@ -45,7 +45,7 @@
 	/*
 	 * Database retrieve information for Poller
 	 */
-	$poller = array();
+	$cfg_poller = array();
 	if (($o == "c" || $o == "w") && $id) {
 		$DBRESULT = $pearDB->query("SELECT * FROM `mod_syslog_collector` WHERE `collector_id` = '".$id."' LIMIT 1");
 		# Set base value
@@ -172,7 +172,7 @@
 		if ($centreon->user->access->page($p) != 2) {
 			$form->addElement("button", "change", _("Modify"), array("onClick"=>"javascript:window.location.href='?p=".$p."&o=c&id=".$ndomod_id."'"));
 		}
-		$form->setDefaults($poller);
+		$form->setDefaults($cfg_poller);
 		$form->freeze();
 	} else if ($o == "c") {
 		/*
@@ -180,7 +180,7 @@
 		 */
 		$subC = $form->addElement('submit', 'submitC', _("Save"));
 		$res = $form->addElement('reset', 'reset', _("Reset"));
-	    $form->setDefaults($poller);
+	    $form->setDefaults($cfg_poller);
 	} else if ($o == "a") {
 		/*
 		 * Add a Poller information

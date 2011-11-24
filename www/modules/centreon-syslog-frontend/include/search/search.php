@@ -34,8 +34,8 @@
  * Project name : Centreon Syslog
  * Module name: Centreon-Syslog-Frontend
  * 
- * SVN : $URL$
- * SVN : $Id$
+ * SVN : $URL:$
+ * SVN : $Id:$
  * 
  */
     require_once $centreon_path . "www/modules/centreon-syslog-frontend/include/common/header.php";
@@ -64,17 +64,17 @@
 	 * PHP functions
 	 */
 	require_once $syslog_mod_path. "include/common/common-Func.php";
-	require_once $centreon_path . "www/include/common/common-Func.php";
+	require_once "./include/common/common-Func.php";
 
 	/*
 	 * Database retrieve information for Centreon-Syslog
 	 */
 	$pearCentreonDB = new SyslogDB("centreon");
-	$pearSyslogDB = new SyslogDB("syslog");
-	$cfg_syslog = getSyslogOption();
+	
+	$collectorList = getCollectorList();
 
 	# QuickSearch form
-	include_once($centreon_path . "www/include/common/quickSearch.php");
+	include_once("./include/common/quickSearch.php");
 
 	# Set limit & num
 	$DBRESULT =& $pearCentreonDB->query("SELECT maxViewMonitoring FROM general_opt LIMIT 1");
@@ -94,6 +94,11 @@
 	isset ($_GET["num"]) ? $num = $_GET["num"] : $num = 0;
 	isset ($_GET["search"]) ? $search = $_GET["search"] : $search = NULL;
 
+	# Get collectors
+	( isset($_POST["collector"]) && ($_POST["collector"] != ""  )) ? $collectorP = $_POST["collector"] : $collectorP = NULL;
+	( isset($_GET["collector"]) && ($_GET["collector"] != ""  )) ? $collectorG = $_GET["collector"] : $collectorG = NULL;
+	$collector = ( isset($collectorP) ) ? $collector = $collectorP : $collector = $collectorG ;
+	
 	# Get filters values from post form
 	( isset($_POST["filter_program"]) && ($_POST["filter_program"] != ""  )) ? $filter_programP = $_POST["filter_program"] : $filter_programP = NULL;
 	( isset($_GET["filter_program"]) && ($_GET["filter_program"] != ""  )) ? $filter_programG = $_GET["filter_program"] : $filter_programG = NULL;	
@@ -157,7 +162,7 @@
 	if (isset($_POST["end_time"]))
 		$EndTime = $_POST["end_time"];
 
-	$filter_program = ( isset($filter_programP) ) ? $filter_program = $filter_programP :$filter_program = $filter_programG ;
+	$filter_program = ( isset($filter_programP) ) ? $filter_program = $filter_programP : $filter_program = $filter_programG ;
 	$filter_host = ( isset($filter_hostP)) ? $filter_host = $filter_hostP  : $filter_host = $filter_hostG;
 	$filter_facility = ( isset($filter_facilityP)) ? $filter_facility = $filter_facilityP  : $filter_facility = $filter_facilityG;
 	$filter_Ffacility = ( isset($filter_FfacilityP)) ? $filter_Ffacility = $filter_FfacilityP  : $filter_Ffacility = $filter_FfacilityG;	
@@ -165,97 +170,114 @@
 	$filter_Fseverity = ( isset($filter_FseverityP)) ? $filter_Fseverity = $filter_FseverityP  : $filter_Fseverity = $filter_FseverityG;
 	$filter_msg = ( isset($filter_msgP)) ? $filter_msg = $filter_msgP  : $filter_msg = $filter_msgG;
 
-	$sql_filter = array();
-
-	if (isset($filter_program))
-		array_push($sql_filter ," (program = '". htmlentities($filter_program , ENT_QUOTES) ."')  ");
-
-	if (isset($filter_host))
-		array_push($sql_filter ," (host = '". htmlentities($filter_host , ENT_QUOTES) ."')  ");
-
-	if (isset($filter_facility)) {
-		if ((strcmp($filter_Ffacility, "") == 0) || (strcmp($filter_Ffacility, "eq") == 0)) {
-			array_push($sql_filter ," (facility = '". htmlentities($filter_facility , ENT_QUOTES) ."')  ");
-		} else {
-			$list_facilities = getListOfFacilities($filter_facility, $filter_Ffacility);
-			$list = "";
-			$listKeys = array_keys($list_facilities);
-			foreach ($list_facilities as $key=>$value) {
-				if (strcmp($list, "") != 0) {
-					$list .= ",";
-				}
-				$list .= "'".$key."'";
-			}
-			array_push($sql_filter ," (facility IN (".$list."))  ");
-		}
-	}
-
-	if (isset($filter_severity)) {
-		if ((strcmp($filter_Fseverity, "") == 0) || (strcmp($filter_Fseverity, "eq") == 0)) {
-			array_push($sql_filter ," (priority = '". htmlentities($filter_severity , ENT_QUOTES) ."')  ");
-		} else {
-			$list_priorities = getListOfSeverities($filter_severity, $filter_Fseverity);
-			$list = "";
-			$listKeys = array_keys($list_priorities);
-			foreach ($list_priorities as $key=>$value) {
-				if (strcmp($list, "") != 0) {
-					$list .= ",";
-				}
-				$list .= "'".$key."'";
-			}
-			array_push($sql_filter ," (priority IN (".$list."))  ");
-		}
-	}				
-
-	if (isset($filter_msg))
-		array_push($sql_filter ," (msg LIKE '%". htmlentities($filter_msg , ENT_QUOTES) ."%')  ");	
-
-	if (isset($StartDate))
-		$start_sql = strftime("%Y-%m-%d " , $StartDate).$StartTime;
-
-	if (isset($EndDate))
-		$end_sql = strftime("%Y-%m-%d " , $EndDate).$EndTime;
-
-	if (isset($sql_filter))
-		$req_sql_filter = join(" AND " , $sql_filter);
-
-	if($search) {
-			$req = "SELECT * FROM ".$cfg_syslog["syslog_db_logs_merge"] . " WHERE msg LIKE '%".htmlentities($search, ENT_QUOTES)."%' ORDER BY datetime ";
-	} else {
-		if (count( $sql_filter ) > 0 ) 
-			$req = "SELECT * FROM ".$cfg_syslog["syslog_db_logs_merge"] . " WHERE datetime > '$start_sql' AND datetime <= '$end_sql' AND " .  $req_sql_filter . " ORDER BY datetime";
-		else
-			$req = "SELECT * FROM ".$cfg_syslog["syslog_db_logs_merge"] . " WHERE datetime > '$start_sql' AND datetime <= '$end_sql' ORDER BY datetime";
-	}
-
-	$DBRESULT =& $pearSyslogDB->query($req);
-	if (PEAR::isError($DBRESULT))
-		print "Mysql Error : ".$DBRESULT->getMessage()."\n";
-
-	$rows = $DBRESULT->numrows();
-
-	if(($num * $limit) > $rows)
-		$num = round($rows / $limit) - 1;
-	$lstart = $num * $limit;
-
-	if ($lstart <= 0)
-		$lstart = 0;
-
-	$query = $req  . " DESC LIMIT $lstart,$limit";
-
-	$DBRESULT1 =& $pearSyslogDB->query($query);
-		if (PEAR::isError($DBRESULT1))
-				print "Mysql Error : ".$DBRESULT1->getMessage();
-
+	
+	$FilterHosts = array();
+	$FilterPrograms = array();
+	$FilterPriorities = array();
+	$FilterFacilities = array();
 	$elemArr = array();
-	while ($DBRESULT1->fetchInto($data)) {
-		$elemArr[] = array("RowMenu_datetime"=>$data["datetime"],
-						"RowMenu_host"=>$data["host"],
-						"RowMenu_facility"=>$data["facility"],
-						"RowMenu_priority"=>$data["priority"],
-						"RowMenu_tag"=>$data["tag"],
-						"RowMenu_program"=>$data["program"],
-						"RowMenu_msg"=>htmlentities($data["msg"]));
+	
+	if (isset($collector)) {
+		$pearSyslogDB = new SyslogDB("syslog", $collector);
+		$cfg_syslog = getSyslogOption($collector);
+		
+		$FilterHosts = getFilterHostsMerge($pearSyslogDB, $cfg_syslog);
+		$FilterPrograms = getFilterProgramsMerge($pearSyslogDB, $cfg_syslog);
+		$FilterFacilities = getFilterFacilitiesMerge();
+		$FilterPriorities = getFilterPrioritiesMerge();
+		
+		$sql_filter = array();
+	
+		if (isset($filter_program))
+			array_push($sql_filter ," (program = '". htmlentities($filter_program , ENT_QUOTES) ."')  ");
+	
+		if (isset($filter_host))
+			array_push($sql_filter ," (host = '". htmlentities($filter_host , ENT_QUOTES) ."')  ");
+	
+		if (isset($filter_facility)) {
+			if ((strcmp($filter_Ffacility, "") == 0) || (strcmp($filter_Ffacility, "eq") == 0)) {
+				array_push($sql_filter ," (facility = '". htmlentities($filter_facility , ENT_QUOTES) ."')  ");
+			} else {
+				$list_facilities = getListOfFacilities($filter_facility, $filter_Ffacility);
+				$list = "";
+				$listKeys = array_keys($list_facilities);
+				foreach ($list_facilities as $key=>$value) {
+					if (strcmp($list, "") != 0) {
+						$list .= ",";
+					}
+					$list .= "'".$key."'";
+				}
+				array_push($sql_filter ," (facility IN (".$list."))  ");
+			}
+		}
+	
+		if (isset($filter_severity)) {
+			if ((strcmp($filter_Fseverity, "") == 0) || (strcmp($filter_Fseverity, "eq") == 0)) {
+				array_push($sql_filter ," (priority = '". htmlentities($filter_severity , ENT_QUOTES) ."')  ");
+			} else {
+				$list_priorities = getListOfSeverities($filter_severity, $filter_Fseverity);
+				$list = "";
+				$listKeys = array_keys($list_priorities);
+				foreach ($list_priorities as $key=>$value) {
+					if (strcmp($list, "") != 0) {
+						$list .= ",";
+					}
+					$list .= "'".$key."'";
+				}
+				array_push($sql_filter ," (priority IN (".$list."))  ");
+			}
+		}				
+	
+		if (isset($filter_msg))
+			array_push($sql_filter ," (msg LIKE '%". htmlentities($filter_msg , ENT_QUOTES) ."%')  ");	
+	
+		if (isset($StartDate))
+			$start_sql = strftime("%Y-%m-%d " , $StartDate).$StartTime;
+	
+		if (isset($EndDate))
+			$end_sql = strftime("%Y-%m-%d " , $EndDate).$EndTime;
+	
+		if (isset($sql_filter))
+			$req_sql_filter = join(" AND " , $sql_filter);
+	
+		if($search) {
+				$req = "SELECT * FROM ".$cfg_syslog["db_table_logs_merge"]." WHERE msg LIKE '%".htmlentities($search, ENT_QUOTES)."%' ORDER BY datetime ";
+		} else {
+			if (count( $sql_filter ) > 0 ) 
+				$req = "SELECT * FROM ".$cfg_syslog["db_table_logs_merge"]." WHERE datetime > '$start_sql' AND datetime <= '$end_sql' AND ".$req_sql_filter." ORDER BY datetime";
+			else
+				$req = "SELECT * FROM ".$cfg_syslog["db_table_logs_merge"]." WHERE datetime > '$start_sql' AND datetime <= '$end_sql' ORDER BY datetime";
+		}
+	
+		$DBRESULT =& $pearSyslogDB->query($req);
+		if (PEAR::isError($DBRESULT))
+			print "Mysql Error : ".$DBRESULT->getMessage()."\n";
+	
+		$rows = $DBRESULT->numrows();
+	
+		if(($num * $limit) > $rows)
+			$num = round($rows / $limit) - 1;
+		$lstart = $num * $limit;
+	
+		if ($lstart <= 0)
+			$lstart = 0;
+	
+		$query = $req  . " DESC LIMIT $lstart,$limit";
+	
+		$DBRESULT1 =& $pearSyslogDB->query($query);
+			if (PEAR::isError($DBRESULT1))
+					print "Mysql Error : ".$DBRESULT1->getMessage();
+	
+		while ($DBRESULT1->fetchInto($data)) {
+			$elemArr[] = array("RowMenu_link"=>"main.php?p=20403&collector=".$collector."&host=".$data["host"]."&facility=".$data["facility"]."&priority=".$data["priority"]."&datetime=".$data["datetime"]."&program=".$data["program"],
+							"RowMenu_datetime"=>$data["datetime"],
+							"RowMenu_host"=>$data["host"],
+							"RowMenu_facility"=>$data["facility"],
+							"RowMenu_priority"=>$data["priority"],
+							"RowMenu_tag"=>$data["tag"],
+							"RowMenu_program"=>$data["program"],
+							"RowMenu_msg"=>htmlentities($data["msg"]));
+		}
 	}
 
 	# Smarty template Init
@@ -269,6 +291,7 @@
 	$tpl->assign('export', _("Export"));
 	$tpl->assign("MODULE_TITLE", _("Syslog"));
 	$tpl->assign("FILTER_TITLE", _("Syslog filters parameters :"));
+	$tpl->assign("headerMenu_collectors", _("Collectors:"));
 	$tpl->assign("headerMenu_datetime", _("Date / Time"));
 	$tpl->assign("headerMenu_host", _("Host"));
 	$tpl->assign("headerMenu_facility", _("Facility"));
@@ -283,15 +306,14 @@
 	$attrsTextHour 	= array("size"=>"5", "style"=>"font-family:Verdana, Tahoma;font-size:9px;height:13px;border: 0.5px solid gray;");
 
 	# QuickForm form_filter
-	$form_filter = new HTML_QuickForm('Formfilter', 'post', "?p=".$p);
+	$form_filter = new HTML_QuickForm('Formfilter', 'post', "?p=".$p."&collector=".$collector);
 
-	$FilterHosts = array();
-	$FilterHosts = getFilterHostsMerge();
+	$form_filter->addElement('select', 'collectors', "", $collectorList, array("onChange"=>"javascript:window.location.href='?p=".$p."&collector='+this.value"));
+	$form_filter->setDefaults(array('collectors' => $collector));
+	
 	$form_filter->addElement('select', 'filter_host', " ", $FilterHosts);
 	$form_filter->setDefaults(array('filter_host' => $filter_host));  
 
-	$FilterFacilities = array();
-	$FilterFacilities = getFilterFacilitiesMerge();
 	$form_filter->addElement('select', 'filter_facility', " ", $FilterFacilities);
 	$form_filter->setDefaults(array('filter_facility' => $filter_facility));  
 
@@ -299,8 +321,6 @@
 	$form_filter->addElement('select', 'filter_Ffacility', " ", $FilterFFacilities);
 	$form_filter->setDefaults(array('filter_Ffacility' => $filter_Ffacility));
 
-	$FilterPriorities = array();
-	$FilterPriorities = getFilterPrioritiesMerge();
 	$form_filter->addElement('select', 'filter_severity', " ", $FilterPriorities);
 	$form_filter->setDefaults(array('filter_severity' => $filter_severity)); 
 
@@ -308,8 +328,6 @@
 	$form_filter->addElement('select', 'filter_Fseverity', " ", $FilterFSeverity);
 	$form_filter->setDefaults(array('filter_Fseverity' => $filter_Fseverity));
 
-	$FilterPrograms = array();
-	$FilterPrograms = getFilterProgramsMerge();
 	$form_filter->addElement('select', 'filter_program', " ", $FilterPrograms);
 	$form_filter->setDefaults(array('filter_program' => $filter_program)); 
 
@@ -340,6 +358,7 @@
 
 	$form = new HTML_QuickForm('Formfilterhidden');
 
+	$form->addElement('hidden', 'collectors');
 	$form->addElement('hidden', 'filter_host');
 	$form->addElement('hidden', 'filter_facility');
 	$form->addElement('hidden', 'filter_Ffacility');
@@ -357,5 +376,5 @@
 	$tpl->assign('Formfilterhidden', $renderer->toArray());
 
 	$tpl->assign("elemArr", $elemArr);
-	$tpl->display($path. "template/syslog_search.ihtml");
+	$tpl->display($path. "template/search.ihtml");
 ?>

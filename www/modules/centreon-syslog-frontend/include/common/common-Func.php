@@ -45,9 +45,12 @@
 	 */
 	require_once $centreon_path . "www/modules/centreon-syslog-frontend/class/syslogDB.class.php";
 	$pearDB = new SyslogDB("centreon");
-	
-	/*
-	 * Get Syslog module options
+
+	/**
+	 * 
+	 * Get syslog collectors configuration
+	 * @param int $collector_id
+	 * @return array
 	 */
 	function getSyslogOption($collector_id) {
 		global $pearDB;
@@ -63,9 +66,11 @@
 		return $cfg_syslog;
 	}
 
-	/*
-	 * Get list of Hosts
-	 */
+	/**
+	*
+	* Get list of Hosts
+	* @return array
+	*/
 	function getFilterHosts() {
 		global $pearSyslogDB, $cfg_syslog;
 
@@ -85,9 +90,13 @@
 			
 		return $FilterHosts;
 	}
-	
-	/*
+
+	/**
+	 * 
 	 * Get list of Hosts from merge table
+	 * @param PEAR::DB $pearSyslogDB
+	 * @param array $cfg_syslog
+	 * @return array
 	 */
 	function getFilterHostsMerge($pearSyslogDB, $cfg_syslog) {
 		$query = "SELECT distinct(value) as host FROM " . $cfg_syslog["db_table_cache_merge"] . " WHERE type= \"HOST\" ORDER BY host ASC";
@@ -106,10 +115,12 @@
 			
 		return $FilterHosts;
 	}
-	
-	/*
-	 * Get list of Facilities
-	 */
+
+	/**
+	*
+	* Get list of Facilities
+	* @return array
+	*/
 	function getFilterFacilities() {
 		global $pearSyslogDB, $cfg_syslog;
 
@@ -128,10 +139,12 @@
 		$FilterFacilities = array_map("myDecode",$FilterFacilities );
 		return $FilterFacilities;
 	}
-	
-	/*
-	 * Get list of Facilities from merge table
-	 */
+
+	/**
+	*
+	* Get list of Facilities from merge table
+	* @return array
+	*/
 	function getFilterFacilitiesMerge() {
 		global $pearSyslogDB, $cfg_syslog;
 
@@ -150,10 +163,12 @@
 		$FilterFacilities = array_map("myDecode",$FilterFacilities );
 		return $FilterFacilities;
 	}
-	
-	/*
-	 * Get list of Priotirites
-	 */
+
+	/**
+	*
+	* Get list of Priotirites
+	* @return array
+	*/
 	function getFilterPriorities() {
 		global $pearSyslogDB, $cfg_syslog;
 
@@ -172,10 +187,12 @@
 		$FilterPriorities = array_map("myDecode",$FilterPriorities );
 		return $FilterPriorities;
 	}
-	
-	/*
-	 * Get list of Priotirites from merge table
-	 */
+
+	/**
+	*
+	* Get list of Priotirites from merge table
+	* @return array
+	*/
 	function getFilterPrioritiesMerge() {
 		global $pearSyslogDB, $cfg_syslog;
 
@@ -194,10 +211,12 @@
 		$FilterPriorities = array_map("myDecode",$FilterPriorities );
 		return $FilterPriorities;
 	}
- 
- 	/*
-	 * Get list of Levels
-	 */
+
+	/**
+	*
+	* Get list of Levels
+	* @return array
+	*/
 	function getFilterLevels() {
 		global $pearSyslogDB, $cfg_syslog;
 
@@ -216,10 +235,12 @@
 		$FilterLevels = array_map("myDecode",$FilterLevels );
 		return $FilterLevels;
 	}
-	
-	/*
-	 * Get list of Levels from merge table
-	 */
+
+	/**
+	*
+	* Get list of Levels from merge table
+	* @return array
+	*/
 	function getFilterLevelsMerge() {
 		global $pearSyslogDB, $cfg_syslog;
 
@@ -239,8 +260,10 @@
 		return $FilterLevels;
 	}
 
-	/*
+	/**
+	 * 
 	 * Get list of Programs
+	 * @return array
 	 */
 	function getFilterPrograms() {
 		global $pearSyslogDB, $cfg_syslog;
@@ -258,14 +281,16 @@
 		while ($program =&$res->fetchRow())
 				$FilterPrograms[$program['program']] = $program['program'] ; 
 		
-		//	array_push($FilterPrograms, $program['program']); 
-			
 		$FilterPrograms  = array_map("myDecode",$FilterPrograms );
 		return $FilterPrograms ;
 	}
-	
-	/*
-	 * Get list of Programs from merge table
+
+	/**
+	 * 
+	 * Get list of available programs from merge table
+	 * @param PEAR::DB $pearSyslogDB
+	 * @param array $cfg_syslog
+	 * @return array
 	 */
 	function getFilterProgramsMerge($pearSyslogDB, $cfg_syslog) {
 
@@ -282,14 +307,14 @@
 		while ($program =&$res->fetchRow())
 				$FilterPrograms[$program['program']] = $program['program'] ; 
 		
-		//	array_push($FilterPrograms, $program['program']); 
-			
 		$FilterPrograms  = array_map("myDecode",$FilterPrograms );
 		return $FilterPrograms ;
 	}
-	
-	/*
-	 * Get list of facility
+
+	/**
+	 * 
+	 * Get complete list of Facilities
+	 * @return array list of Facilities
 	 */
 	function getSyslogFacility() {
 		global $pearDB;
@@ -304,9 +329,11 @@
 		$DBRESULT->free();
 		return $cfg_syslog_facility;
 	}
-	
-	/*
-	 * Get list of facility
+
+	/**
+	 * 
+	 * Get complete list of Priorities
+	 * @return array list of Priorities
 	 */
 	function getSyslogPriority() {
 		global $pearDB;
@@ -321,9 +348,13 @@
 		$DBRESULT->free();
 		return $cfg_syslog_priority;
 	}
-	
-	/*
-	 * Get list of facility
+
+	/**
+	 * 
+	 * Get list of selected facilities
+	 * @param string $severity
+	 * @param string $Fseverity
+	 * @return array list of selected facilities
 	 */
 	function getListOfFacilities($facility, $Ffacility) {
 		global $pearDB;
@@ -361,8 +392,12 @@
 		return $list_priorities;
 	}
 
-	/*
-	 * Get list of facility
+	/**
+	 * 
+	 * Get list of selected severities
+	 * @param string $severity
+	 * @param string $Fseverity
+	 * @return array list of selected severities
 	 */
 	function getListOfSeverities($severity, $Fseverity) {
 		global $pearDB;
@@ -399,9 +434,11 @@
 		$res->free();
 		return $list_severities;
 	}
-	
-	/*
+
+	/**
+	 * 
 	 * Get list of Facilities from specific table
+	 * @return array list of facilities
 	 */
 	function getAllFacilities() {
 		global $pearDB;
@@ -416,12 +453,13 @@
 		while ($facility =& $res->fetchRow())
 			$FilterFacilities[$facility['key']] = $facility['key']; 
 			
-		//$FilterFacilities = array_map("myDecode",$FilterFacilities );
 		return $FilterFacilities;
 	}
-	
-	/*
-	 * Get list of Facilities from specific table
+
+	/**
+	 * 
+	 * Get list of Severities from specific table
+	 * @return array list of severities
 	 */
 	function getAllSeverities() {
 		global $pearDB;
@@ -440,8 +478,10 @@
 		return $FilterSeverities;
 	}
 
-	/*
-	 * Get list of syslog collector define into database
+	/**
+	 * 
+	 * Enter description here ...
+	 * @return array list of collectors
 	 */
 	function getCollectorList() {
 	    global $pearDB;
@@ -458,5 +498,46 @@
 		}
 
 		return $collectorsList;
+	}
+
+	/**
+	 * 
+	 * Get event details
+	 * @param PEAR::DB $pearSyslogDB
+	 * @param array $cfg_syslog
+	 * @param array $options
+	 */
+	function getEvent($pearSyslogDB, $cfg_syslog, $options) {
+		$query = " SELECT * FROM " . $cfg_syslog["db_table_logs_merge"] ." ";
+		$query .= "WHERE host = \"".$options['host']."\" ";
+		$query .= "AND 	facility = \"".$options['facility']."\" ";
+		$query .= "AND 	priority = \"".$options['priority']."\" ";
+		$query .= "AND 	datetime = \"".$options['datetime']."\" ";
+		$query .= "AND 	program = \"".$options['program']."\" ";
+
+		$res =& $pearSyslogDB->query($query);
+		if (PEAR::isError($pearSyslogDB)) {
+			print "Mysql Error : ". $pearSyslogDB->getMessage()."\n";
+		}
+		# Set base value
+		$eventDetails = array();
+				
+		$event =& $res->fetchRow();
+		
+		$eventDetails = array(
+			'host' 		=> $event['host'],
+			'facility' 	=> $event['facility'],
+			'priority' 	=> $event['priority'],
+			'tag' 		=> $event['tag'],
+			'datetime'	=> $event['datetime'],
+			'program'	=> $event['program'],
+			'msg'		=> $event['msg'],
+			'seq'		=> $event['seq'],
+			'counter'	=> $event['counter'],
+			'fo'		=> $event['fo'],
+			'lo'		=> $event['lo']
+		);
+		
+		return $eventDetails;
 	}
 ?>

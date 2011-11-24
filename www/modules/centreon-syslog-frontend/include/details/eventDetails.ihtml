@@ -1,0 +1,19 @@
+{$form.javascript}
+<form {$form.attributes}>
+	<div>
+	 <table class="ListTable">
+	 	<tr class="ListHeader"><td class="FormHeader" colspan="2">&nbsp;<img src='./img/icones/16x16/text_code_colored.gif'>&nbsp;&nbsp;{$form.header.title}</td></tr>
+	 	<tr class="list_one"><td class="FormRowField">{$form.host.label}</td><td class="FormRowValue">{$form.host.html}</td></tr>
+		<tr class="list_two"><td class="FormRowField">{$form.datetime.label}</td><td class="FormRowValue">{$form.datetime.html}</td></tr>
+		<tr class="list_one"><td class="FormRowField">{$form.facility.label}</td><td class="FormRowValue">{$form.facility.html}</td></tr>
+		<tr class="list_two"><td class="FormRowField">{$form.priority.label}</td><td class="FormRowValue">{$form.priority.html}</td></tr>
+		<tr class="list_one"><td class="FormRowField">{$form.tag.label}</td><td class="FormRowValue">{$form.tag.html}</td></tr>
+		<tr class="list_two"><td class="FormRowField">{$form.program.label}</td><td class="FormRowValue">{$form.program.html}</td></tr>
+		<tr class="list_one"><td class="FormRowField">{$form.msg.label}</td><td class="FormRowValue">{$form.msg.html}</td></tr>
+		<tr class="list_one"><td class="FormRowField">{$form.seq.label}</td><td class="FormRowValue">{$form.seq.html}</td></tr>
+		<tr class="list_two"><td class="FormRowField">{$form.counter.label}</td><td class="FormRowValue">{$form.counter.html}</td></tr>
+	 	<tr class="list_one"><td class="FormRowField">{$form.fo.label}</td><td class="FormRowValue">{$form.fo.html}</td></tr>
+		<tr class="list_two"><td class="FormRowField">{$form.lo.label}</td><td class="FormRowValue">{$form.lo.html}</td></tr>
+	</table>
+	{$form.hidden}
+</form>

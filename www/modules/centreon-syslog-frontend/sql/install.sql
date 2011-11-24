@@ -81,7 +81,8 @@ CREATE TABLE IF NOT EXISTS `mod_syslog_collector` (
 INSERT INTO `topology` (`topology_id`, `topology_name`, `topology_icone`, `topology_parent`, `topology_page`, `topology_order`, `topology_group`, `topology_url`, `topology_url_opt`, `topology_popup`, `topology_modules`, `topology_show`, `topology_style_class`, `topology_style_id`, `topology_OnClick`) 
 VALUES ('', 'Syslog', NULL, 2, 204, 40, 1, './modules/centreon-syslog-frontend/include/monitoring/syslog.php', NULL, '0', '1', '1', NULL, NULL, NULL) ,
 ('', 'Monitoring', './img/icones/16x16/text_view.gif', 204, 20401, 40, 1, './modules/centreon-syslog-frontend/include/monitoring/syslog.php', NULL, '0', '1', '1', NULL, NULL, NULL) ,
-('', 'Search', './img/icones/16x16/text_view.gif', 204, 20402, 40, 1, './modules/centreon-syslog-frontend/include/search/syslog_search.php', NULL, '0', '1', '1', NULL, NULL, NULL) ,
+('', 'Search', './img/icones/16x16/text_view.gif', 204, 20402, 40, 1, './modules/centreon-syslog-frontend/include/search/search.php', NULL, '0', '1', '1', NULL, NULL, NULL) ,
+('', 'Details', NULL, 204, 20403, 40, 1, './modules/centreon-syslog-frontend/include/details/eventDetails.php', NULL, '0', '1', '0', NULL, NULL, NULL) ,
 ('', 'Syslog', './img/icones/16x16/text_view.gif', 6, 605, 91, 1, NULL, NULL, '0', '0', '1', NULL, NULL, NULL) ,
 ('', 'Collectors', NULL, 605, NULL, NULL, 3, NULL, NULL, '0', '0', '1', NULL, NULL, NULL) ,
 ('', 'Collectors', './img/icones/16x16/server_network.gif', 605, 60502, 10, 3, './modules/centreon-syslog-frontend/include/configuration/configCollectors/collectors.php', NULL, '0', '1', '1', NULL, NULL, NULL) ,
