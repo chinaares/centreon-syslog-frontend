@@ -95,9 +95,9 @@
 	isset ($_GET["search"]) ? $search = $_GET["search"] : $search = NULL;
 
 	# Get collectors
-	( isset($_POST["collector"]) && ($_POST["collector"] != ""  )) ? $collectorP = $_POST["collector"] : $collectorP = NULL;
-	( isset($_GET["collector"]) && ($_GET["collector"] != ""  )) ? $collectorG = $_GET["collector"] : $collectorG = NULL;
-	$collector = ( isset($collectorP) ) ? $collector = $collectorP : $collector = $collectorG ;
+	( isset($_POST["collectors"]) && ($_POST["collectors"] != ""  )) ? $collectorP = $_POST["collectors"] : $collectorP = NULL;
+	( isset($_GET["collectors"]) && ($_GET["collectors"] != ""  )) ? $collectorG = $_GET["collectors"] : $collectorG = NULL;
+	( isset($collectorP) ) ? $collector = $collectorP : $collector = $collectorG ;
 	
 	# Get filters values from post form
 	( isset($_POST["filter_program"]) && ($_POST["filter_program"] != ""  )) ? $filter_programP = $_POST["filter_program"] : $filter_programP = NULL;
@@ -306,9 +306,9 @@
 	$attrsTextHour 	= array("size"=>"5", "style"=>"font-family:Verdana, Tahoma;font-size:9px;height:13px;border: 0.5px solid gray;");
 
 	# QuickForm form_filter
-	$form_filter = new HTML_QuickForm('Formfilter', 'post', "?p=".$p."&collector=".$collector);
+	$form_filter = new HTML_QuickForm('Formfilter', 'post', "?p=".$p."&collectors=".$collector);
 
-	$form_filter->addElement('select', 'collectors', "", $collectorList, array("onChange"=>"javascript:window.location.href='?p=".$p."&collector='+this.value"));
+	$form_filter->addElement('select', 'collectors', "", $collectorList, array("onChange"=>"javascript:window.location.href='?p=".$p."&collectors='+this.value"));
 	$form_filter->setDefaults(array('collectors' => $collector));
 	
 	$form_filter->addElement('select', 'filter_host', " ", $FilterHosts);

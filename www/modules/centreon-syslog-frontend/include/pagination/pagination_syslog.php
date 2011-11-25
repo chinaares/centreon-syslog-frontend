@@ -53,8 +53,8 @@
 	isset ($_GET["type"]) ? $type = $_GET["type"] : $stype = NULL;
 	isset ($_GET["o"]) ? $o = $_GET["o"] : $o = NULL;
 
-	( isset($_POST["collector"]) && ($_POST["collector"] != ""  )) ? $collectorP = $_POST["collector"] : $collectorP = NULL;
-	( isset($_GET["collector"]) && ($_GET["collector"] != ""  )) ? $collectorG = $_GET["collector"] : $collectorG = NULL;
+	( isset($_POST["collectors"]) && ($_POST["collectors"] != ""  )) ? $collectorP = $_POST["collectors"] : $collectorP = NULL;
+	( isset($_GET["collectors"]) && ($_GET["collectors"] != ""  )) ? $collectorG = $_GET["collectors"] : $collectorG = NULL;
 	( isset($_POST["filter_program"]) && ($_POST["filter_program"] != ""  )) ? $filter_programP = $_POST["filter_program"] : $filter_programP = NULL;
 	( isset($_GET["filter_program"]) && ($_GET["filter_program"] != ""  )) ? $filter_programG = $_GET["filter_program"] : $filter_programG = NULL;	
 	( isset($_POST["filter_host"]) && ($_POST["filter_host"] != "" )) ? $filter_hostP = $_POST["filter_host"] : $filter_hostP = NULL;
@@ -154,7 +154,7 @@
 	}
 	
 	if (isset($collector))
-		$url_var .= "&collector=".$collector;
+		$url_var .= "&collectors=".$collector;
 	if (isset($filter_program))
 		$url_var .= "&filter_program=".$filter_program;
 	if (isset($filter_host))
