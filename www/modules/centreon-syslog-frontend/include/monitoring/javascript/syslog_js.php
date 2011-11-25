@@ -72,6 +72,7 @@ if ($refresh_options["refresh_filters"] == 0) {
 	
 	function build_ajax() {
 		_lock = 1;
+		clearTimeout(_mySyslogTimeOut);
 		var proc = new Transformation();
 
 		if (document.getElementById('collector_id')) var collector_id = document.getElementById('collector_id').value;
@@ -95,6 +96,7 @@ if ($refresh_options["refresh_filters"] == 0) {
 
 	function build_ajaxFilters() {
 		_lockFilter = 1;
+		clearTimeout(_mySyslogFiltersTimeOut);
 		var proc = new Transformation();
 
 		if (document.getElementById('collector_id')) var collector_id = document.getElementById('collector_id').value;
