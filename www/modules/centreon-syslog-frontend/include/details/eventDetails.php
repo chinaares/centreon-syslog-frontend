@@ -112,6 +112,7 @@
 	$form->addElement('text', 'counter', _("Compteur"), $attrsText);
 	$form->addElement('text', 'fo', _("FO"), $attrsText);
 	$form->addElement('text', 'lo', _("LO"), $attrsText);
+	$form->addElement("button", "back", _("Back"), array("onClick"=>"javascript:history.back()"));
 
 	$form->setDefaults($eventDetails);
 	$form->freeze();

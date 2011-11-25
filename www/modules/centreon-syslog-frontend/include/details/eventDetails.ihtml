@@ -1,5 +1,8 @@
 {$form.javascript}
 <form {$form.attributes}>
+	<div id="back">
+		<p class="oreonbutton">{$form.back.html}</p>&nbsp;&nbsp;
+	</div>
 	<div>
 	 <table class="ListTable">
 	 	<tr class="ListHeader"><td class="FormHeader" colspan="2">&nbsp;<img src='./img/icones/16x16/text_code_colored.gif'>&nbsp;&nbsp;{$form.header.title}</td></tr>
@@ -15,5 +18,9 @@
 	 	<tr class="list_one"><td class="FormRowField">{$form.fo.label}</td><td class="FormRowValue">{$form.fo.html}</td></tr>
 		<tr class="list_two"><td class="FormRowField">{$form.lo.label}</td><td class="FormRowValue">{$form.lo.html}</td></tr>
 	</table>
+	</div>
+	<div id="back">
+		&nbsp;&nbsp;<p class="oreonbutton">{$form.back.html}</p>
+	</div>
 	{$form.hidden}
 </form>
