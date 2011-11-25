@@ -9,7 +9,7 @@ Installation is detailed on documentation available here: http://forge.centreon.
 
 1. Get last version of Syslog module here http://forge.centreon.com/projects/list_files/centreon-syslog
 
-2. Start installation with install.sh script on root directory "centreon-syslog-frontend-2.x"
+2. Start installation with install.sh script on root directory "centreon-syslog-frontend-1.5.x"
 
 $> chmod +x install.sh
 $> ./install.sh -u /etc/centreon
@@ -20,7 +20,7 @@ Go on menu 'Administration > Modules > Setup'.
 Syslog module must be present on modules list but not installed.
 Click on right icon to start installation
 
-4. Go on menu 'Administration > Modules > Syslog configuration'.
+4. Go on menu 'Configuration > Syslog > Collectors'.
 
 To fill the fields 
 
@@ -31,7 +31,7 @@ To fill the fields
 
 #	FAQ
 
-Q: During access on 'Monitoring > Syslog > Syslog reporting' page,
+Q: During access on 'Monitoring > Syslog > Monitoring' page,
 	error message describe 'DB Error: connect failed' or 'DB Error: insufficient permissions'
 
 R: You must fill the fileds correctly or use database syslog user with good right.
