@@ -1,3 +1,29 @@
+## Centreon-Syslog-Frontend 1.5
+Enhancement #1519: Alloss to connect to several databases
+Enhancement #1799: Change "lt, gt, ge, ..." by "<, >, >=, .."
+Enhancement #1805: Rename modules project name "Syslog" to "centreon-syslog"
+Enhancement #1807: Show all "facility" and "severity" in select box on monitoring page
+
+## Centreon-Syslog-Frontend 1.4.1
+Bug #2417: PHP Fatal Error on csv_export.php
+Enhancement #2427: IE9 compatibility
+
+## Centreon-Syslog-Frontend 1.4
+Enhancement #2179: Change order of severities
+Enhancement #2292: Compatibility with Cenreon 2.2.x and 2.3.x
+
+## Centreon-Syslog-Frontend 1.3.3
+Bug #1450: MySQL retention failure
+Bug #1851: no visualization under Internet Explorer
+Bug #1869: Error when export data from search in ODT format due to accents encoding
+Bug #1914: Syslog variable "Configuration Directory" not correctly set
+Bug #1936: Logging from Windows EventLog with Snare
+Bug #1940: Selectbox on monitoring page don't work under IE8
+Bug #1943: Unable to download ODT file from search page using IE
+Bug #1951: Size of field "program" not change during update of server
+Enhancement #1913: Enhancements to the FrontEnd installation documentation
+Enhancement #1945: check php5-mysql in server installation
+
 ## Centreon-Syslog-Frontend 1.3.2
 Bug #1794: Delete hard coded "centreon" database name in SQL uninstall and install script on Frontend
 Enhancement #1793: ODT export in search page
