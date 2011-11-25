@@ -67,31 +67,6 @@
 	}
 
 	/**
-	*
-	* Get list of Hosts
-	* @return array
-	*/
-	function getFilterHosts() {
-		global $pearSyslogDB, $cfg_syslog;
-
-		$query = "SELECT distinct(value) as host FROM " . $cfg_syslog["db_table_cache"] . " WHERE type= \"HOST\" ORDER BY host ASC";
-			
-		$res =& $pearSyslogDB->query($query);
-		if (PEAR::isError($pearSyslogDB)) {
-			print "Mysql Error : ". $pearSyslogDB->getMessage()."\n";
-		}
-		# Set base value
-		$FilterHosts  =  array("" => "");
-		
-		while ($host =& $res->fetchRow())
-			$FilterHosts[$host['host']] = $host['host']; 
-			
-		$FilterHosts = array_map("myDecode",$FilterHosts);
-			
-		return $FilterHosts;
-	}
-
-	/**
 	 * 
 	 * Get list of Hosts from merge table
 	 * @param PEAR::DB $pearSyslogDB
@@ -103,7 +78,7 @@
 		
 		$res =& $pearSyslogDB->query($query);
 		if (PEAR::isError($pearSyslogDB)) {
-			print "Mysql Error : ". $pearSyslogDB->getMessage()."\n";
+			displayConnectionErrorPage("Mysql Error : ". $pearSyslogDB->getMessage());
 		}
 		# Set base value
 		$FilterHosts  =  array("" => "");
@@ -114,30 +89,6 @@
 		$FilterHosts = array_map("myDecode",$FilterHosts);
 			
 		return $FilterHosts;
-	}
-
-	/**
-	*
-	* Get list of Facilities
-	* @return array
-	*/
-	function getFilterFacilities() {
-		global $pearSyslogDB, $cfg_syslog;
-
-		$query = "SELECT distinct(value) as facility FROM " . $cfg_syslog["db_table_cache"] . " WHERE type= \"FACILITY\"  ORDER BY facility ASC";
-
-		$res =& $pearSyslogDB->query($query);
-		if (PEAR::isError($pearSyslogDB)) {
-			print "Mysql Error : ". $pearSyslogDB->getMessage()."\n";
-		}
-		# Set base value
-		$FilterFacilities  =  array("" => "");
-		
-		while ($facility =& $res->fetchRow())
-			$FilterFacilities[$facility['facility']] = $facility['facility']; 
-			
-		$FilterFacilities = array_map("myDecode",$FilterFacilities );
-		return $FilterFacilities;
 	}
 
 	/**
@@ -152,7 +103,7 @@
 
 		$res =& $pearSyslogDB->query($query);
 		if (PEAR::isError($pearSyslogDB)) {
-			print "Mysql Error : ". $pearSyslogDB->getMessage()."\n";
+			displayConnectionErrorPage("Mysql Error : ". $pearSyslogDB->getMessage());
 		}
 		# Set base value
 		$FilterFacilities  =  array("" => "");
@@ -162,30 +113,6 @@
 			
 		$FilterFacilities = array_map("myDecode",$FilterFacilities );
 		return $FilterFacilities;
-	}
-
-	/**
-	*
-	* Get list of Priotirites
-	* @return array
-	*/
-	function getFilterPriorities() {
-		global $pearSyslogDB, $cfg_syslog;
-
-		$query = "SELECT distinct(value) as priority FROM " . $cfg_syslog["db_table_cache"] . " WHERE type= \"PRIORITY\"  ORDER BY priority ASC";
-
-		$res =& $pearSyslogDB->query($query);
-		if (PEAR::isError($pearSyslogDB)) {
-			print "Mysql Error : ". $pearSyslogDB->getMessage()."\n";
-		}
-		# Set base value
-		$FilterPriorities  =  array("" => "");
-		
-		while ($priority =& $res->fetchRow())
-			$FilterPriorities[$priority['priority']] = $priority['priority']; 
-			
-		$FilterPriorities = array_map("myDecode",$FilterPriorities );
-		return $FilterPriorities;
 	}
 
 	/**
@@ -200,7 +127,7 @@
 
 		$res =& $pearSyslogDB->query($query);
 		if (PEAR::isError($pearSyslogDB)) {
-			print "Mysql Error : ". $pearSyslogDB->getMessage()."\n";
+			displayConnectionErrorPage("Mysql Error : ". $pearSyslogDB->getMessage());
 		}
 		# Set base value
 		$FilterPriorities  =  array("" => "");
@@ -210,79 +137,6 @@
 			
 		$FilterPriorities = array_map("myDecode",$FilterPriorities );
 		return $FilterPriorities;
-	}
-
-	/**
-	*
-	* Get list of Levels
-	* @return array
-	*/
-	function getFilterLevels() {
-		global $pearSyslogDB, $cfg_syslog;
-
-		$query = "SELECT distinct(value) as level FROM " . $cfg_syslog["db_table_cache"] . " WHERE type= \"LEVEL\"  ORDER BY level ASC";
-
-		$res =& $pearSyslogDB->query($query);
-		if (PEAR::isError($pearSyslogDB)) {
-			print "Mysql Error : ". $pearSyslogDB->getMessage()."\n";
-		}
-		# Set base value
-		$FilterLevels  = array("" => "");
-		
-		while ($level =& $res->fetchRow())
-			$FilterLevels[$level['level']] = $level['level']; 
-			
-		$FilterLevels = array_map("myDecode",$FilterLevels );
-		return $FilterLevels;
-	}
-
-	/**
-	*
-	* Get list of Levels from merge table
-	* @return array
-	*/
-	function getFilterLevelsMerge() {
-		global $pearSyslogDB, $cfg_syslog;
-
-		$query = "SELECT distinct(value) as level FROM " . $cfg_syslog["db_table_cache_merge"] . " WHERE type= \"LEVEL\"  ORDER BY level ASC";
-
-		$res =& $pearSyslogDB->query($query);
-		if (PEAR::isError($pearSyslogDB)) {
-			print "Mysql Error : ". $pearSyslogDB->getMessage()."\n";
-		}
-		# Set base value
-		$FilterLevels  = array("" => "");
-		
-		while ($level =& $res->fetchRow())
-			$FilterLevels[$level['level']] = $level['level']; 
-			
-		$FilterLevels = array_map("myDecode",$FilterLevels );
-		return $FilterLevels;
-	}
-
-	/**
-	 * 
-	 * Get list of Programs
-	 * @return array
-	 */
-	function getFilterPrograms() {
-		global $pearSyslogDB, $cfg_syslog;
-
-		$query = "SELECT distinct(value) as program FROM " . $cfg_syslog["db_table_cache"] . " WHERE type= \"PROGRAM\"  ORDER BY program ASC";
-
-		$res =& $pearSyslogDB->query($query);
-		
-		if (PEAR::isError($pearSyslogDB)) {
-			print "Mysql Error : ". $pearSyslogDB->getMessage()."\n";
-		}
-		# Set base value
-		$FilterPrograms  = array("" => "");
-		
-		while ($program =&$res->fetchRow())
-				$FilterPrograms[$program['program']] = $program['program'] ; 
-		
-		$FilterPrograms  = array_map("myDecode",$FilterPrograms );
-		return $FilterPrograms ;
 	}
 
 	/**
@@ -299,7 +153,7 @@
 		$res =& $pearSyslogDB->query($query);
 		
 		if (PEAR::isError($pearSyslogDB)) {
-			print "Mysql Error : ". $pearSyslogDB->getMessage()."\n";
+			displayConnectionErrorPage("Mysql Error : ". $pearSyslogDB->getMessage());
 		}
 		# Set base value
 		$FilterPrograms  = array("" => "");
@@ -309,44 +163,6 @@
 		
 		$FilterPrograms  = array_map("myDecode",$FilterPrograms );
 		return $FilterPrograms ;
-	}
-
-	/**
-	 * 
-	 * Get complete list of Facilities
-	 * @return array
-	 */
-	function getSyslogFacility() {
-		global $pearDB;
-		
-		$cfg_syslog_facility = array();
-
-		$DBRESULT =& $pearDB->query("SELECT * FROM `mod_syslog_filters_facility`");
-		/*
-		 * Set base value
-		 */
-		$cfg_syslog_facility = array_map("myDecode", $DBRESULT->fetchRow());
-		$DBRESULT->free();
-		return $cfg_syslog_facility;
-	}
-
-	/**
-	 * 
-	 * Get complete list of Priorities
-	 * @return array
-	 */
-	function getSyslogPriority() {
-		global $pearDB;
-		
-		$cfg_syslog_priority = array();
-
-		$DBRESULT =& $pearDB->query("SELECT * FROM `mod_syslog_filters_priority`");
-		/*
-		 * Set base value
-		 */
-		$cfg_syslog_priority = array_map("myDecode", $DBRESULT->fetchRow());
-		$DBRESULT->free();
-		return $cfg_syslog_priority;
 	}
 
 	/**
@@ -367,7 +183,7 @@
 		$res =& $pearDB->query($query);
 		
 		if (PEAR::isError($pearDB)) {
-			print "Mysql Error : ". $pearDB->getMessage()."\n";
+			displayConnectionErrorPage("Mysql Error : ". $pearDB->getMessage());
 		}
 		$intFacility = &$res->fetchRow();
 		
@@ -381,7 +197,7 @@
 		$res =& $pearDB->query($query);
 
 		if (PEAR::isError($pearDB)) {
-			print "Mysql Error : ". $pearDB->getMessage()."\n";
+			displayConnectionErrorPage("Mysql Error : ". $pearDB->getMessage());
 		}
 
 		$list_priorities = array();
@@ -410,7 +226,7 @@
 		$res =& $pearDB->query($query);
 		
 		if (PEAR::isError($pearDB)) {
-			print "Mysql Error : ". $pearDB->getMessage()."\n";
+			displayConnectionErrorPage("Mysql Error : ". $pearDB->getMessage());
 		}
 		$intSeverity = &$res->fetchRow();
 
@@ -424,7 +240,7 @@
 		$res =& $pearDB->query($query);
 
 		if (PEAR::isError($pearDB)) {
-			print "Mysql Error : ". $pearDB->getMessage()."\n";
+			displayConnectionErrorPage("Mysql Error : ". $pearDB->getMessage());
 		}
 		
 		$list_severities = array();
@@ -445,7 +261,7 @@
 
 		$res =& $pearDB->query("SELECT * FROM mod_syslog_filters_facility ORDER BY CAST(value AS UNSIGNED) ASC");
 		if (PEAR::isError($pearDB)) {
-			print "Mysql Error : ". $pearDB->getMessage()."\n";
+			displayConnectionErrorPage("Mysql Error : ". $pearDB->getMessage());
 		}
 		# Set base value
 		$FilterFacilities  =  array("" => "");
@@ -466,7 +282,7 @@
 
 		$res =& $pearDB->query("SELECT * FROM mod_syslog_filters_priority ORDER BY CAST(value AS UNSIGNED) ASC");
 		if (PEAR::isError($pearDB)) {
-			print "Mysql Error : ". $pearDB->getMessage()."\n";
+			displayConnectionErrorPage("Mysql Error : ". $pearDB->getMessage());
 		}
 		# Set base value
 		$FilterSeverities  =  array("" => "");
@@ -488,7 +304,7 @@
 
 		$res =& $pearDB->query("SELECT `collector_id`, `collector_name` FROM `mod_syslog_collector` ");
 		if (PEAR::isError($pearDB)) {
-			print "Mysql Error : ". $pearDB->getMessage()."\n";
+			displayConnectionErrorPage("Mysql Error : ". $pearDB->getMessage());
 		}
 		# Set base value
 		$collectorsList =  array("" => "");
@@ -517,7 +333,7 @@
 
 		$res =& $pearSyslogDB->query($query);
 		if (PEAR::isError($pearSyslogDB)) {
-			print "Mysql Error : ". $pearSyslogDB->getMessage()."\n";
+			displayConnectionErrorPage("Mysql Error : ". $pearSyslogDB->getMessage());
 		}
 		# Set base value
 		$eventDetails = array();
@@ -551,7 +367,7 @@
 		
 		$res =& $pearDB->query("SELECT `refresh_monitoring`, `refresh_filters` FROM `mod_syslog_opt` ");
 		if (PEAR::isError($pearDB)) {
-			print "Mysql Error : ". $pearDB->getMessage()."\n";
+			displayConnectionErrorPage("Mysql Error : ". $pearDB->getMessage());
 		}
 		# Set base value
 		$refresh_options =  array("" => "");
@@ -562,5 +378,21 @@
 		}
 		
 		return $refresh_options;
+	}
+	
+	/**
+	* Display error page
+	*
+	* @access protected
+	* @return	void
+	*/
+	function displayConnectionErrorPage($msg = null) {
+		echo "<img src='./img/centreon.gif'><br/>";
+		if ($msg) {
+			echo "<b>" . $msg . "</b>";
+		} else {
+			echo "<b>" . _("Connection failed, please contact your administrator") . "</b>";
+		}
+		exit;
 	}
 ?>
