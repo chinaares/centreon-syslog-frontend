@@ -80,6 +80,11 @@
 		if (PEAR::isError($pearSyslogDB)) {
 			displayConnectionErrorPage("Mysql Error : ". $pearSyslogDB->getMessage());
 		}
+		
+		if ($pearSyslogDB->numberRows() == 0) {
+			displayConnectionErrorPage("<br \>Database empty or not correctly configured<br \><br \>Please contact your administrator.");
+		}
+		
 		# Set base value
 		$FilterHosts  =  array("" => "");
 		
@@ -105,6 +110,11 @@
 		if (PEAR::isError($pearSyslogDB)) {
 			displayConnectionErrorPage("Mysql Error : ". $pearSyslogDB->getMessage());
 		}
+		
+		if ($pearSyslogDB->numberRows() == 0) {
+			displayConnectionErrorPage("<br \>Database empty or not correctly configured<br \><br \>Please contact your administrator.");
+		}
+		
 		# Set base value
 		$FilterFacilities  =  array("" => "");
 		
@@ -129,6 +139,11 @@
 		if (PEAR::isError($pearSyslogDB)) {
 			displayConnectionErrorPage("Mysql Error : ". $pearSyslogDB->getMessage());
 		}
+		
+		if ($pearSyslogDB->numberRows() == 0) {
+			displayConnectionErrorPage("<br \>Database empty or not correctly configured<br \><br \>Please contact your administrator.");
+		}
+		
 		# Set base value
 		$FilterPriorities  =  array("" => "");
 		
@@ -155,6 +170,11 @@
 		if (PEAR::isError($pearSyslogDB)) {
 			displayConnectionErrorPage("Mysql Error : ". $pearSyslogDB->getMessage());
 		}
+		
+		if ($pearSyslogDB->numberRows() == 0) {
+		displayConnectionErrorPage("<br \>Database empty or not correctly configured<br \><br \>Please contact your administrator.");
+		}
+		
 		# Set base value
 		$FilterPrograms  = array("" => "");
 		
