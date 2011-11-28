@@ -196,7 +196,7 @@
 			$buffer->writeElement("facility", $data["facility"]);
 			$buffer->writeElement("priority", $data["priority"]);
 			$buffer->writeElement("program", $data["program"]);
-			$buffer->writeElement("msg", $data["msg"]);
+			$buffer->writeElement("msg", utf8_decode($data["msg"]));
 			$buffer->endElement();
 		}
 		$buffer->endElement();

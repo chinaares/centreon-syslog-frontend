@@ -276,7 +276,7 @@
 							"RowMenu_priority"=>$data["priority"],
 							"RowMenu_tag"=>$data["tag"],
 							"RowMenu_program"=>$data["program"],
-							"RowMenu_msg"=>htmlentities($data["msg"]));
+							"RowMenu_msg"=>htmlentities(utf8_decode($data["msg"])));
 		}
 	}
 

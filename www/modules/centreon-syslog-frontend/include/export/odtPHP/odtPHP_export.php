@@ -190,12 +190,12 @@
 	$resource = $odf->setSegment('s');
 
 	while ($DBRESULT->fetchInto($data)) {
-		$resource->setVars('datetime',$data["datetime"], true, 'UTF-8');
-		$resource->setVars('host',$data["host"], true, 'UTF-8');
-		$resource->setVars('facility',$data["facility"], true, 'UTF-8');
-		$resource->setVars('severity',$data["priority"], true, 'UTF-8');
-		$resource->setVars('program',$data["program"], true, 'UTF-8');
-		$resource->setVars('message',$data["msg"]);
+		$resource->setVars('datetime', $data["datetime"], true, 'UTF-8');
+		$resource->setVars('host', $data["host"], true, 'UTF-8');
+		$resource->setVars('facility', $data["facility"], true, 'UTF-8');
+		$resource->setVars('severity', $data["priority"], true, 'UTF-8');
+		$resource->setVars('program', $data["program"], true, 'UTF-8');
+		$resource->setVars('message', utf8_decode($data["msg"]));
 		$resource->merge();
 	}
 	
