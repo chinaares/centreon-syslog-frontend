@@ -94,8 +94,3 @@ INSERT INTO `topology_JS` (`id_t_js`, `id_page`, `o`, `PathName_js`, `Init`)
 VALUES ('', '20402', NULL, './modules/centreon-syslog-frontend/include/search/javascript/exportCSV.js', NULL ) ,
 ('', '20402', NULL, './include/common/javascript/datePicker.js', NULL ) ,
 ('', '20402', NULL, './include/common/javascript/tool.js', NULL ) ;
-
--- Delete topology
-
-DELETE FROM `topology` WHERE `topology_parent` = '507' AND `topology_name`= "Modules";
-DELETE FROM `topology` WHERE `topology_parent` = '507' AND `topology_name`= "Syslog";
