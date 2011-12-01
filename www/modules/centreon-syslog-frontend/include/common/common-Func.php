@@ -82,7 +82,7 @@
 		}
 		
 		if ($pearSyslogDB->numberRows() == 0) {
-			displayConnectionErrorPage("<br \>Database empty or not correctly configured<br \><br \>Please contact your administrator.");
+			return NULL;
 		}
 		
 		# Set base value
@@ -165,22 +165,21 @@
 
 		$query = "SELECT distinct(value) as program FROM " . $cfg_syslog["db_table_cache_merge"] . " WHERE type= \"PROGRAM\"  ORDER BY program ASC";
 
-		$res =& $pearSyslogDB->query($query);
-		
+	$res =& $pearSyslogDB->query($query);
 		if (PEAR::isError($pearSyslogDB)) {
 			displayConnectionErrorPage("Mysql Error : ". $pearSyslogDB->getMessage());
 		}
 		
 		if ($pearSyslogDB->numberRows() == 0) {
-		displayConnectionErrorPage("<br \>Database empty or not correctly configured<br \><br \>Please contact your administrator.");
+			displayConnectionErrorPage("<br \>Database empty or not correctly configured<br \><br \>Please contact your administrator.");
 		}
 		
 		# Set base value
 		$FilterPrograms  = array("" => "");
-		
+			
 		while ($program =&$res->fetchRow())
-				$FilterPrograms[$program['program']] = $program['program'] ; 
-		
+			$FilterPrograms[$program['program']] = $program['program'] ;
+			
 		$FilterPrograms  = array_map("myDecode",$FilterPrograms );
 		return $FilterPrograms ;
 	}
