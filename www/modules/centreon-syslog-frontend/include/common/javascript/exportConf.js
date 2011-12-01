@@ -38,7 +38,7 @@
  * 
  */
 
-function ajax_generate()
+function ajax_generate(id)
 {
 	var xhr=null;
 	
@@ -70,7 +70,7 @@ function ajax_generate()
 		}
 	}
 	
-	xhr.open('GET', "./modules/Syslog/include/export/ssh2/ssh2_export.php", true);
+	xhr.open('GET', "./modules/centreon-syslog-frontend/include/export/ssh2/ssh2_export.php?id=" +id, true);
 	xhr.send(null);
 }
 
