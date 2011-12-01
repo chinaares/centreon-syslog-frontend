@@ -96,6 +96,13 @@
 	else
 		$Fseverity_selected = "";
 
+	
+	header('Content-Type: text/xml');
+	header('Pragma: no-cache');
+	header('Expires: 0');
+	header('Cache-Control: no-cache, must-revalidate');
+	echo "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>";
+	
 	/*
 	 * Build SQL request
 	 */
@@ -103,113 +110,113 @@
 	    $pearDB_syslog = new SyslogDB("syslog", $collector_id);
 	    $cfg_syslog = getSyslogOption($collector_id);
 	    $FilterHosts = getFilterHostsMerge($pearDB_syslog, $cfg_syslog);
-	    $FilterPrograms = getFilterProgramsMerge($pearDB_syslog, $cfg_syslog);
+	    
+	    if (!isset($FilterHosts)) {
+	    	echo "<root><error>"._("Problem to access to merge cache table. Please contact your administrator.")."</error></root>";
+	    } else {
+		    $FilterPrograms = getFilterProgramsMerge($pearDB_syslog, $cfg_syslog);
+		    $FilterFacilities = getAllFacilities();
+		    $FilterFFacilities = array("" => "", "gt" => ">", "ge" => ">=", "eq" => "=", "le" => "<=", "lt" => "<", "ne" => "!=");
+		    $FilterPriorities = getAllSeverities();
+		    $FilterFPriorities = array("" => "", "gt" => ">", "ge" => ">=", "eq" => "=", "le" => "<=", "lt" => "<", "ne" => "!=");
+		    
+		    /*
+		     * Generate XML ouput
+		    */
+		     echo "<root>";
+		    
+		    # For headers
+		    echo "<headers>";
+		    echo "<header>"._("Syslog filters parameters :")."</header>";
+		    echo "</headers>";
+		    
+		    echo "<filters>";
+		    echo "<filter>"._("Host")."</filter>";
+		    echo "<filter>"._("Facility")."</filter>";
+		    echo "<filter>"._("Severity")."</filter>";
+		    echo "<filter>"._("Program")."</filter>";
+		    echo "<filter>"._("Message")."</filter>";
+		    echo "</filters>";
+		    
+		    echo "<buttons>";
+		    echo "<buton>"._("stop")."</buton>";
+		    echo "</buttons>";
+		    
+		    # For hosts select box
+		    echo "<hosts>";
+		    if (preg_match('/^\d+$/', $collector_id)) {
+		    	foreach ($FilterHosts as $key=>$value) {
+		    		if (strcmp($value, $host_selected) == 0) {
+		    			echo "<host selected=\"Y\">".$value."</host>";
+		    		} else {
+		    			echo "<host>".$value."</host>";
+		    		}
+		    	}
+		    } else {
+		    	echo "<host></host>";
+		    }
+		    echo "</hosts>";
+		    
+		    # For facilities select box
+		    echo "<facilities>";
+	     	foreach ($FilterFFacilities as $key=>$value) {
+	    		if ((strcmp($Ffacility_selected, "") == 0) && (strcmp($value, "eq") == 0)) {
+	   				echo "<Ffacility selected=\"Y\"><![CDATA["."="."]]></Ffacility>";
+	     		} else if (strcmp($value, $Ffacility_selected) == 0) {
+	    			echo "<Ffacility selected=\"Y\"><![CDATA[".$value."]]></Ffacility>";
+	     		} else {
+	    			echo "<Ffacility><![CDATA[".$value."]]></Ffacility>";
+	     		}
+	     	}
+		    
+	     	foreach ($FilterFacilities as $key=>$value) {
+		   		if (strcmp($value, $facility_selected) == 0) {
+			    	echo "<facility selected=\"Y\">".$value."</facility>";
+			    } else {
+					echo "<facility>".$value."</facility>";
+	     		}
+		    }
+		    echo "</facilities>";
+		    
+		    # For severities select box
+		    echo "<severities>";
+		    foreach ($FilterFPriorities as $key=>$value) {
+		    	if ((strcmp($Fseverity_selected, "") == 0) && (strcmp($value, "eq") == 0)) {
+		    		echo "<Fseverity selected=\"Y\"><![CDATA["."="."]]></Fseverity>";
+	     		} else if (strcmp($value, $Fseverity_selected) == 0) {
+		    		echo "<Fseverity selected=\"Y\"><![CDATA[".$value."]]></Fseverity>";
+	     		} else {
+	     			echo "<Fseverity><![CDATA[".$value."]]></Fseverity>";
+	     		}
+	     	}
+		    
+	     	foreach ($FilterPriorities  as $key=>$value) {
+		    	if (strcmp($value, $severity_selected) == 0) {
+		    		echo "<severity selected=\"Y\">".$value."</severity>";
+		    	} else {
+	     			echo "<severity>".$value."</severity>";
+		    	}
+		    }
+		    echo "</severities>";
+		     	
+		     	# For programs select box
+		    echo "<programs>";
+	     	if (preg_match('/^\d+$/', $collector_id)) {
+	    		foreach ($FilterPrograms as $key=>$value) {
+	    			if (strcmp($value, $program_selected) == 0) {
+		    			echo "<program selected=\"Y\">".$value."</program>";
+		    		} else {
+		    			echo "<program>".$value."</program>";
+	         		}
+	         	}
+		    } else {
+				echo "<program></program>";
+		    }
+	    	echo "</programs>";
+	    	echo "<msg></msg>";
+	     	echo "</root>";
+	    }
+	} else {
+		echo "<root><error>"._("Please select a collector.")."</error></root>";
 	}
-	
-	$FilterFacilities = getAllFacilities();
-	$FilterFFacilities = array("" => "", "gt" => ">", "ge" => ">=", "eq" => "=", "le" => "<=", "lt" => "<", "ne" => "!=");
-	$FilterPriorities = getAllSeverities();
-	$FilterFPriorities = array("" => "", "gt" => ">", "ge" => ">=", "eq" => "=", "le" => "<=", "lt" => "<", "ne" => "!=");
-
-	/*
-	 * Generate XML ouput
-	 */
-	header('Content-Type: text/xml');
-	header('Pragma: no-cache');
-	header('Expires: 0');
-	header('Cache-Control: no-cache, must-revalidate'); 
-	echo "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>";
- 	echo "<root>";
-
- 	# For headers
- 	echo "<headers>";
- 	echo "<header>"._("Syslog filters parameters :")."</header>";	
- 	echo "</headers>";
-
- 	echo "<filters>";
- 	echo "<filter>"._("Host")."</filter>";
- 	echo "<filter>"._("Facility")."</filter>";
- 	echo "<filter>"._("Severity")."</filter>";
- 	echo "<filter>"._("Program")."</filter>";
- 	echo "</filters>";
-
- 	echo "<buttons>";
- 	echo "<buton>"._("stop")."</buton>";
- 	echo "</buttons>";
-
- 	# For hosts select box
- 	echo "<hosts>";
- 	if (preg_match('/^\d+$/', $collector_id)) {
-     	foreach ($FilterHosts as $key=>$value) {
-     		if (strcmp($value, $host_selected) == 0) {
-     			echo "<host selected=\"Y\">".$value."</host>";
-     		} else {
-     			echo "<host>".$value."</host>";
-     		}
-     	}
- 	} else {
- 	    echo "<host></host>";
- 	}
- 	echo "</hosts>";
- 	
- 	# For facilities select box
- 	echo "<facilities>";
- 	foreach ($FilterFFacilities as $key=>$value) {
- 		if ((strcmp($Ffacility_selected, "") == 0) && (strcmp($value, "eq") == 0)) {
- 			echo "<Ffacility selected=\"Y\"><![CDATA["."="."]]></Ffacility>";
- 		}
- 		else if (strcmp($value, $Ffacility_selected) == 0) {
- 			echo "<Ffacility selected=\"Y\"><![CDATA[".$value."]]></Ffacility>";
- 		} else {
- 			echo "<Ffacility><![CDATA[".$value."]]></Ffacility>";
- 		}
- 	}
-
- 	foreach ($FilterFacilities as $key=>$value) {
- 	if (strcmp($value, $facility_selected) == 0) {
- 			echo "<facility selected=\"Y\">".$value."</facility>";
- 		} else {
- 			echo "<facility>".$value."</facility>";
- 		}
- 	}
- 	echo "</facilities>";
- 	
- 	# For severities select box
- 	echo "<severities>";
- 	foreach ($FilterFPriorities as $key=>$value) {
- 		if ((strcmp($Fseverity_selected, "") == 0) && (strcmp($value, "eq") == 0)) {
- 			echo "<Fseverity selected=\"Y\"><![CDATA["."="."]]></Fseverity>";
- 		}
- 		else if (strcmp($value, $Fseverity_selected) == 0) {
- 			echo "<Fseverity selected=\"Y\"><![CDATA[".$value."]]></Fseverity>";
- 		} else {
- 			echo "<Fseverity><![CDATA[".$value."]]></Fseverity>";
- 		}
- 	}
-
- 	foreach ($FilterPriorities  as $key=>$value) {
- 	if (strcmp($value, $severity_selected) == 0) {
- 			echo "<severity selected=\"Y\">".$value."</severity>";
- 		} else {
- 			echo "<severity>".$value."</severity>";
- 		}
- 	}
- 	echo "</severities>";
- 	
- 	# For programs select box
- 	echo "<programs>";
- 	if (preg_match('/^\d+$/', $collector_id)) {
-     	foreach ($FilterPrograms as $key=>$value) {
-     		if (strcmp($value, $program_selected) == 0) {
-     			echo "<program selected=\"Y\">".$value."</program>";
-     		} else {
-     			echo "<program>".$value."</program>";
-     		}
-     	}
- 	} else {
- 	    echo "<program></program>";
- 	}
- 	echo "</programs>";
- 	
- 	echo "</root>";
  ?>

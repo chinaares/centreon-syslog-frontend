@@ -145,6 +145,23 @@
 					</xsl:element>
 				</td>
 			</xsl:for-each>
+			<xsl:for-each select="msg">
+				<td class="ListColHeaderCenter">
+					<input type="text">
+						<xsl:attribute name='id'>filter_msg</xsl:attribute>
+						<xsl:attribute name='onChange'>build_ajax();</xsl:attribute>
+						<xsl:attribute name='name'>filter_msg</xsl:attribute>
+						<xsl:attribute name='size'>50</xsl:attribute>
+					</input>
+				</td>
+			</xsl:for-each>
+		</xsl:element>
+		<xsl:element name="tr">
+			<xsl:for-each select="//error">
+				<xsl:element name="td">
+					<xsl:value-of select="." />
+				</xsl:element>
+			</xsl:for-each>
 		</xsl:element>
 	</xsl:element>
 </xsl:for-each>
