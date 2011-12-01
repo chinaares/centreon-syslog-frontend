@@ -113,7 +113,7 @@
 						"RowMenu_name"=>$config["collector_name"],
 						"RowMenu_db_address"=>$config["db_server_address"],
 						"RowMenu_interface_type"=>$config["db_type"],
-						"RowMenu_link"=>"?p=".$p."&o=c&id=".$config['collector_id'],
+						"RowMenu_link"=>"?p=".$p."&o=w&id=".$config['collector_id'],
 						"RowMenu_status"=>$config["enable"] ? _("Enabled") : _("Disabled"),
 						"RowMenu_comment"=>substr($config["comment"], 0, 40),
 						"RowMenu_options"=>$moptions);;

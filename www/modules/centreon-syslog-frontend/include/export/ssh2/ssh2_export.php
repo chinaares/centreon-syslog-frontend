@@ -34,8 +34,8 @@
  * Project name : Centreon Syslog
  * Module name: Centreon-Syslog-Frontend
  * 
- * SVN : $URL:$
- * SVN : $Id:$
+ * SVN : $URL$
+ * SVN : $Id$
  * 
  */
 	
@@ -60,27 +60,19 @@
 	 * PHP functions
 	 */
 	require_once $syslog_mod_path . "class/syslogDB.class.php";
+	require_once $syslog_mod_path . "include/common/common-Func.php";
 
 	/*
 	 * Path to the configuration dir
 	 */
 	global $path, $conf_file, $tmp_file;
 
+	if (isset($_GET['id']) && $_GET['id'] != "" )
+		$collector_id = $_GET['id'];
+	else
+		return "<root><status>"._("No collector ID defined")."</status></root>";
+	
 	$conf_file = "syslog.conf.php";
-	$pear_DB = new SyslogDB("centreon");
-
-	/*
-	 * Get Syslog parameters from 'mod_syslog_opt' on Centreon database
-	 */	
-	function getSSHParameters($pear_DB) {
-		$query = "SELECT * FROM `mod_syslog_opt` LIMIT 1;";
-
-		# Set limit & num
-		$DBRESULT =& $pear_DB->query($query);		
-		$Syslog_options = array();
-		$Syslog_options =& $DBRESULT->fetchRow();
-		return $Syslog_options;
-	}
 
 	/*
 	 * Generate new configuration file for syslog server
@@ -92,13 +84,13 @@
 		$fp = fopen($tmp_file,"w");
 		fputs($fp, "<?php\n");
 
-		fputs($fp, "\$syslogOpt[\"syslog_server_db_user\"] = \"".$Syslog_options["syslog_db_user"]."\";\n");
-		fputs($fp, "\$syslogOpt[\"syslog_server_db_password\"] = \"".$Syslog_options["syslog_db_password"]."\";\n");
-		fputs($fp, "\$syslogOpt[\"syslog_server\"] = \"".$Syslog_options["syslog_db_server"]."\";\n");
-		fputs($fp, "\$syslogOpt[\"syslog_db_name\"] = \"".$Syslog_options["syslog_db_name"]."\";\n");
-		fputs($fp, "\$syslogOpt[\"syslog_db_filter\"] = \"".$Syslog_options["syslog_db_logs"]."\";\n");
-		fputs($fp, "\$syslogOpt[\"syslog_db_table\"] = \"".$Syslog_options["syslog_db_cache"]."\";\n");
-		fputs($fp, "\$syslogOpt[\"syslog_db_rotate\"] = \"".$Syslog_options["syslog_db_rotate"]."\";\n");
+		fputs($fp, "\$syslogOpt[\"syslog_server_db_user\"] = \"".$Syslog_options["db_username"]."\";\n");
+		fputs($fp, "\$syslogOpt[\"syslog_server_db_password\"] = \"".$Syslog_options["db_password"]."\";\n");
+		fputs($fp, "\$syslogOpt[\"syslog_server\"] = \"".$Syslog_options["db_server_address"]."\";\n");
+		fputs($fp, "\$syslogOpt[\"syslog_db_name\"] = \"".$Syslog_options["db_name"]."\";\n");
+		fputs($fp, "\$syslogOpt[\"syslog_db_filter\"] = \"".$Syslog_options["db_table_logs"]."\";\n");
+		fputs($fp, "\$syslogOpt[\"syslog_db_table\"] = \"".$Syslog_options["db_table_cache"]."\";\n");
+		fputs($fp, "\$syslogOpt[\"syslog_db_rotate\"] = \"".$Syslog_options["retention_days"]."\";\n");
 		fputs($fp, "?>\n");
 		fclose($fp);
 	}
@@ -109,17 +101,17 @@
 	function exportConfFile($Syslog_options) {
 		global $tmp_file, $conf_file;
 
-		$connection = ssh2_connect($Syslog_options["syslog_ssh_server"], $Syslog_options["syslog_ssh_port"], array('hostkey'=>'ssh-rsa'));
+		$connection = ssh2_connect($Syslog_options["ssh_server_address"], $Syslog_options["ssh_server_port"], array('hostkey'=>'ssh-rsa'));
 			
 		if (!$connection) {
 			$output = _("Unable to connect on distant server.");
 			return $output;
 		}
 
-		if (strlen($Syslog_options["syslog_ssh_pass"]) == 0) {
-			$status = ssh2_auth_none($connection, $Syslog_options["syslog_ssh_user"]);
+		if (strlen($Syslog_options["ssh_password"]) == 0) {
+			$status = ssh2_auth_none($connection, $Syslog_options["ssh_username"]);
 		} else {
-			$status = ssh2_auth_password($connection, $Syslog_options["syslog_ssh_user"], $Syslog_options["syslog_ssh_pass"]);
+			$status = ssh2_auth_password($connection, $Syslog_options["ssh_username"], $Syslog_options["ssh_password"]);
 		}
 		
 		if (!$status) {
@@ -127,7 +119,7 @@
 			return $output;
 		}
 
-		$status = ssh2_scp_send($connection, $tmp_file, $Syslog_options["syslog_conf_dir"]."/".$conf_file, 0664);
+		$status = ssh2_scp_send($connection, $tmp_file, $Syslog_options["configuration_dir"]."/".$conf_file, 0664);
 		
 		if (!$status) {
 			$output = _("Unable to export configuration file. Rights may be not correct on distant directory.");
@@ -140,7 +132,7 @@
 		return $output;
 	}
 
-	$Syslog_options = getSSHParameters($pear_DB);
+	$Syslog_options = getSyslogOption($collector_id);
 	generateNewConfFile($Syslog_options);
 
 	echo "<root>";

@@ -34,8 +34,8 @@
  * Project name : Centreon Syslog
  * Module name: Centreon-Syslog-Frontend
  * 
- * SVN : $URL:$
- * SVN : $Id:$
+ * SVN : $URL$
+ * SVN : $Id$
  * 
  */
 
@@ -170,7 +170,15 @@
 		 * Just watch a Poller information
 		 */
 		if ($centreon->user->access->page($p) != 2) {
-			$form->addElement("button", "change", _("Modify"), array("onClick"=>"javascript:window.location.href='?p=".$p."&o=c&id=".$ndomod_id."'"));
+			$form->addElement('button', 'change', _("Modify"), array("onClick"=>"javascript:window.location.href='?p=".$p."&o=c&id=".$id."'"));
+			if (extension_loaded('ssh2')) {
+				$form->addElement('button', 'export',  _("Export configuration"), array( "id" => "ajaxBtn", "onClick" => "javascript:ajax_generate(".$id.");") );
+			} else {
+				print ("<div class='ssh2' align='center'>");
+				print ("<br/>"._("Export button is hidden because SSH2 libraries for PHP was not installed."));
+				print ("<br/>"._("Please refer to install guide for Centreon-Syslog-Frontend."));
+				print ("<br/></div>");
+			}
 		}
 		$form->setDefaults($cfg_poller);
 		$form->freeze();
