@@ -165,7 +165,7 @@
 
 		$query = "SELECT distinct(value) as program FROM " . $cfg_syslog["db_table_cache_merge"] . " WHERE type= \"PROGRAM\"  ORDER BY program ASC";
 
-	$res =& $pearSyslogDB->query($query);
+		$res =& $pearSyslogDB->query($query);
 		if (PEAR::isError($pearSyslogDB)) {
 			displayConnectionErrorPage("Mysql Error : ". $pearSyslogDB->getMessage());
 		}
