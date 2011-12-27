@@ -138,11 +138,10 @@ class SyslogDB {
      */
     protected function displayConnectionErrorPage($msg = null)
     {
-		echo "<img src='./img/centreon.gif'><br/>";
 		if ($msg) {
-            echo "<b>" . $msg . "</b>";
+			echo "<root><error>" . $msg . "</error></root>";
 		} else {
-		    echo "<b>" . _("Connection failed, please contact your administrator") . "</b>";
+			echo "<root><error>" . _("Connection failed, please contact your administrator") . "</error></root>";
 		}
 		exit;
 	}    
