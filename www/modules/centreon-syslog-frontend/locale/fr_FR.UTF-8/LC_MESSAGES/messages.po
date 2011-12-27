@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Centreon Syslog Frontend\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-12-27 19:06+0100\n"
-"PO-Revision-Date: 2011-12-27 19:11+0100\n"
+"PO-Revision-Date: 2011-12-27 19:22+0100\n"
 "Last-Translator: Laurent Pinsivy <lpinsivy@merethis.com>\n"
 "Language-Team: Centreon Syslog team <contact@centreon.com>\n"
 "MIME-Version: 1.0\n"
@@ -116,14 +116,12 @@ msgid "Message"
 msgstr "Message"
 
 #: /merethis/centreon-syslog/svn/www/modules/centreon-syslog-frontend/include/monitoring/xml/syslog_xml.php:171
-#, fuzzy
 msgid "No informations"
-msgstr "Informations d'accès SSH"
+msgstr "Aucune information disponible"
 
 #: /merethis/centreon-syslog/svn/www/modules/centreon-syslog-frontend/include/monitoring/xml/syslog_filters_xml.php:115
-#, fuzzy
 msgid "Problem to access to merge cache table. Please contact your administrator."
-msgstr "Echec de connexion, contactez votre administrateur"
+msgstr "Impossible d'accéder à la table de liaison du cache. Contactez votre administrateur"
 
 #: /merethis/centreon-syslog/svn/www/modules/centreon-syslog-frontend/include/monitoring/xml/syslog_filters_xml.php:130
 #: /merethis/centreon-syslog/svn/www/modules/centreon-syslog-frontend/include/search/search.php:303
@@ -196,9 +194,8 @@ msgstr "Revenir"
 #: /merethis/centreon-syslog/svn/www/modules/centreon-syslog-frontend/include/common/common-Func.php:115
 #: /merethis/centreon-syslog/svn/www/modules/centreon-syslog-frontend/include/common/common-Func.php:144
 #: /merethis/centreon-syslog/svn/www/modules/centreon-syslog-frontend/include/common/common-Func.php:174
-#, fuzzy
 msgid "<br\\>Database empty or not correctly configured<br\\><br\\>Please contact your administrator."
-msgstr "Echec de connexion, contactez votre administrateur"
+msgstr "<br\\>Base de données vide ou non correctement configurée.<br\\><br\\>Contactez votre administrateur."
 
 #: /merethis/centreon-syslog/svn/www/modules/centreon-syslog-frontend/include/configuration/configCollectors/formCollector.php:69
 msgid "Add a Poller Configuration File"
@@ -371,9 +368,8 @@ msgid "Modify"
 msgstr "Modifier"
 
 #: /merethis/centreon-syslog/svn/www/modules/centreon-syslog-frontend/include/configuration/configCollectors/formCollector.php:175
-#, fuzzy
 msgid "Export configuration"
-msgstr "Configuration de l'interface"
+msgstr "Export de la configuration"
 
 #: /merethis/centreon-syslog/svn/www/modules/centreon-syslog-frontend/include/configuration/configCollectors/formCollector.php:178
 msgid "Export button is hidden because SSH2 libraries for PHP was not installed."
@@ -537,14 +533,12 @@ msgid "reset"
 msgstr "annuler"
 
 #: /merethis/centreon-syslog/svn/www/modules/centreon-syslog-frontend/include/search/xml/syslog_filters_xml.php:129
-#, fuzzy
 msgid "Export :"
-msgstr "Exporter"
+msgstr "Exporter:"
 
 #: /merethis/centreon-syslog/svn/www/modules/centreon-syslog-frontend/include/search/xml/syslog_filters_xml.php:145
-#, fuzzy
 msgid "From: "
-msgstr "De"
+msgstr "De:"
 
 #: /merethis/centreon-syslog/svn/www/modules/centreon-syslog-frontend/include/search/xml/syslog_filters_xml.php:149
 msgid "  To: "
