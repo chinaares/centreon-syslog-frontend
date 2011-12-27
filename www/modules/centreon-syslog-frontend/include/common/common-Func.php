@@ -112,7 +112,7 @@
 		}
 		
 		if ($pearSyslogDB->numberRows() == 0) {
-			displayConnectionErrorPage("<br \>Database empty or not correctly configured<br \><br \>Please contact your administrator.");
+			displayConnectionErrorPage(_("<br \>Database empty or not correctly configured<br \><br \>Please contact your administrator."));
 		}
 		
 		# Set base value
@@ -141,7 +141,7 @@
 		}
 		
 		if ($pearSyslogDB->numberRows() == 0) {
-			displayConnectionErrorPage("<br \>Database empty or not correctly configured<br \><br \>Please contact your administrator.");
+			displayConnectionErrorPage(_("<br \>Database empty or not correctly configured<br \><br \>Please contact your administrator."));
 		}
 		
 		# Set base value
@@ -171,7 +171,7 @@
 		}
 		
 		if ($pearSyslogDB->numberRows() == 0) {
-			displayConnectionErrorPage("<br \>Database empty or not correctly configured<br \><br \>Please contact your administrator.");
+			displayConnectionErrorPage(_("<br\>Database empty or not correctly configured<br\><br\>Please contact your administrator."));
 		}
 		
 		# Set base value
