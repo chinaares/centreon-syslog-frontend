@@ -177,6 +177,8 @@
 	$FilterFacilities = array();
 	$elemArr = array();
 	
+	$error = 0;
+	
 	if (isset($collector)) {
 		$pearSyslogDB = new SyslogDB("syslog", $collector);
 		$cfg_syslog = getSyslogOption($collector);
@@ -251,6 +253,7 @@
 	
 		$DBRESULT =& $pearSyslogDB->query($req);
 		if (PEAR::isError($DBRESULT)) {
+			$error = 1;
 			echo "<table><tr><td><font color=\"red\"><b>";
 			if (preg_match('/no such table/',$DBRESULT->getMessage())) {
 				echo _("Unable to access to table 'db_table_logs_merge', please check the centreon mysql database on this collector.");
@@ -287,6 +290,7 @@
 			}
 		}
 	} else {
+		$error = 1;
 		echo "<table><tr><td>"._("Please select a collector.")."</b></td></tr></table><br\>";
 	}
 
@@ -360,8 +364,10 @@
 		"filter_start_time"=>$filter_start_time,"filter_end_time"=>$filter_end_time);
    	$form_filter->setDefaults($tab_value);
 
-	$form_filter->addElement('submit', 'filter_search',  _("filter") );
-	$form_filter->addElement('reset', 'reset',  _("reset"));
+   	if (!$error) {
+		$form_filter->addElement('submit', 'filter_search',  _("filter") );
+		$form_filter->addElement('reset', 'reset',  _("reset"));
+   	}
 	$renderer_filter =& new HTML_QuickForm_Renderer_ArraySmarty($tpl);
 	$form_filter->accept($renderer_filter);
 	$tpl->assign('Formfilter', $renderer_filter->toArray());
