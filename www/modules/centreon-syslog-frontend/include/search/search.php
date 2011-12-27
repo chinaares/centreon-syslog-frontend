@@ -250,34 +250,44 @@
 		}
 	
 		$DBRESULT =& $pearSyslogDB->query($req);
-		if (PEAR::isError($DBRESULT))
-			print "Mysql Error : ".$DBRESULT->getMessage()."\n";
-	
-		$rows = $DBRESULT->numrows();
-	
-		if(($num * $limit) > $rows)
-			$num = round($rows / $limit) - 1;
-		$lstart = $num * $limit;
-	
-		if ($lstart <= 0)
-			$lstart = 0;
-	
-		$query = $req  . " DESC LIMIT $lstart,$limit";
-	
-		$DBRESULT1 =& $pearSyslogDB->query($query);
-			if (PEAR::isError($DBRESULT1))
-					print "Mysql Error : ".$DBRESULT1->getMessage();
-	
-		while ($DBRESULT1->fetchInto($data)) {
-			$elemArr[] = array("RowMenu_link"=>"main.php?p=20403&collector=".$collector."&host=".$data["host"]."&facility=".$data["facility"]."&priority=".$data["priority"]."&datetime=".$data["datetime"]."&program=".$data["program"],
-							"RowMenu_datetime"=>$data["datetime"],
-							"RowMenu_host"=>$data["host"],
-							"RowMenu_facility"=>$data["facility"],
-							"RowMenu_priority"=>$data["priority"],
-							"RowMenu_tag"=>$data["tag"],
-							"RowMenu_program"=>$data["program"],
-							"RowMenu_msg"=>htmlentities(utf8_decode($data["msg"])));
+		if (PEAR::isError($DBRESULT)) {
+			echo "<table><tr><td><font color=\"red\"><b>";
+			if (preg_match('/no such table/',$DBRESULT->getMessage())) {
+				echo _("Unable to access to table 'db_table_logs_merge', please check the centreon mysql database on this collector.");
+			} else {
+				echo "Mysql Error : ".$DBRESULT->getMessage();
+			}
+			echo "</font></b></td></tr></table><br\>";
+			
+		} else {
+			$rows = $DBRESULT->numrows();
+		
+			if(($num * $limit) > $rows)
+				$num = round($rows / $limit) - 1;
+			$lstart = $num * $limit;
+		
+			if ($lstart <= 0)
+				$lstart = 0;
+		
+			$query = $req  . " DESC LIMIT $lstart,$limit";
+		
+			$DBRESULT1 =& $pearSyslogDB->query($query);
+				if (PEAR::isError($DBRESULT1))
+						print "Mysql Error : ".$DBRESULT1->getMessage();
+		
+			while ($DBRESULT1->fetchInto($data)) {
+				$elemArr[] = array("RowMenu_link"=>"main.php?p=20403&collector=".$collector."&host=".$data["host"]."&facility=".$data["facility"]."&priority=".$data["priority"]."&datetime=".$data["datetime"]."&program=".$data["program"],
+								"RowMenu_datetime"=>$data["datetime"],
+								"RowMenu_host"=>$data["host"],
+								"RowMenu_facility"=>$data["facility"],
+								"RowMenu_priority"=>$data["priority"],
+								"RowMenu_tag"=>$data["tag"],
+								"RowMenu_program"=>$data["program"],
+								"RowMenu_msg"=>htmlentities(utf8_decode($data["msg"])));
+			}
 		}
+	} else {
+		echo "<table><tr><td>"._("Please select a collector.")."</b></td></tr></table><br\>";
 	}
 
 	# Smarty template Init
