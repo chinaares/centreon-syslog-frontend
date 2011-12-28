@@ -74,16 +74,18 @@
 	
 	$conf_file = "syslog.conf.php";
 
-	/*
+	/**
+	 * 
 	 * Generate new configuration file for syslog server
+	 * @param array $Syslog_options
 	 */
 	function generateNewConfFile($Syslog_options) {
 		global $tmp_file, $conf_file;
 
-		$tmp_file = "/tmp/".$conf_file."_tmp";		
+		$tmp_file = "/tmp/".$conf_file."_tmp";
+			
 		$fp = fopen($tmp_file,"w");
 		fputs($fp, "<?php\n");
-
 		fputs($fp, "\$syslogOpt[\"syslog_server_db_user\"] = \"".$Syslog_options["db_username"]."\";\n");
 		fputs($fp, "\$syslogOpt[\"syslog_server_db_password\"] = \"".$Syslog_options["db_password"]."\";\n");
 		fputs($fp, "\$syslogOpt[\"syslog_server\"] = \"".$Syslog_options["db_server_address"]."\";\n");
@@ -95,19 +97,57 @@
 		fclose($fp);
 	}
 
-	/*
+	/**
+	 * 
 	 * Export new configuration file in "etc" syslog server directory"
+	 * @param array $Syslog_options
 	 */
 	function exportConfFile($Syslog_options) {
+		if (preg_match('/(localhost|127.0.0.1)/', $Syslog_options["ssh_server_address"])) {
+			localExportConfFile($Syslog_options);
+		} else {
+			sshExportConfFile($Syslog_options);
+		}
+	}
+	
+	/**
+	*
+	* Export centreon-syslog-server configuration file locally
+	* @param array $Syslog_options
+	* @return string
+	*/
+	function localExportConfFile($Syslog_options) {
 		global $tmp_file, $conf_file;
+		
+		$command = "cp ".$tmp_file." ".$Syslog_options["configuration_dir"]."/".$conf_file." 2>&1";
+		$tab_result = array();
+		$return_var = 0;
 
+		exec ($command, $tab_result, $return_var);
+
+		if ($return_var != 0) {
+			return $tab_result[0];
+		}
+
+		return _("Configuration file copied successfully");
+	}
+	
+	/**
+	 * 
+	 * Export centreon-syslog-server configuration file using SSH2
+	 * @param array $Syslog_options
+	 * @return string
+	 */
+	function sshExportConfFile($Syslog_options) {
+		global $tmp_file, $conf_file;
+		
 		$connection = ssh2_connect($Syslog_options["ssh_server_address"], $Syslog_options["ssh_server_port"], array('hostkey'=>'ssh-rsa'));
 			
 		if (!$connection) {
 			$output = _("Unable to connect on distant server.");
 			return $output;
 		}
-
+		
 		if (strlen($Syslog_options["ssh_password"]) == 0) {
 			$status = ssh2_auth_none($connection, $Syslog_options["ssh_username"]);
 		} else {
@@ -118,25 +158,20 @@
 			$output = _("Authentification failed.");
 			return $output;
 		}
-
+		
 		$status = ssh2_scp_send($connection, $tmp_file, $Syslog_options["configuration_dir"]."/".$conf_file, 0664);
 		
 		if (!$status) {
 			$output = _("Unable to export configuration file. Rights may be not correct on distant directory.");
 			return $output;
 		}
-
-		//exec("rm -Rf ".$tmp_file);
-
-		$output = _("Configuration file was exported with succes");	
-		return $output;
+		
+		return _("Configuration file exported successfully");
 	}
 
 	$Syslog_options = getSyslogOption($collector_id);
 	generateNewConfFile($Syslog_options);
 
-	echo "<root>";
-	echo "<status>".exportConfFile($Syslog_options)."</status>";
-	echo "</root>";
+	echo "<root><status>".exportConfFile($Syslog_options)."</status></root>";
 
  ?>
