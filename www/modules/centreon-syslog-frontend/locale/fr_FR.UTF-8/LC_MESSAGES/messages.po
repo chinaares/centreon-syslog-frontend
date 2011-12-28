@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Centreon Syslog Frontend\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-12-27 19:06+0100\n"
-"PO-Revision-Date: 2011-12-27 19:22+0100\n"
+"POT-Creation-Date: 2011-12-28 14:06+0100\n"
+"PO-Revision-Date: 2011-12-28 14:09+0100\n"
 "Last-Translator: Laurent Pinsivy <lpinsivy@merethis.com>\n"
 "Language-Team: Centreon Syslog team <contact@centreon.com>\n"
 "MIME-Version: 1.0\n"
@@ -59,14 +59,14 @@ msgstr "Démarrer"
 
 #: /merethis/centreon-syslog/svn/www/modules/centreon-syslog-frontend/include/monitoring/xml/syslog_xml.php:85
 #: /merethis/centreon-syslog/svn/www/modules/centreon-syslog-frontend/include/monitoring/xml/syslog_filters_xml.php:220
-#: /merethis/centreon-syslog/svn/www/modules/centreon-syslog-frontend/include/search/search.php:290
+#: /merethis/centreon-syslog/svn/www/modules/centreon-syslog-frontend/include/search/search.php:294
 msgid "Please select a collector."
 msgstr "Sélectionner un collecteur."
 
 #: /merethis/centreon-syslog/svn/www/modules/centreon-syslog-frontend/include/monitoring/xml/syslog_xml.php:154
 #: /merethis/centreon-syslog/svn/www/modules/centreon-syslog-frontend/include/export/odtPHP/odtPHP_export.php:183
 #: /merethis/centreon-syslog/svn/www/modules/centreon-syslog-frontend/include/details/eventDetails.php:105
-#: /merethis/centreon-syslog/svn/www/modules/centreon-syslog-frontend/include/search/search.php:305
+#: /merethis/centreon-syslog/svn/www/modules/centreon-syslog-frontend/include/search/search.php:309
 msgid "Date / Time"
 msgstr "Date et heure"
 
@@ -74,7 +74,7 @@ msgstr "Date et heure"
 #: /merethis/centreon-syslog/svn/www/modules/centreon-syslog-frontend/include/monitoring/xml/syslog_filters_xml.php:134
 #: /merethis/centreon-syslog/svn/www/modules/centreon-syslog-frontend/include/export/odtPHP/odtPHP_export.php:184
 #: /merethis/centreon-syslog/svn/www/modules/centreon-syslog-frontend/include/details/eventDetails.php:104
-#: /merethis/centreon-syslog/svn/www/modules/centreon-syslog-frontend/include/search/search.php:306
+#: /merethis/centreon-syslog/svn/www/modules/centreon-syslog-frontend/include/search/search.php:310
 #: /merethis/centreon-syslog/svn/www/modules/centreon-syslog-frontend/include/search/xml/syslog_filters_xml.php:136
 msgid "Host"
 msgstr "Equipement"
@@ -83,7 +83,7 @@ msgstr "Equipement"
 #: /merethis/centreon-syslog/svn/www/modules/centreon-syslog-frontend/include/monitoring/xml/syslog_filters_xml.php:135
 #: /merethis/centreon-syslog/svn/www/modules/centreon-syslog-frontend/include/export/odtPHP/odtPHP_export.php:185
 #: /merethis/centreon-syslog/svn/www/modules/centreon-syslog-frontend/include/details/eventDetails.php:106
-#: /merethis/centreon-syslog/svn/www/modules/centreon-syslog-frontend/include/search/search.php:307
+#: /merethis/centreon-syslog/svn/www/modules/centreon-syslog-frontend/include/search/search.php:311
 #: /merethis/centreon-syslog/svn/www/modules/centreon-syslog-frontend/include/search/xml/syslog_filters_xml.php:137
 msgid "Facility"
 msgstr "Marqueur"
@@ -92,7 +92,7 @@ msgstr "Marqueur"
 #: /merethis/centreon-syslog/svn/www/modules/centreon-syslog-frontend/include/monitoring/xml/syslog_filters_xml.php:136
 #: /merethis/centreon-syslog/svn/www/modules/centreon-syslog-frontend/include/export/odtPHP/odtPHP_export.php:186
 #: /merethis/centreon-syslog/svn/www/modules/centreon-syslog-frontend/include/details/eventDetails.php:107
-#: /merethis/centreon-syslog/svn/www/modules/centreon-syslog-frontend/include/search/search.php:308
+#: /merethis/centreon-syslog/svn/www/modules/centreon-syslog-frontend/include/search/search.php:312
 #: /merethis/centreon-syslog/svn/www/modules/centreon-syslog-frontend/include/search/xml/syslog_filters_xml.php:138
 msgid "Severity"
 msgstr "Priorité"
@@ -101,7 +101,7 @@ msgstr "Priorité"
 #: /merethis/centreon-syslog/svn/www/modules/centreon-syslog-frontend/include/monitoring/xml/syslog_filters_xml.php:137
 #: /merethis/centreon-syslog/svn/www/modules/centreon-syslog-frontend/include/export/odtPHP/odtPHP_export.php:187
 #: /merethis/centreon-syslog/svn/www/modules/centreon-syslog-frontend/include/details/eventDetails.php:109
-#: /merethis/centreon-syslog/svn/www/modules/centreon-syslog-frontend/include/search/search.php:309
+#: /merethis/centreon-syslog/svn/www/modules/centreon-syslog-frontend/include/search/search.php:313
 #: /merethis/centreon-syslog/svn/www/modules/centreon-syslog-frontend/include/search/xml/syslog_filters_xml.php:139
 #: /merethis/centreon-syslog/svn/www/modules/centreon-syslog-frontend/include/search/xml/syslog_filters_xml.php:142
 msgid "Program"
@@ -111,7 +111,7 @@ msgstr "Programme"
 #: /merethis/centreon-syslog/svn/www/modules/centreon-syslog-frontend/include/monitoring/xml/syslog_filters_xml.php:138
 #: /merethis/centreon-syslog/svn/www/modules/centreon-syslog-frontend/include/export/odtPHP/odtPHP_export.php:188
 #: /merethis/centreon-syslog/svn/www/modules/centreon-syslog-frontend/include/details/eventDetails.php:110
-#: /merethis/centreon-syslog/svn/www/modules/centreon-syslog-frontend/include/search/search.php:310
+#: /merethis/centreon-syslog/svn/www/modules/centreon-syslog-frontend/include/search/search.php:314
 msgid "Message"
 msgstr "Message"
 
@@ -124,7 +124,7 @@ msgid "Problem to access to merge cache table. Please contact your administrator
 msgstr "Impossible d'accéder à la table de liaison du cache. Contactez votre administrateur"
 
 #: /merethis/centreon-syslog/svn/www/modules/centreon-syslog-frontend/include/monitoring/xml/syslog_filters_xml.php:130
-#: /merethis/centreon-syslog/svn/www/modules/centreon-syslog-frontend/include/search/search.php:303
+#: /merethis/centreon-syslog/svn/www/modules/centreon-syslog-frontend/include/search/search.php:307
 #: /merethis/centreon-syslog/svn/www/modules/centreon-syslog-frontend/include/search/xml/syslog_filters_xml.php:126
 msgid "Syslog filters parameters :"
 msgstr "Paramétrage des filtres :"
@@ -134,12 +134,12 @@ msgid "Syslog events"
 msgstr "Evénements syslog"
 
 #: /merethis/centreon-syslog/svn/www/modules/centreon-syslog-frontend/include/export/odtPHP/odtPHP_export.php:68
-#: /merethis/centreon-syslog/svn/www/modules/centreon-syslog-frontend/include/search/search.php:345
+#: /merethis/centreon-syslog/svn/www/modules/centreon-syslog-frontend/include/search/search.php:349
 msgid "From"
 msgstr "De"
 
 #: /merethis/centreon-syslog/svn/www/modules/centreon-syslog-frontend/include/export/odtPHP/odtPHP_export.php:69
-#: /merethis/centreon-syslog/svn/www/modules/centreon-syslog-frontend/include/search/search.php:347
+#: /merethis/centreon-syslog/svn/www/modules/centreon-syslog-frontend/include/search/search.php:351
 msgid "To"
 msgstr "A"
 
@@ -147,21 +147,25 @@ msgstr "A"
 msgid "No collector ID defined"
 msgstr "Aucun ID de collecteur défini"
 
-#: /merethis/centreon-syslog/svn/www/modules/centreon-syslog-frontend/include/export/ssh2/ssh2_export.php:107
+#: /merethis/centreon-syslog/svn/www/modules/centreon-syslog-frontend/include/export/ssh2/ssh2_export.php:132
+msgid "Configuration file copied successfully"
+msgstr "Fichier de configuration copié avec succèss"
+
+#: /merethis/centreon-syslog/svn/www/modules/centreon-syslog-frontend/include/export/ssh2/ssh2_export.php:147
 msgid "Unable to connect on distant server."
 msgstr "Impossible de se connecter au serveur distnat."
 
-#: /merethis/centreon-syslog/svn/www/modules/centreon-syslog-frontend/include/export/ssh2/ssh2_export.php:118
+#: /merethis/centreon-syslog/svn/www/modules/centreon-syslog-frontend/include/export/ssh2/ssh2_export.php:158
 msgid "Authentification failed."
 msgstr "Echec d'authentification."
 
-#: /merethis/centreon-syslog/svn/www/modules/centreon-syslog-frontend/include/export/ssh2/ssh2_export.php:125
+#: /merethis/centreon-syslog/svn/www/modules/centreon-syslog-frontend/include/export/ssh2/ssh2_export.php:165
 msgid "Unable to export configuration file. Rights may be not correct on distant directory."
 msgstr "Impossible d'exporter la configuration. Les droits sur le répertoire distant sont peut etre érronés."
 
-#: /merethis/centreon-syslog/svn/www/modules/centreon-syslog-frontend/include/export/ssh2/ssh2_export.php:131
-msgid "Configuration file was exported with succes"
-msgstr "La configuration a été éxportée avec succèss."
+#: /merethis/centreon-syslog/svn/www/modules/centreon-syslog-frontend/include/export/ssh2/ssh2_export.php:169
+msgid "Configuration file exported successfully"
+msgstr "Fichier de configuration exporté avec succèss"
 
 #: /merethis/centreon-syslog/svn/www/modules/centreon-syslog-frontend/include/details/eventDetails.php:103
 msgid "Details of event:"
@@ -508,27 +512,27 @@ msgstr "Intervalle de rafraichissement des pages de supervision"
 msgid "Refresh Interval for filters"
 msgstr "Intervalle de rafraichissement des pages des filtres"
 
-#: /merethis/centreon-syslog/svn/www/modules/centreon-syslog-frontend/include/search/search.php:256
+#: /merethis/centreon-syslog/svn/www/modules/centreon-syslog-frontend/include/search/search.php:259
 msgid "Unable to access to table 'db_table_logs_merge', please check the centreon mysql database on this collector."
 msgstr "Impossible d'accéder à la table 'db_table_logs_merge', merci de contrôler la base de données mysql du collecteur."
 
-#: /merethis/centreon-syslog/svn/www/modules/centreon-syslog-frontend/include/search/search.php:301
+#: /merethis/centreon-syslog/svn/www/modules/centreon-syslog-frontend/include/search/search.php:305
 msgid "Export"
 msgstr "Exporter"
 
-#: /merethis/centreon-syslog/svn/www/modules/centreon-syslog-frontend/include/search/search.php:302
+#: /merethis/centreon-syslog/svn/www/modules/centreon-syslog-frontend/include/search/search.php:306
 msgid "Syslog"
 msgstr "Syslog"
 
-#: /merethis/centreon-syslog/svn/www/modules/centreon-syslog-frontend/include/search/search.php:304
+#: /merethis/centreon-syslog/svn/www/modules/centreon-syslog-frontend/include/search/search.php:308
 msgid "Collectors:"
 msgstr "Collecteurs :"
 
-#: /merethis/centreon-syslog/svn/www/modules/centreon-syslog-frontend/include/search/search.php:363
+#: /merethis/centreon-syslog/svn/www/modules/centreon-syslog-frontend/include/search/search.php:368
 msgid "filter"
 msgstr "filtrer"
 
-#: /merethis/centreon-syslog/svn/www/modules/centreon-syslog-frontend/include/search/search.php:364
+#: /merethis/centreon-syslog/svn/www/modules/centreon-syslog-frontend/include/search/search.php:369
 msgid "reset"
 msgstr "annuler"
 
