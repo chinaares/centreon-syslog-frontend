@@ -104,9 +104,9 @@
 	 */
 	function exportConfFile($Syslog_options) {
 		if (preg_match('/(localhost|127.0.0.1)/', $Syslog_options["ssh_server_address"])) {
-			localExportConfFile($Syslog_options);
+			return localExportConfFile($Syslog_options);
 		} else {
-			sshExportConfFile($Syslog_options);
+			return sshExportConfFile($Syslog_options);
 		}
 	}
 	
