@@ -52,10 +52,10 @@
 	/*
 	 * PHP functions
 	 */
-	require $syslog_mod_path ."/include/common/common-Func.php";
+	require_once $centreon_path . "www/include/common/common-Func.php";
+	require_once $syslog_mod_path ."/include/common/common-Func.php";
 	require_once $syslog_mod_path . "class/syslogDB.class.php";
-	require $centreon_path . "www/include/common/common-Func.php";
-
+	
 	/*
 	 * Get host name and IP address
 	 */
