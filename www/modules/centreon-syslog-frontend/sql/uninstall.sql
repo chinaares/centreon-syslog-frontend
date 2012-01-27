@@ -1,6 +1,7 @@
 DROP TABLE IF EXISTS `mod_syslog_opt`;
 DROP TABLE IF EXISTS `mod_syslog_collector`;
-DROP TABLE IF EXISTS `mod_syslog_filters_facility`;
+DROP TABLE IF EXISTS `mod_syslog_hosts`;
+DROP TABLE IF EXISTS `mod_syslog_filters_priority`;
 DROP TABLE IF EXISTS `mod_syslog_filters_priority`;
 
 DELETE FROM `topology` WHERE `topology_parent` = '204' AND `topology_name` = "Syslog";
@@ -9,6 +10,8 @@ DELETE FROM `topology` WHERE `topology_page` = '20402' AND `topology_name` = "Se
 DELETE FROM `topology` WHERE `topology_page` = '20403' AND `topology_name` = "Details";
 DELETE FROM `topology` WHERE `topology_page` = '204' AND `topology_name` = "Syslog";
 DELETE FROM `topology` WHERE `topology_parent` = '605' AND `topology_name` = "Syslog";
+DELETE FROM `topology` WHERE `topology_parent` = '605' AND `topology_name` = "Hosts";
+DELETE FROM `topology` WHERE `topology_page` = '60501' AND `topology_name` = "Hosts";
 DELETE FROM `topology` WHERE `topology_parent` = '605' AND `topology_name` = "Collectors";
 DELETE FROM `topology` WHERE `topology_page` = '60502' AND `topology_name` = "Collectors";
 DELETE FROM `topology` WHERE `topology_parent` = '605' AND `topology_name` = "General";

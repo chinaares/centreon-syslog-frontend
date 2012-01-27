@@ -31,35 +31,28 @@
  * 
  * For more information : contact@centreon.com
  * 
- * Module name: Syslog
+ * Project name : Centreon Syslog
+ * Module name: Centreon-Syslog-Frontend
  * 
- * First developpement by : Jean Marc Grisard - Christophe Coraboeuf
- * 
- * Adaptation for Centreon 2.0 by : Merethis team 
- * 
- * SVN : $URL:$
- * SVN : $Id:$
+ * SVN : $URL$
+ * SVN : $Id$
  * 
  */
 	if (!isset($oreon))
 		exit();
-		
+
 	/*
 	 * Path to the configuration dir
 	 */
-	global $syslog_mod_path;
-	$syslog_mod_path = $centreon_path . "www/modules/centreon-syslog/";
+	require_once $centreon_path . "www/modules/centreon-syslog-frontend/include/common/header.php";
 
-	require_once ($centreon_path . "www/class/Session.class.php");
-	require_once ($centreon_path . "www/class/Oreon.class.php");
-	
 	/*
 	 * Pear library
 	 */
 	require_once "HTML/QuickForm.php";
 	require_once 'HTML/QuickForm/advmultiselect.php';
 	require_once 'HTML/QuickForm/Renderer/ArraySmarty.php';
-	
+
 	/*
 	 * Set language
 	 */
@@ -78,13 +71,16 @@
 	 */
 	require_once $syslog_mod_path ."include/common/common-Func.php";
 	require_once $syslog_mod_path ."include/common/common-IP-Func.php";
+	require_once $syslog_mod_path . "class/syslogDB.class.php";
 	require_once $centreon_path . "www/include/common/common-Func.php";
 
 	/*
 	 * Database retrieve information for Centreon-Syslog
 	 */
-	$pearSyslogDB = new SyslogDB("syslog");
-	$cfg_syslog = getSyslogOption();
+	if (isset($_GET['collector_id']) && $_GET['collector_id'] != "" )
+		$collector_id = $_GET['collector_id'];
+
+	$cfg_syslog = getSyslogOption($collector_id);
 
 	# QuickSearch form
 	include_once $centreon_path . "www/include/common/quickSearch.php";
@@ -92,39 +88,40 @@
 	/*
 	 * Get list of hostname already imported
 	 */
-	$req = "SELECT DISTINCT host_name FROM mod_syslog_hosts WHERE host_name != ''";
+	$req = "SELECT DISTINCT host_syslog_name FROM mod_syslog_hosts";
 	$DBRESULT =& $pearDB->query($req);
 	$hostsList = "";
 	while ($host =& $DBRESULT->fetchRow()) {
 		if (strcmp($hostsList, "") != 0) {
 			$hostsList .= ", ";
 		}
-		$hostsList .= "'".$host["host_name"]."'";
+		$hostsList .= "'".$host["host_syslog_name"]."'";
 	}
-	
-	$req = "SELECT DISTINCT host_ipv4 FROM mod_syslog_hosts WHERE host_ipv4 != ''";
+
+	$req = "SELECT DISTINCT host_syslog_ipv4 FROM mod_syslog_hosts";
 	$DBRESULT =& $pearDB->query($req);
 	while ($host =& $DBRESULT->fetchRow()) {
 		if (strcmp($hostsList, "") != 0) {
 			$hostsList .= ", ";
 		}
-		$hostsList .= "'".$host["host_ipv4"]."'";
+		$hostsList .= "'".$host["host_syslog_ipv4"]."'";
 	}
-	
+
 	/*
 	 * Get list of hostname not imported
 	 */
 	if($search) {
-		$req = "SELECT DISTINCT value FROM ".$cfg_syslog["syslog_db_cache_merge"] . " WHERE type = 'HOST' AND value LIKE '%".htmlentities($search, ENT_QUOTES)."%' ORDER BY value ";
+		$req = "SELECT DISTINCT value FROM ".$cfg_syslog["db_table_cache_merge"] . " WHERE type = 'HOST' AND value LIKE '%".htmlentities($search, ENT_QUOTES)."%' ORDER BY value ";
 	} else {
 		if (strcmp($hostsList, "") != 0) {
-			$req = "SELECT DISTINCT value FROM ".$cfg_syslog["syslog_db_cache_merge"] . " WHERE type = 'HOST' AND value NOT IN (".$hostsList.") ORDER BY value ";
+			$req = "SELECT DISTINCT value FROM ".$cfg_syslog["db_table_cache_merge"] . " WHERE type = 'HOST' AND value NOT IN (".$hostsList.") ORDER BY value ";
 		} else {
-			$req = "SELECT DISTINCT value FROM ".$cfg_syslog["syslog_db_cache_merge"] . " WHERE type = 'HOST' ORDER BY value ";
+			$req = "SELECT DISTINCT value FROM ".$cfg_syslog["db_table_cache_merge"] . " WHERE type = 'HOST' ORDER BY value ";
 		}
 	}
+	$pearSyslogDB = new SyslogDB("syslog", $collector_id);
 	$DBRESULT =& $pearSyslogDB->query($req);
-	
+
 	# Smarty template Init
 	$tpl = new Smarty();
 	$tpl = initSmartyTpl($path, $tpl);
@@ -133,16 +130,16 @@
 	$tpl->assign("headerMenu_syslog_dns", _("Syslog Name"));
 	$tpl->assign("headerMenu_syslog_ipv4", _("Syslog IP v4"));
 	# end header menu
-	
+
 	$form = new HTML_QuickForm('select_form', 'POST', "?p=".$p);
 	#Different style between each lines
 	$style = "one";
 	#Fill a tab with a mutlidimensionnal Array we put in $tpl
-	
+
 	$elemArr = array();
 	for ($i = 0; $host =& $DBRESULT->fetchRow(); $i++) {
 		if (is_ip_address($host["value"])) {
-			$syslog_name = getMachineNameFromIP($host["value"]);			
+			$syslog_name = getDNSFromIP($host["value"]);			
 			$syslog_ip = $host["value"];
 		} else {
 			$syslog_name = $host["value"];
@@ -152,16 +149,16 @@
 				$syslog_ip = _("Unable to get IP address");
 			}
 		}
-		
+
 		$elemArr[$i] = array("MenuClass"=>"list_".$style,
 						"hostName"=>$syslog_name,
 						"hostIPV4"=>$syslog_ip);
 		$style != "two" ? $style = "two" : $style = "one";
-		
+
 		$syslog_name = "";
 		$syslog_ip = "";
 	}
-	
+
 	$tpl->assign("elemArr", $elemArr);
 	$tpl->assign('limit', $limit);
 
@@ -169,7 +166,7 @@
 	##Apply a template definition
 	#
 	$renderer =& new HTML_QuickForm_Renderer_ArraySmarty($tpl);
-	$form->addElement('button', 'import', _("Import"), array("onClick"=>"javascript:importHost(this);"));
+	$form->addElement('button', 'import', _("Import"), array("onClick"=>"javascript:importHost('".$collector_id."');"));
 	$form->accept($renderer);
 	$tpl->assign('form', $renderer->toArray());
 	$tpl->display($syslog_mod_path . "include/configuration/configHosts/template/syslogImport.ihtml");

@@ -1,45 +1,47 @@
 <script type="text/javascript" src="./include/common/javascript/tool.js"></script>
-<form name='form' method='POST'>
-	<table class="ToolbarTable">
-		<tr class="ToolbarTR">
-			<td class="Toolbar_TDSelectAction_Top">
-				<a href="{$msg.syslog_importL}">{$msg.syslog_importT}</a>&nbsp;-&nbsp;
-				<a href="{$msg.addL}">{$msg.addT}</a>
-			</td>
 
-			<input name="p" value="{$p}" type="hidden">
-			{php}
-			   include('./include/common/pagination.php');
-			{/php}
-		</tr>
-	</table>
-	<table class="ListTable">
-		<tr class="ListHeader">
-			<td class="ListColHeaderCenter">{$headerMenu_centreon_name}</td>
-			<td class="ListColHeaderCenter">{$headerMenu_syslog_dns}</td>
-			<td class="ListColHeaderCenter">{$headerMenu_syslog_ipv4}</td>
-		</tr>
-		{section name=elem loop=$elemArr}
-		<tr class={$elemArr[elem].MenuClass}>
-			<td class="ListColLeft">{$elemArr[elem].RowMenu_centreonHostName}</td>
-			<td class="ListColCenter">{$elemArr[elem].RowMenu_hostName}</td>
-			<td class="ListColCenter">{$elemArr[elem].RowMenu_hostIPV4}</td>
-		</tr>
-		{/section}
-	</table>
-	<table class="ToolbarTable">
-		<tr>
-			<td class="Toolbar_TDSelectAction_Bottom">
-				<a href="{$msg.syslog_importL}">{$msg.syslog_importT}</a>&nbsp;-&nbsp;
-				<a href="{$msg.addL}">{$msg.addT}</a>
-			</td>
-			<input name="p" value="{$p}" type="hidden">
-			{php}
-			   include('./include/common/pagination.php');
-			{/php}
-		</tr>
-	</table>
-<input type='hidden' name='o' id='o' value='42'>
-<input type='hidden' id='limit' name='limit' value='{$limit}'>
-{$form.hidden}
+{$Formhost.javascript}
+<form {$Formhost.attributes}>
+	<div id="action">
+		<table ="ListTable">
+			<tr>
+				<td align=center><b>{$headerMenu_collectors}</b>&nbsp;&nbsp;{$Formhost.collectors.html}</td>
+				<td aling="center">&nbsp;&nbsp;&nbsp;{$Formhost.import.html}&nbsp;&nbsp;&nbsp;{$Formhost.add.html}</td>
+			</tr>
+		</table>
+	</div>
+	<div id="hosts">
+		<table class="ToolbarTable">
+			<tr class="ToolbarTR">
+				<input name="p" value="{$p}" type="hidden">
+				{php}
+				   include('./include/common/pagination.php');
+				{/php}
+			</tr>
+		</table>
+		<table class="ListTable">
+			<tr class="ListHeader">
+				<td class="ListColHeaderCenter">{$headerMenu_centreon_name}</td>
+				<td class="ListColHeaderCenter">{$headerMenu_syslog_dns}</td>
+				<td class="ListColHeaderCenter">{$headerMenu_syslog_ipv4}</td>
+				<td class="ListColHeaderCenter">{$headerMenu_state}</td>
+			</tr>
+			{section name=elem loop=$elemArr}
+			<tr class={$elemArr[elem].MenuClass}>
+				<td class="ListColLeft"><a href="{$elemArr[elem].RowMenu_link}">{$elemArr[elem].RowMenu_centreonHostName}</a></td>
+				<td class="ListColCenter"><a href="{$elemArr[elem].RowMenu_link}">{$elemArr[elem].RowMenu_hostName}</a></td>
+				<td class="ListColCenter"><a href="{$elemArr[elem].RowMenu_link}">{$elemArr[elem].RowMenu_hostIPV4}</a></td>
+				<td class="ListColCenter"><a href="{$elemArr[elem].RowMenu_link}">{$elemArr[elem].RowMenu_state}</a></td>
+			</tr>
+			{/section}
+		</table>
+		<table class="ToolbarTable">
+			<tr>
+				<input name="p" value="{$p}" type="hidden">
+				{php}
+				   include('./include/common/pagination.php');
+				{/php}
+			</tr>
+		</table>
+	</div>
 </form>

@@ -31,14 +31,11 @@
  * 
  * For more information : contact@centreon.com
  * 
- * Module name: Syslog
+ * Project name : Centreon Syslog
+ * Module name: Centreon-Syslog-Frontend
  * 
- * First developpement by : Jean Marc Grisard - Christophe Coraboeuf
- * 
- * Adaptation for Centreon 2.0 by : Merethis team 
- * 
- * SVN : $URL:$
- * SVN : $Id:$
+ * SVN : $URL$
+ * SVN : $Id$
  * 
  */
  
@@ -73,15 +70,14 @@
 	/*
 	 * Path to the configuration dir
 	 */
-	global $syslog_mod_path;
-	$syslog_mod_path = $centreon_path . "www/modules/centreon-syslog/";
+	$syslog_mod_path = $centreon_path . "www/modules/centreon-syslog-frontend/";
 	$syslog_configuration_path = $syslog_mod_path . "include/configuration/configHosts/";
 
 	
 	if (isset($_POST["o"]))
 		$o = $_POST["o"];
 
-	switch ($o)     {
+	switch ($o) {
 		case "a"	: require_once($syslog_configuration_path."formHost.php"); break; #Add a host
 		case "w"	: require_once($syslog_configuration_path."formHost.php"); break; #Watch a host
 		case "m"	: require_once($syslog_configuration_path."formHost.php"); break; #Modify a host

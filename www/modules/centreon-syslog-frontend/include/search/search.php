@@ -49,6 +49,17 @@
 	bindtextdomain("messages", $syslog_mod_path . "locale/");
 	bind_textdomain_codeset("messages", "UTF-8");
 	textdomain("messages");
+	
+	/*
+	 * Get ACL
+	 */
+	$pearDB = new CentreonDB();
+	$pearDBndo = new CentreonDB("ndo");
+	$contact_id = check_session($sid, $pearDB);
+	$is_admin = isUserAdmin($sid);
+	$access = new CentreonACL($contact_id, $is_admin);
+	$aclHostString = $access->getHostsString("ID", $pearDBndo);
+	$aclHostGroups = $access->getHostGroups();
 
 	# Pagination
 	include("./include/common/autoNumLimit.php");
@@ -102,6 +113,8 @@
 	# Get filters values from post form
 	( isset($_POST["filter_program"]) && ($_POST["filter_program"] != ""  )) ? $filter_programP = $_POST["filter_program"] : $filter_programP = NULL;
 	( isset($_GET["filter_program"]) && ($_GET["filter_program"] != ""  )) ? $filter_programG = $_GET["filter_program"] : $filter_programG = NULL;	
+	( isset($_POST["filter_hostgroup"]) && ($_POST["filter_hostgroup"] != "" )) ? $filter_hostgroupP = $_POST["filter_hostgroup"] : $filter_hostgroupP = NULL;
+	( isset($_GET["filter_hostgroup"]) && ($_GET["filter_hostgroup"] != "" )) ? $filter_hostgroupG = $_GET["filter_hostgroup"] : $filter_hostgroupG = NULL;
 	( isset($_POST["filter_host"]) && ($_POST["filter_host"] != "" )) ? $filter_hostP = $_POST["filter_host"] : $filter_hostP = NULL;
 	( isset($_GET["filter_host"]) && ($_GET["filter_host"] != "" )) ? $filter_hostG = $_GET["filter_host"] : $filter_hostG = NULL;	
 	( isset($_POST["filter_facility"]) && ($_POST["filter_facility"] != "" )) ? $filter_facilityP = $_POST["filter_facility"] : $filter_facilityP = NULL;
@@ -164,13 +177,14 @@
 
 	$filter_program = ( isset($filter_programP) ) ? $filter_program = $filter_programP : $filter_program = $filter_programG ;
 	$filter_host = ( isset($filter_hostP)) ? $filter_host = $filter_hostP  : $filter_host = $filter_hostG;
+	$filter_hostgroup = ( isset($filter_hostgroupP)) ? $filter_hostgroup = $filter_hostgroupP  : $filter_hostgroup = $filter_hostgroupG;
 	$filter_facility = ( isset($filter_facilityP)) ? $filter_facility = $filter_facilityP  : $filter_facility = $filter_facilityG;
 	$filter_Ffacility = ( isset($filter_FfacilityP)) ? $filter_Ffacility = $filter_FfacilityP  : $filter_Ffacility = $filter_FfacilityG;	
 	$filter_severity = ( isset($filter_severityP)) ? $filter_severity = $filter_severityP  : $filter_severity = $filter_severityG;
 	$filter_Fseverity = ( isset($filter_FseverityP)) ? $filter_Fseverity = $filter_FseverityP  : $filter_Fseverity = $filter_FseverityG;
 	$filter_msg = ( isset($filter_msgP)) ? $filter_msg = $filter_msgP  : $filter_msg = $filter_msgG;
 
-	
+	$FilterHostGroups = array();
 	$FilterHosts = array();
 	$FilterPrograms = array();
 	$FilterPriorities = array();
@@ -182,8 +196,14 @@
 	if (isset($collector)) {
 		$pearSyslogDB = new SyslogDB("syslog", $collector);
 		$cfg_syslog = getSyslogOption($collector);
-		
-		$FilterHosts = getFilterHostsMerge($pearSyslogDB, $cfg_syslog);
+
+		$FilterHostGroups = "";
+		if($is_admin)
+			$FilterHostGroups = getHostGroups();
+		else
+			$FilterHostGroups = $aclHostGroups;
+
+		$FilterHosts = getFilterHostsACL($aclHostString, $collector, $is_admin);
 		$FilterPrograms = getFilterProgramsMerge($pearSyslogDB, $cfg_syslog);
 		$FilterFacilities = getFilterFacilitiesMerge();
 		$FilterPriorities = getFilterPrioritiesMerge();
@@ -191,14 +211,24 @@
 		$sql_filter = array();
 	
 		if (isset($filter_program))
-			array_push($sql_filter ," (program = '". htmlentities($filter_program , ENT_QUOTES) ."')  ");
+			array_push($sql_filter ," (program = '". htmlentities($filter_program , ENT_QUOTES) ."') ");
 	
-		if (isset($filter_host))
-			array_push($sql_filter ," (host = '". htmlentities($filter_host , ENT_QUOTES) ."')  ");
-	
+		if (isset($filter_hostgroup) && $filter_hostgroup != "" && $filter_hostgroup != "undefined") {
+			array_push($sql_filter ," (host IN (". getSyslogHostFromHostgroups($filter_hostgroup) .")) ");
+		} else {
+			if (isset($filter_host) && $filter_host != "" && $filter_host != "undefined") {
+				array_push($sql_filter ," (host IN (". getSyslogHostFromCentreon($filter_host) .")) ");
+			} else {
+				if ($is_admin)
+					array_push($sql_filter ," (host IN (". getFullSyslogHostFromCentreon($collector, $aclHostString) .")) ");
+				else
+					array_push($sql_filter ," (host IN (". getAllSyslogHostFromCentreon($collector, $aclHostString) .")) ");
+			}
+		}
+		
 		if (isset($filter_facility)) {
 			if ((strcmp($filter_Ffacility, "") == 0) || (strcmp($filter_Ffacility, "eq") == 0)) {
-				array_push($sql_filter ," (facility = '". htmlentities($filter_facility , ENT_QUOTES) ."')  ");
+				array_push($sql_filter ," (facility = '". htmlentities($filter_facility , ENT_QUOTES) ."') ");
 			} else {
 				$list_facilities = getListOfFacilities($filter_facility, $filter_Ffacility);
 				$list = "";
@@ -209,13 +239,13 @@
 					}
 					$list .= "'".$key."'";
 				}
-				array_push($sql_filter ," (facility IN (".$list."))  ");
+				array_push($sql_filter ," (facility IN (".$list.")) ");
 			}
 		}
 	
 		if (isset($filter_severity)) {
 			if ((strcmp($filter_Fseverity, "") == 0) || (strcmp($filter_Fseverity, "eq") == 0)) {
-				array_push($sql_filter ," (priority = '". htmlentities($filter_severity , ENT_QUOTES) ."')  ");
+				array_push($sql_filter ," (priority = '". htmlentities($filter_severity , ENT_QUOTES) ."') ");
 			} else {
 				$list_priorities = getListOfSeverities($filter_severity, $filter_Fseverity);
 				$list = "";
@@ -226,12 +256,12 @@
 					}
 					$list .= "'".$key."'";
 				}
-				array_push($sql_filter ," (priority IN (".$list."))  ");
+				array_push($sql_filter ," (priority IN (".$list.")) ");
 			}
 		}				
 	
 		if (isset($filter_msg))
-			array_push($sql_filter ," (msg LIKE '%". htmlentities($filter_msg , ENT_QUOTES) ."%')  ");	
+			array_push($sql_filter ," (msg LIKE '%". htmlentities($filter_msg , ENT_QUOTES) ."%') ");	
 	
 		if (isset($StartDate))
 			$start_sql = strftime("%Y-%m-%d " , $StartDate).$StartTime;
@@ -307,6 +337,7 @@
 	$tpl->assign("FILTER_TITLE", _("Syslog filters parameters :"));
 	$tpl->assign("headerMenu_collectors", _("Collectors:"));
 	$tpl->assign("headerMenu_datetime", _("Date / Time"));
+	$tpl->assign("headerMenu_hostgroup", _("Host Group"));
 	$tpl->assign("headerMenu_host", _("Host"));
 	$tpl->assign("headerMenu_facility", _("Facility"));
 	$tpl->assign("headerMenu_severity", _("Severity"));
@@ -325,7 +356,10 @@
 	$form_filter->addElement('select', 'collectors', "", $collectorList, array("onChange"=>"javascript:window.location.href='?p=".$p."&collectors='+this.value"));
 	$form_filter->setDefaults(array('collectors' => $collector));
 	
-	$form_filter->addElement('select', 'filter_host', " ", $FilterHosts);
+	$form_filter->addElement('select', 'filter_hostgroup', " ", $FilterHostGroups, array("onChange"=>"reset_box('hostgroup')"));
+	$form_filter->setDefaults(array('filter_hostgroup' => $filter_hostgroup));
+	
+	$form_filter->addElement('select', 'filter_host', " ", $FilterHosts, array("onChange"=>"javascript:reset_box('host')"));
 	$form_filter->setDefaults(array('filter_host' => $filter_host));  
 
 	$form_filter->addElement('select', 'filter_facility', " ", $FilterFacilities);
@@ -375,6 +409,7 @@
 	$form = new HTML_QuickForm('Formfilterhidden');
 
 	$form->addElement('hidden', 'collectors');
+	$form->addElement('hidden', 'filter_hostgroup');
 	$form->addElement('hidden', 'filter_host');
 	$form->addElement('hidden', 'filter_facility');
 	$form->addElement('hidden', 'filter_Ffacility');

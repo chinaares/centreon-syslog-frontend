@@ -77,6 +77,19 @@ CREATE TABLE IF NOT EXISTS `mod_syslog_collector` (
   PRIMARY KEY  (`collector_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
 
+CREATE TABLE IF NOT EXISTS `mod_syslog_hosts` (
+  `id` int(11) NOT NULL auto_increment,
+  `collector_id` int(15) default NULL,
+  `host_centreon_id` int(11) default NULL,
+  `host_syslog_name` varchar(255) collate utf8_unicode_ci NOT NULL,
+  `host_syslog_ipv4` varchar(45) collate utf8_unicode_ci NOT NULL,
+  `state` enum('0','1','2') default '0',
+  PRIMARY KEY  (`id`),
+  KEY `host_centreon_id` (`host_centreon_id`),
+  KEY `host_syslog_name` (`host_syslog_name`),
+  KEY `host_syslog_ipv4` (`host_syslog_ipv4`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
 -- Topology
 INSERT INTO `topology` (`topology_id`, `topology_name`, `topology_icone`, `topology_parent`, `topology_page`, `topology_order`, `topology_group`, `topology_url`, `topology_url_opt`, `topology_popup`, `topology_modules`, `topology_show`, `topology_style_class`, `topology_style_id`, `topology_OnClick`) 
 VALUES ('', 'Syslog', NULL, 2, 204, 40, 1, './modules/centreon-syslog-frontend/include/monitoring/syslog.php', NULL, '0', '1', '1', NULL, NULL, NULL) ,
@@ -86,6 +99,8 @@ VALUES ('', 'Syslog', NULL, 2, 204, 40, 1, './modules/centreon-syslog-frontend/i
 ('', 'Syslog', './img/icones/16x16/text_view.gif', 6, 605, 91, 1, NULL, NULL, '0', '0', '1', NULL, NULL, NULL) ,
 ('', 'Collectors', NULL, 605, NULL, NULL, 3, NULL, NULL, '0', '0', '1', NULL, NULL, NULL) ,
 ('', 'Collectors', './img/icones/16x16/server_network.gif', 605, 60502, 10, 3, './modules/centreon-syslog-frontend/include/configuration/configCollectors/collectors.php', NULL, '0', '1', '1', NULL, NULL, NULL) ,
+('', 'Hosts', NULL, 605, NULL, NULL, 1, NULL, NULL, NULL, NULL, '1', NULL, NULL, NULL) ,
+('', 'Hosts', './img/icones/16x16/server_network.gif', 605, 60501, 10, 1, './modules/centreon-syslog-frontend/include/configuration/configHosts/hosts.php', '&o=l', '0', '1', '1', NULL, NULL, NULL) ,
 ('', 'General', NULL, 605, NULL, NULL, 4, NULL, NULL, '0', '0', '1', NULL, NULL, NULL) ,
 ('', 'Resfresh', './img/icones/16x16/server_network.gif', 605, 60503, 10, 4, './modules/centreon-syslog-frontend/include/configuration/configOpt/refresh.php', '&o=f', '0', '1', '1', NULL, NULL, NULL) ;
 

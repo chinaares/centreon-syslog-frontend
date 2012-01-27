@@ -38,6 +38,15 @@
  * 
  */
 
+function reset_box(type) {
+	if (type == "hostgroup")
+		document.forms['Formfilter'].elements['filter_host'].value = "";
+	else
+		document.forms['Formfilter'].elements['filter_hostgroup'].value = "";
+
+	build_ajax();
+}
+
 function ajax_generateCSV_XML(value)
 {
 	var xhr=null;

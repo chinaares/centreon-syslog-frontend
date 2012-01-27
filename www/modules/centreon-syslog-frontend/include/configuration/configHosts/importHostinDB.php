@@ -31,63 +31,60 @@
  * 
  * For more information : contact@centreon.com
  * 
- * Module name: Syslog
+ * Project name : Centreon Syslog
+ * Module name: Centreon-Syslog-Frontend
  * 
- * First developpement by : Jean Marc Grisard - Christophe Coraboeuf
- * 
- * Adaptation for Centreon 2.0 by : Merethis team 
- * 
- * SVN : $URL:$
- * SVN : $Id:$
+ * SVN : $URL$
+ * SVN : $Id$
  * 
  */
+	include ("@CENTREON_ETC@centreon.conf.php");
+
 	if (!isset($_GET["host"])) {
 		exit();
 	}
-	
-	include ("@CENTREON_ETC@centreon.conf.php");
 
-	require ($centreon_path . "www/class/Session.class.php");
-	require ($centreon_path . "www/class/Oreon.class.php");
-	Session::start();
-	
 	/*
-	 * Defined path
+	 * Path to the configuration dir
 	 */
-	$syslog_mod_path = $centreon_path . "www/modules/centreon-syslog/";
-	
+	require_once $centreon_path . "www/modules/centreon-syslog-frontend/include/common/header.php";
+
 	/*
 	 * PHP functions
 	 */
 	require $syslog_mod_path ."/include/common/common-Func.php";
+	require_once $syslog_mod_path . "class/syslogDB.class.php";
 	require $centreon_path . "www/include/common/common-Func.php";
-	
+
 	/*
 	 * Get host name and IP address
 	 */
 	$hostAndIP = split("::", $_GET["host"]);
 
+	if (isset($_GET['collector_id']) && $_GET['collector_id'] != "" )
+		$collector_id = $_GET['collector_id'];
+
 	$hostname = $hostAndIP[0];
 	$hostIP = $hostAndIP[1];
-	
+
 	$value = _("Unable to get IP address");
-	
+
 	if (strcmp($hostIP, $value) == 0) {
 		$hostIP = "0.0.0.0";
 	}
-	
+
 	/*
 	 * Insert into Database informations
 	 */
 	$pearCentreonDB = new SyslogDB("centreon");
-	
+
 	$DBRESULT =& $pearCentreonDB->query("SELECT `host_id` FROM `host` WHERE `host_address` = '".$hostIP."' OR `host_name` LIKE '%".$hostname."%' OR `host_alias` LIKE '%".$hostname."%'");
 	$result = $DBRESULT->fetchRow();
-	
+
 	if ($DBRESULT->numRows() == 1) {
-		$query = "INSERT INTO mod_syslog_hosts(host_id, host_centreon_id, host_name, host_ipv4) VALUES ('', '".$result["host_id"]."', '".$hostname."', '".$hostIP."');";
+		$query = "INSERT INTO mod_syslog_hosts (id, collector_id, host_centreon_id, host_syslog_name, host_syslog_ipv4, state) VALUES ('', $collector_id, '".$result["host_id"]."', '".$hostname."', '".$hostIP."', '1');";
 	} else {
-		$query = "INSERT INTO mod_syslog_hosts(host_id, host_centreon_id, host_name, host_ipv4) VALUES ('', NULL, '".$hostname."', '".$hostIP."');";
+		$query = "INSERT INTO mod_syslog_hosts (id, collector_id, host_centreon_id, host_syslog_name, host_syslog_ipv4, state) VALUES ('', $collector_id, NULL, '".$hostname."', '".$hostIP."', '2');";
 	}
 
 	$pearCentreonDB->query($query);

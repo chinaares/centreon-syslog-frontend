@@ -34,8 +34,8 @@
  * Project name : Centreon Syslog
  * Module name: Centreon-Syslog-Frontend
  * 
- * SVN : $URL:$
- * SVN : $Id:$
+ * SVN : $URL$
+ * SVN : $Id$
  * 
  */
 
@@ -110,19 +110,6 @@
 		return false;
 	}
 
-	function getMachineNameFromIP($ip) {
-		$hostname = getDNSFromIP($ip);
-		
-		$pattern = '/(?<name>\w+).(?<name>\w+).(?<name>\w+)/';
-		
-		if(preg_match($pattern, $hostname, $matches, PREG_OFFSET_CAPTURE, 3)) {
-			echo "is DNS: ".$matches[0];
-		} else {
-			echo "not DNS: ".$matches[0];
-		}
-		
-	}
-	
 	function getIPFromDNS($dns) {
 		return gethostbyname($dns);
 	}

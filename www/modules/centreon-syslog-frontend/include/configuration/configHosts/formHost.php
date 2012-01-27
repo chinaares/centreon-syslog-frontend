@@ -37,8 +37,8 @@
  * 
  * Adaptation for Centreon 2.0 by : Merethis team 
  * 
- * SVN : $URL:$
- * SVN : $Id:$
+ * SVN : $URL$
+ * SVN : $Id$
  * 
  */
 
@@ -46,7 +46,7 @@
 	/*
 	 * Resource Hosts
 	 */
-	$hostListInCentreon = getHostNameAndID();
+	$hostListInCentreon = getHostNameAndIDFromCentreon();
 	
 	$attrsText = array("size"=>"35");
 

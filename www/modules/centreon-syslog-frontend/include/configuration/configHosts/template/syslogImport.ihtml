@@ -1,4 +1,5 @@
 <script type="text/javascript" src="./include/common/javascript/tool.js"></script>
+<script type="text/javascript" src="./modules/centreon-syslog-frontend/include/configuration/configHosts/javascript/syslogImport.js"></script>
 <form id='listForm' name='form' method='POST'>
 	<p class="oreonbutton">{$form.import.html}</p>
 	<table class="ToolbarTable">

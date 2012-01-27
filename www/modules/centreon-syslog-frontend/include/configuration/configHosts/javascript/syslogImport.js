@@ -38,7 +38,7 @@
  * 
  */
 
-function importHost(theElement)
+function importHost(collector_id)
 {
 	if (!document.getElementById("centreonMsg_img"))
 	{
@@ -49,7 +49,7 @@ function importHost(theElement)
 		_setValign("centreonMsg", "bottom");
 	}
 
-    var theForm = theElement.form, z = 0;
+    var theForm = document.form, z = 0;
 
     for (z=0; z<theForm.length;z++){
     	if (theForm[z].type == 'checkbox' && theForm[z].disabled == '0'){
@@ -63,7 +63,7 @@ function importHost(theElement)
     			{
     				xhr = new ActiveXObject("Microsoft.XMLHTTP");
     			}
-    			xhr.open('GET', "./modules/centreon-syslog/include/configuration/configHosts/importHostinDB.php?host=" + theForm[z].name, true);
+    			xhr.open('GET', "./modules/centreon-syslog-frontend/include/configuration/configHosts/importHostinDB.php?collector_id=" + collector_id + "&host=" + theForm[z].name, true);
     			xhr.send(null);
     		}
     	}

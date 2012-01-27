@@ -97,6 +97,221 @@
 	}
 
 	/**
+	 * 
+	 * Get Centreon hostname available from ACL
+	 * @param string $hostID
+	 * @param string $collectorID
+	 * @param int $isAdmin
+	 * @return NULL|string
+	 */
+	function getFilterHostsACL($hostID, $collectorID, $isAdmin = false) {
+		global $pearDB;
+		
+		if(!$isAdmin) {
+			$query = "SELECT h.host_alias FROM host as h, mod_syslog_hosts as msh WHERE h.host_id = msh.host_centreon_id AND msh.collector_id = '".$collectorID."' AND msh.host_centreon_id IN (".$hostID.")";
+		} else {
+			$query = "SELECT h.host_alias FROM host as h, mod_syslog_hosts as msh WHERE h.host_id = msh.host_centreon_id AND msh.collector_id = '".$collectorID."'";
+		}
+		
+		$res =& $pearDB->query($query);
+		if (PEAR::isError($pearDB)) {
+			displayConnectionErrorPage("Mysql Error : ". $pearDB->getMessage());
+		}
+		
+		if ($pearDB->numberRows() == 0) {
+			return NULL;
+		}
+		
+		# Set base value
+		$FilterHosts  =  array("" => "");
+		
+		while ($host =& $res->fetchRow()) {
+			$FilterHosts[$host['host_alias']] = $host['host_alias'];
+		}
+			
+		$FilterHosts = array_map("myDecode",$FilterHosts);
+			
+		return $FilterHosts;
+	}
+
+	/**
+	 * 
+	 * Get list of available hostgroups activated
+	 */
+	function getHostGroups() {
+		global $pearDB;
+		
+		$query = "SELECT hg_id, hg_name FROM hostgroup WHERE hg_activate = '1'";
+		$DBRESULT = $pearDB->query($query);
+		$hostgroup = array("" => "");
+		while ($row = $DBRESULT->fetchRow()) {
+			$hostgroup[$row['hg_id']] = $row['hg_name'];
+		}
+		$DBRESULT->free();
+		
+		$hostgroup = array_map("myDecode",$hostgroup);
+		
+		return $hostgroup;
+	}
+
+	/**
+	 * 
+	 * Get Syslog hostname from Centreon hostgroup name
+	 * @param string $centreonHostName
+	 * @return string
+	 */
+	function getSyslogHostFromHostgroups($centreonHostgroupName) {
+		global $pearDB;
+		
+		$query = "SELECT msh.host_syslog_name, msh.host_syslog_ipv4 ";
+		$query .= "FROM mod_syslog_hosts AS msh, host AS h ";
+		$query .= "WHERE h.host_id IN ( ";
+		$query .= "     SELECT host_host_id ";
+		$query .= "     FROM hostgroup_relation AS hgr, hostgroup AS hg ";
+		$query .= "     WHERE hg.hg_name LIKE \"%".$centreonHostgroupName."%\" ";
+		$query .= "     AND hg.hg_id = hgr.hostgroup_hg_id ";
+		$query .= ") AND h.host_id = msh.host_centreon_id";
+
+		$res =& $pearDB->query($query);
+		if (PEAR::isError($pearDB)) {
+			displayConnectionErrorPage("Mysql Error : ". $pearDB->getMessage());
+		}
+		
+		if ($pearDB->numberRows() == 0) {
+			return "''";
+		}
+		
+		# Set base value
+		$Hosts  =  "";
+		
+		while($host =& $res->fetchRow()) {
+			if ($Hosts != "")
+				$Hosts .= ",";
+			if (strcmp($host['host_syslog_name'],$host['host_syslog_ipv4']) == 0) {
+				$Hosts .= '"'.$host['host_syslog_ipv4'].'"';
+			} else {
+				$Hosts .= '"'.$host['host_syslog_ipv4'].'","'.$host['host_syslog_name'].'"';
+			}
+		}
+		
+		return $Hosts;
+	}
+
+	/**
+	 * 
+	 * Get Syslog hostname from Centreon hostname
+	 * @param string $centreonHostName
+	 * @return string
+	 */
+	function getSyslogHostFromCentreon($centreonHostName) {
+		global $pearDB;
+		
+		$query = "SELECT host_syslog_name, host_syslog_ipv4 ";
+		$query .= "FROM mod_syslog_hosts, host ";
+		$query .= "WHERE host.host_alias = \"".$centreonHostName."\" ";
+		$query .= "AND host.host_id = mod_syslog_hosts.host_centreon_id";
+		
+		$res =& $pearDB->query($query);
+		if (PEAR::isError($pearDB)) {
+			displayConnectionErrorPage("Mysql Error : ". $pearDB->getMessage());
+		}
+		
+		if ($pearDB->numberRows() == 0) {
+			return NULL;
+		}
+		
+		# Set base value
+		$Host  =  "";
+		
+		$host =& $res->fetchRow();
+		
+		if (strcmp($host['host_syslog_name'],$host['host_syslog_ipv4']) == 0) {
+			return '"'.$host['host_syslog_ipv4'].'"';
+		} else {
+			return '"'.$host['host_syslog_ipv4'].'","'.$host['host_syslog_name'].'"';
+		}
+	}
+
+	/**
+	 * 
+	 * Get all Syslog hostname available from ACL
+	 * @param string $centreonHostName
+	 * @return string
+	 */
+	function getFullSyslogHostFromCentreon($collector_id) {
+		global $pearDB;
+		
+		$query = "SELECT host_syslog_name, host_syslog_ipv4 ";
+		$query .= "FROM mod_syslog_hosts WHERE collector_id = '".$collector_id."'";
+		
+		$res =& $pearDB->query($query);
+		if (PEAR::isError($pearDB)) {
+			displayConnectionErrorPage("Mysql Error : ". $pearDB->getMessage());
+		}
+		
+		if ($pearDB->numberRows() == 0) {
+			return NULL;
+		}
+		
+		# Set base value
+		$hosts  =  "";
+		
+		while ($host =& $res->fetchRow()) {
+			if ($hosts != "") {
+				$hosts .= ",";
+			}
+			if (strcmp($host['host_syslog_name'],$host['host_syslog_ipv4']) == 0) {
+				$hosts .= '"'.$host['host_syslog_ipv4'].'"';
+			} else {
+				$hosts .= '"'.$host['host_syslog_ipv4'].'","'.$host['host_syslog_name'].'"';
+			}
+		}
+
+		return $hosts;
+	}
+
+	/**
+	*
+	* Get all Syslog hostname available from ACL
+	* @param string $centreonHostName
+	* @return string
+	*/
+	function getAllSyslogHostFromCentreon($collector_id, $aclHostString) {
+		global $pearDB;
+	
+		$query = "SELECT host_syslog_name, host_syslog_ipv4 ";
+		$query .= "FROM mod_syslog_hosts, host ";
+		$query .= "WHERE host.host_id IN (".$aclHostString.") ";
+		$query .= "AND mod_syslog_hosts.collector_id = '".$collector_id."' ";
+		$query .= "AND mod_syslog_hosts.host_centreon_id = host.host_id";
+	
+		$res =& $pearDB->query($query);
+		if (PEAR::isError($pearDB)) {
+			displayConnectionErrorPage("Mysql Error : ". $pearDB->getMessage());
+		}
+	
+		if ($pearDB->numberRows() == 0) {
+			return NULL;
+		}
+	
+		# Set base value
+		$hosts  =  "";
+			
+		while ($host =& $res->fetchRow()) {
+		if ($hosts != "") {
+		$hosts .= ",";
+		}
+				if (strcmp($host['host_syslog_name'],$host['host_syslog_ipv4']) == 0) {
+		$hosts .= '"'.$host['host_syslog_ipv4'].'"';
+				} else {
+		$hosts .= '"'.$host['host_syslog_ipv4'].'","'.$host['host_syslog_name'].'"';
+				}
+			}
+	
+			return $hosts;
+	}
+
+	/**
 	*
 	* Get list of Facilities from merge table
 	* @return array
@@ -315,7 +530,7 @@
 
 	/**
 	 * 
-	 * Enter description here ...
+	 * Get list of collectors
 	 * @return array
 	 */
 	function getCollectorList() {
@@ -375,11 +590,11 @@
 		
 		return $eventDetails;
 	}
-	
+
 	/**
 	 * 
 	 * Get refresh time
-	 * @return arry
+	 * @return array
 	 */
 	function getRefreshInfo() {
 		global $pearDB;
@@ -398,12 +613,12 @@
 		
 		return $refresh_options;
 	}
-	
+
 	/**
 	* Display error page
 	*
 	* @access protected
-	* @return	void
+	* @return array
 	*/
 	function displayConnectionErrorPage($msg = null) {
 		if ($msg) {
@@ -412,5 +627,26 @@
 			echo "<root><error>" . _("Connection failed, please contact your administrator") . "</error></root>";
 		}
 		exit;
+	}
+
+	/**
+	 * Get host_id and host_name from Centreon database
+	 * @return array
+	 */
+	function getHostNameAndIDFromCentreon() {
+		global $pearDB;
+		
+		$res =& $pearDB->query("SELECT `host_id`, `host_name` FROM `host` ORDER BY host_name ASC ");
+		if (PEAR::isError($pearDB)) {
+			displayConnectionErrorPage("Mysql Error : ". $pearDB->getMessage());
+		}
+		# Set base value
+		$list =  array("" => "");
+						
+		while ($element =& $res->fetchRow()) {
+			$list['host_id'] = $element['host_name'];
+		}
+		
+		return $list;
 	}
 ?>

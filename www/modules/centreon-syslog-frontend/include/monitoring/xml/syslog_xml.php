@@ -54,7 +54,18 @@
 	bindtextdomain("messages",  $syslog_mod_path . "locale/");
 	bind_textdomain_codeset("messages", "UTF-8"); 
 	textdomain("messages");
-
+	
+	/*
+	 * Get ACL
+	 */
+	$pearDB = new CentreonDB();
+	$pearDBndo = new CentreonDB("ndo");
+	$sid = session_id($_GET["sid"]);
+	$contact_id = check_session($sid, $pearDB);
+	$is_admin = isUserAdmin($sid);
+	$access = new CentreonACL($contact_id, $is_admin);
+	$aclHostString = $access->getHostsString("ID", $pearDBndo);
+	
 	/*
 	 * Get selected option in lists
 	 */
@@ -74,7 +85,6 @@
 	else
 		$Fseverity_selected = "";
 
-		
 	if (!preg_match('/^\d+$/', $collector_id)) {
 	    header('Content-Type: text/xml');
     	header('Pragma: no-cache');
@@ -87,6 +97,7 @@
     	$buffer->output();
     	exit;
 	}
+
 	/*
 	 * Build SQL request
 	 */
@@ -96,14 +107,24 @@
 	
 	$sql_filter = array();
 	if (isset($_GET['program']) && $_GET['program'] != "" && $_GET['program'] != "undefined")
-		array_push($sql_filter ," (program = '". htmlentities($_GET['program'] , ENT_QUOTES) ."')  ");
+		array_push($sql_filter ," (program = '". htmlentities($_GET['program'] , ENT_QUOTES) ."') ");
 
-	if (isset($_GET['host']) && $_GET['host'] != "" && $_GET['host'] != "undefined")
-		array_push($sql_filter ," (host = '". htmlentities($_GET['host'] , ENT_QUOTES) ."')  ");	
+	if (isset($_GET['hostgroup']) && $_GET['hostgroup'] != "" && $_GET['hostgroup'] != "undefined") {
+		array_push($sql_filter ," (host IN (". getSyslogHostFromHostgroups($_GET['hostgroup']) .")) ");
+	} else {
+		if (isset($_GET['host']) && $_GET['host'] != "" && $_GET['host'] != "undefined") {
+			array_push($sql_filter ," (host IN (". getSyslogHostFromCentreon($_GET['host']) .")) ");
+		} else {
+			if ($is_admin)
+			array_push($sql_filter ," (host IN (". getFullSyslogHostFromCentreon($collector_id, $aclHostString) .")) ");
+			else
+			array_push($sql_filter ," (host IN (". getAllSyslogHostFromCentreon($collector_id, $aclHostString) .")) ");
+		}
+	}
 
 	if (isset($_GET['facility']) && $_GET['facility'] != "" && $_GET['facility'] != "undefined") {
 		if ((strcmp($Ffacility_selected, "") == 0) || (strcmp($Ffacility_selected, "eq") == 0)) {
-			array_push($sql_filter ," (facility = '". htmlentities($_GET['facility'] , ENT_QUOTES) ."')  ");
+			array_push($sql_filter ," (facility = '". htmlentities($_GET['facility'] , ENT_QUOTES) ."') ");
 		} else {
 			$list_facilities = getListOfFacilities($_GET['facility'], $Ffacility_selected);
 			$list = "";
@@ -114,13 +135,13 @@
 				}
 				$list .= "'".$key."'";
 			}
-			array_push($sql_filter ," (facility IN (".$list."))  ");
+			array_push($sql_filter ," (facility IN (".$list.")) ");
 		}
 	}
 
 	if (isset($_GET['severity']) && $_GET['severity'] != "" && $_GET['severity'] != "undefined") {
 		if ((strcmp($Fseverity_selected, "") == 0) || (strcmp($Fseverity_selected, "eq") == 0)) {
-			array_push($sql_filter ," (priority = '". htmlentities($_GET['severity'] , ENT_QUOTES) ."')  ");
+			array_push($sql_filter ," (priority = '". htmlentities($_GET['severity'] , ENT_QUOTES) ."') ");
 		} else {
 			$list_priorities = getListOfSeverities($_GET['severity'], $Fseverity_selected);
 			$list = "";
@@ -136,7 +157,7 @@
 	}
 	
 	if (isset($_GET['msg']) && $_GET['msg'] != "" && $_GET['msg'] != "undefined")
-		array_push($sql_filter ," (msg LIKE '%". htmlentities($_GET['msg'] , ENT_QUOTES) ."%')  ");
+		array_push($sql_filter ," (msg LIKE '%". htmlentities($_GET['msg'] , ENT_QUOTES) ."%') ");
 
 	$req_sql_filter = "";	
 	if (isset( $sql_filter ))
@@ -147,7 +168,7 @@
 	else
 		$req = "SELECT * FROM ".$cfg_syslog["db_table_logs"]." ORDER BY datetime DESC LIMIT 50";	
 
-	$DBRESULT =& $pearDB_syslog->query($req);	
+	$DBRESULT =& $pearDB_syslog->query($req);
 
  	$buffer = new SyslogXML();
  	$buffer->startElement("root");

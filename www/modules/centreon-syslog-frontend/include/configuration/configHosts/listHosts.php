@@ -31,88 +31,153 @@
  * 
  * For more information : contact@centreon.com
  * 
- * Module name: Syslog
+ * Project name : Centreon Syslog
+ * Module name: Centreon-Syslog-Frontend
  * 
- * First developpement by : Jean Marc Grisard - Christophe Coraboeuf
- * 
- * Adaptation for Centreon 2.0 by : Merethis team 
- * 
- * SVN : $URL:$
- * SVN : $Id:$
+ * SVN : $URL$
+ * SVN : $Id$
  * 
  */
 
-	if (!isset($oreon))
-		exit();
+	require_once $centreon_path . "www/modules/centreon-syslog-frontend/include/common/header.php";
+
+	/*
+	 * Set language
+	*/
+	$locale = $oreon->user->get_lang();
+	putenv("LANG=$locale");
+	setlocale(LC_ALL, $locale);
+	bindtextdomain("messages", $syslog_mod_path . "locale/");
+	bind_textdomain_codeset("messages", "UTF-8");
+	textdomain("messages");
 
 	# Pagination
 	include("./include/common/autoNumLimit.php");
 
+	/*
+	 * Pear library
+	*/
+	require_once "HTML/QuickForm.php";
+	require_once 'HTML/QuickForm/advmultiselect.php';
+	require_once 'HTML/QuickForm/Renderer/ArraySmarty.php';
+
+	/*
+	 * PHP functions
+	*/
+	require_once $syslog_mod_path. "include/common/common-Func.php";
+	require_once "./include/common/common-Func.php";
+
+	/*
+	 * Database retrieve information for Centreon-Syslog
+	*/
+	$pearCentreonDB = new SyslogDB("centreon");
+
+	$collectorList = getCollectorList();
+
+	# QuickSearch form
 	include_once("./include/common/quickSearch.php");
 
-	if (isset($search))
-		$DBRESULT = & $pearDB->query("SELECT COUNT(*) FROM mod_syslog_hosts WHERE (mod_syslog_hosts.host_name LIKE '%".htmlentities($search, ENT_QUOTES)."%' OR mod_syslog_hosts.host_ipv4 LIKE '%".htmlentities($search, ENT_QUOTES)."%')");
-	else
-		$DBRESULT = & $pearDB->query("SELECT COUNT(*) FROM mod_syslog_hosts");
+	# Set limit & num
+	$DBRESULT =& $pearCentreonDB->query("SELECT maxViewMonitoring FROM general_opt LIMIT 1");
+	if (PEAR::isError($DBRESULT)) {
+		# For Centreon 2.1 compatibility
+		$DBRESULT =& $pearCentreonDB->query("SELECT `value` FROM options WHERE `key`=\"maxViewMonitoring\" LIMIT 1");
+		$row = $DBRESULT->fetchRow();
+		$gopt = $row["value"];
+		if (PEAR::isError($DBRESULT)) {
+			print "Mysql Error : ".$DBRESULT->getMessage()."\n";
+		}
+	} else {
+		$gopt = array_map("myDecode", $DBRESULT->fetchRow());
+	}
 
-	$tmp = & $DBRESULT->fetchRow();
-	$rows = $tmp["COUNT(*)"];
+	# Get end Post values
+	isset ($_GET["num"]) ? $num = $_GET["num"] : $num = 0;
+	isset ($_GET["search"]) ? $search = $_GET["search"] : $search = NULL;
 
-	include("./include/common/checkPagination.php");
-
-	# Smarty template Init
+	# Get collectors
+	( isset($_POST["collector_id"]) && ($_POST["collector_id"] != ""  )) ? $collectorP = $_POST["collector_id"] : $collectorP = NULL;
+	( isset($_GET["collector_id"]) && ($_GET["collector_id"] != ""  )) ? $collectorG = $_GET["collector_id"] : $collectorG = NULL;
+	( isset($collectorP) ) ? $collector = $collectorP : $collector = $collectorG ;
+	
+	$error = 0;
+	
+	if (isset($collector)) {
+		if (isset($search)) {
+			$DBRESULT = & $pearDB->query("SELECT COUNT(*) FROM mod_syslog_hosts WHERE (mod_syslog_hosts.host_syslog_name LIKE '%".htmlentities($search, ENT_QUOTES)."%' OR mod_syslog_hosts.host_syslog_ipv4 LIKE '%".htmlentities($search, ENT_QUOTES)."%') AND collector_id = '".$collector."' ");
+		} else {
+			$DBRESULT = & $pearDB->query("SELECT COUNT(*) FROM mod_syslog_hosts WHERE collector_id = '".$collector."' ");
+		}
+		
+		$tmp = & $DBRESULT->fetchRow();
+		$rows = $tmp["COUNT(*)"];
+		unset($DBRESULT);
+		
+		include("./include/common/checkPagination.php");
+		
+		#Host list
+		if ($search) {
+			$rq = "SELECT * FROM mod_syslog_hosts WHERE (mod_syslog_hosts.host_syslog_name LIKE '%".htmlentities($search, ENT_QUOTES)."%' OR mod_syslog_hosts.host_syslog_ipv4 LIKE '%".htmlentities($search, ENT_QUOTES)."%') AND collector_id = '".$collector."' LIMIT ".$num * $limit.", ".$limit;
+		} else {
+			$rq = "SELECT * FROM mod_syslog_hosts WHERE collector_id = '".$collector."' LIMIT ".$num * $limit.", ".$limit;
+		}
+		$DBRESULT =& $pearDB->query($rq);
+		
+		$rq = "SELECT host_id, host_name FROM host WHERE host_register = '1'";
+		$HOSTRESULT =& $pearDB->query($rq);
+		
+		$CentreonHostID = array();
+		while ($host =& $HOSTRESULT->fetchRow()) {
+			$CentreonHostID[$host["host_id"]] = $host["host_name"];
+		}
+		unset($HOSTRESULT);
+		
+		$form = new HTML_QuickForm('select_form', 'POST', "?p=".$p."&o=l");
+		#Different style between each lines
+		$style = "one";
+		#Fill a tab with a mutlidimensionnal Array we put in $tpl
+		$elemArr = array();
+		for ($i = 0; $host =& $DBRESULT->fetchRow(); $i++) {
+			if (isset($CentreonHostID[$host['host_centreon_id']])) {
+				$name = $CentreonHostID[$host['host_centreon_id']];
+			} else {
+				$name = _("any correspondence with a Centreon host");
+			}
+			
+			$host['state'] != 1 ? $state = "not linked" : $state = "linked to Centreon host";
+		
+			$elemArr[$i] = array("MenuClass"=>"list_".$style,
+								"RowMenu_link"=>"main.php?p=60501&o=w&host_id=".$host['id'],
+								"RowMenu_centreonHostName"=>$name,
+								"RowMenu_hostName"=>$host['host_syslog_name'],
+								"RowMenu_hostIPV4"=>$host['host_syslog_ipv4'],
+								"RowMenu_state"=>$state);
+			$style != "two" ? $style = "two" : $style = "one";
+		}
+		unset($DBRESULT);
+	}
+	
 	$tpl = new Smarty();
+	$path = $syslog_mod_path . "include/configuration/configHosts";
 	$tpl = initSmartyTpl($path, $tpl);
-
-	# start header menu
+	$tpl->assign("headerMenu_collectors", _("Collectors:"));
 	$tpl->assign("headerMenu_centreon_name", _("Centreon Host Name"));
 	$tpl->assign("headerMenu_syslog_dns", _("Syslog Name"));
 	$tpl->assign("headerMenu_syslog_ipv4", _("Syslog IP v4"));
-	# end header menu
-
-	#Host list
-	if ($search)
-		$rq = "SELECT * FROM mod_syslog_hosts WHERE (mod_syslog_hosts.host_name LIKE '%".htmlentities($search, ENT_QUOTES)."%' OR mod_syslog_hosts.host_ipv4 LIKE '%".htmlentities($search, ENT_QUOTES)."%') LIMIT ".$num * $limit.", ".$limit;
-	else
-		$rq = "SELECT * FROM mod_syslog_hosts LIMIT ".$num * $limit.", ".$limit;
-	$DBRESULT =& $pearDB->query($rq);
-
-	$rq = "SELECT host_id, host_name FROM host WHERE host_register = '1'";
-	$HOSTRESULT =& $pearDB->query($rq);
-
-	$CentreonHostID = array();
-	while ($host =& $HOSTRESULT->fetchRow()) {
-		$CentreonHostID[$host["host_id"]] = $host["host_name"];
-	}
-
-	$form = new HTML_QuickForm('select_form', 'POST', "?p=".$p);
-	#Different style between each lines
-	$style = "one";
-	#Fill a tab with a mutlidimensionnal Array we put in $tpl
-	$elemArr = array();
-	for ($i = 0; $host =& $DBRESULT->fetchRow(); $i++) {
-		if (isset($CentreonHostID[$host['host_centreon_id']]))
-			$name = $CentreonHostID[$host['host_centreon_id']];
-		else
-			$name = _("any correspondence with a Centreon host");
-
-		$elemArr[$i] = array("MenuClass"=>"list_".$style,
-						"RowMenu_centreonHostName"=>$name,
-						"RowMenu_hostName"=>$host['host_name'],
-						"RowMenu_hostIPV4"=>$host['host_ipv4']);
-		$style != "two" ? $style = "two" : $style = "one";
-	}
-	#Different messages we put in the template
-	$tpl->assign('msg', array ("addL"=>"?p=".$p."&o=a", "addT"=>_("Add"),"syslog_importL"=>"?p=".$p."&o=si", "syslog_importT"=>_("Syslog Import")));
-
+	$tpl->assign("headerMenu_state", _("State"));
 	$tpl->assign("elemArr", $elemArr);
-	$tpl->assign('limit', $limit);
-
-	#
-	##Apply a template definition
-	#
+	
+	$form_host = new HTML_QuickForm('Formhost', 'post');
+	$form_host->addElement('select', 'collectors', _("Collectors:"), $collectorList, array("onChange"=>"javascript:window.location.href='?o=l&p=".$p."&collector_id='+this.value"));
+	$form_host->setDefaults(array('collectors' => $collector));
+	
+	if (isset($collector)) {
+		$form_host->addElement('button', 'import',  _("Syslog Import"), array("onClick"=>"javascript:window.location.href='?p=".$p."&o=si&collector_id=".$collector."'"));
+	}
+		$form_host->addElement('button', 'add',  _("Add"), array("onClick"=>"javascript:window.location.href='?p=".$p."&o=a'"));
+   	
 	$renderer =& new HTML_QuickForm_Renderer_ArraySmarty($tpl);
-	$form->accept($renderer);
-	$tpl->assign('form', $renderer->toArray());
+	$form_host->accept($renderer);
+	$tpl->assign('Formhost', $renderer->toArray());
 	$tpl->display($syslog_configuration_path . "template/listHosts.ihtml");
 ?>
