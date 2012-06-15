@@ -1,6 +1,6 @@
 ## Centreon-Syslog-Frontend 1.5
 Bug #2816: Displaying UTF8 in logs
-Enhancement #1519: Alloss to connect to several databases
+Enhancement #1519: Allow to connect to several databases
 Enhancement #1799: Change "lt, gt, ge, ..." by "<, >, >=, .."
 Enhancement #1805: Rename modules project name "Syslog" to "centreon-syslog"
 Enhancement #1807: Show all "facility" and "severity" in select box on monitoring page
