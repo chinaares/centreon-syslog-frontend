@@ -85,12 +85,13 @@ function ajax_generateCSV_XML(value)
 	var filter_severity = document.forms['Formfilter'].elements['filter_severity'].value;
 	var filter_Fseverity = document.forms['Formfilter'].elements['filter_Fseverity'].value;
 	var filter_program = escape(document.forms['Formfilter'].elements['filter_program'].value);
+	var filter_msg = escape(document.forms['Formfilter'].elements['filter_msg'].value);
 	var start_date = document.getElementById('StartDate').value;
 	var start_time = document.getElementById('StartTime').value;
 	var end_date = document.getElementById('EndDate').value;
 	var end_time = document.getElementById('EndTime').value;
 
-	var _addr = "./modules/centreon-syslog-frontend/include/export/csv/csv_export.php?type=" + value + '&collector=' + collector + '&host=' + filter_host + '&facility=' + filter_facility + '&Ffacility=' + filter_Ffacility + '&severity=' + filter_severity + '&Fseverity=' + filter_Fseverity + '&program=' + filter_program + '&start_date=' + start_date + '&start_time=' + start_time + '&end_date=' + end_date + '&end_time=' + end_time
+	var _addr = "./modules/centreon-syslog-frontend/include/export/csv/csv_export.php?type=" + value + '&collector=' + collector + '&host=' + filter_host + '&facility=' + filter_facility + '&Ffacility=' + filter_Ffacility + '&severity=' + filter_severity + '&Fseverity=' + filter_Fseverity + '&program=' + filter_program + '&msg=' + filter_msg + '&start_date=' + start_date + '&start_time=' + start_time + '&end_date=' + end_date + '&end_time=' + end_time
 	window.open(_addr);
 }
 
@@ -132,11 +133,12 @@ function ajax_generateODT(value)
 	var filter_severity = document.forms['Formfilter'].elements['filter_severity'].value;
 	var filter_Fseverity = document.forms['Formfilter'].elements['filter_Fseverity'].value;
 	var filter_program = escape(document.forms['Formfilter'].elements['filter_program'].value);
+	var filter_msg = escape(document.forms['Formfilter'].elements['filter_msg'].value);
 	var start_date = document.getElementById('StartDate').value;
 	var start_time = document.getElementById('StartTime').value;
 	var end_date = document.getElementById('EndDate').value;
 	var end_time = document.getElementById('EndTime').value;
 
-	var _addr = "./modules/centreon-syslog-frontend/include/export/odtPHP/odtPHP_export.php?type=" + value + '&collector=' + collector + '&host=' + filter_host + '&facility=' + filter_facility + '&Ffacility=' + filter_Ffacility + '&severity=' + filter_severity + '&Fseverity=' + filter_Fseverity + '&program=' + filter_program + '&start_date=' + start_date + '&start_time=' + start_time + '&end_date=' + end_date + '&end_time=' + end_time
+	var _addr = "./modules/centreon-syslog-frontend/include/export/odtPHP/odtPHP_export.php?type=" + value + '&collector=' + collector + '&host=' + filter_host + '&facility=' + filter_facility + '&Ffacility=' + filter_Ffacility + '&severity=' + filter_severity + '&Fseverity=' + filter_Fseverity + '&program=' + filter_program + '&msg=' + filter_msg + '&start_date=' + start_date + '&start_time=' + start_time + '&end_date=' + end_date + '&end_time=' + end_time
 	window.open(_addr);
 }

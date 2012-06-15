@@ -125,6 +125,9 @@
 			array_push($sql_filter ," (priority IN (".$list."))  ");
 		}
 
+	if (isset($_GET['msg']) && $_GET['msg'] != "")
+		array_push($sql_filter ," (msg LIKE '%". htmlentities($_GET['msg'] , ENT_QUOTES) ."%')  ");
+
 	$req_sql_filter = "";	
 	if (isset( $sql_filter ))
 		$req_sql_filter = join(" AND " , $sql_filter);
