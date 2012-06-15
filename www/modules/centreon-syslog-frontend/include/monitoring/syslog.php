@@ -65,6 +65,7 @@
     require $syslog_mod_path. "include/monitoring/javascript/syslog_js.php";
 
     $collectorList = getCollectorList();
+    $init = 0;
 
     /*
      * Add ajax button and div
@@ -76,7 +77,12 @@
     echo "                  "._("Collector:")."&nbsp;&nbsp;&nbsp;";
     echo "                  <select onChange=\"javascript:rebuild_page();\" name=\"collector_id\" id=\"collector_id\" >";
     foreach ($collectorList as $key => $value) {
-        echo "				<option value=\"".$key."\">".$value."</option>";
+    	if (($init == 0) && preg_match('/^$/', $value) == 0) {
+        	echo "				<option value=\"".$key."\" selected>".$value."</option>";
+        	$init++;
+        } else {
+        	echo "				<option value=\"".$key."\">".$value."</option>";
+        }
     }
     echo "					</select>";
     echo "          </td>";
