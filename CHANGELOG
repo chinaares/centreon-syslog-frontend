@@ -1,5 +1,6 @@
 ## Centreon-Syslog-Frontend 1.5
 Bug #2816: Displaying UTF8 in logs
+Bug #3066: Export to csv does not take into account if a message filter is applied
 Enhancement #1519: Allow to connect to several databases
 Enhancement #1799: Change "lt, gt, ge, ..." by "<, >, >=, .."
 Enhancement #1805: Rename modules project name "Syslog" to "centreon-syslog"
@@ -7,6 +8,7 @@ Enhancement #1807: Show all "facility" and "severity" in select box on monitorin
 Enhancement #2581: Add message filter in real-time
 Enhancement #2919: Add local copy for local configuration file export
 Enhancement #2927: Possibility to view event details
+Enhancement #2936: Select default collector
 
 ## Centreon-Syslog-Frontend 1.4.1
 Bug #2417: PHP Fatal Error on csv_export.php
