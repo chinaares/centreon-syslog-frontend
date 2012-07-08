@@ -44,7 +44,7 @@
 	 */
 	require_once ("DB.php");
 
-	include ("@CENTREON_ETC@centreon.conf.php");
+	include ("/etc/centreon//centreon.conf.php");
 	
 	$connexion = mysql_connect($conf_centreon['hostCentreon'], $conf_centreon['user'], $conf_centreon['password']) or die("Connexion impossible au serveur ".$conf_centreon['hostCentreon']." par ".$conf_centreon['user']);
 	

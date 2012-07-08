@@ -38,7 +38,7 @@
  * SVN : $Id$
  * 
  */
-	include ("/etc/centreon/centreon.conf.php");
+	include ("@CENTREON_ETC@centreon.conf.php");
 	
 	/*
 	 * Make PEAR DB object to connect to MySQL DB
@@ -208,12 +208,13 @@
 		
 		$query = "SELECT host_syslog_name, host_syslog_ipv4 ";
 		$query .= "FROM mod_syslog_hosts, host ";
-		$query .= "WHERE host.host_alias = \"".$centreonHostName."\" ";
+		$query .= "WHERE host.host_name = \"".$centreonHostName."\" ";
 		$query .= "AND host.host_id = mod_syslog_hosts.host_centreon_id";
 		
 		$res =& $pearDB->query($query);
 		if (PEAR::isError($pearDB)) {
 			displayConnectionErrorPage("Mysql Error : ". $pearDB->getMessage());
+			return NULL;
 		}
 		
 		if ($pearDB->numberRows() == 0) {
@@ -221,15 +222,18 @@
 		}
 		
 		# Set base value
-		$Host  =  "";
-		
-		$host =& $res->fetchRow();
-		
-		if (strcmp($host['host_syslog_name'],$host['host_syslog_ipv4']) == 0) {
-			return '"'.$host['host_syslog_ipv4'].'"';
-		} else {
-			return '"'.$host['host_syslog_ipv4'].'","'.$host['host_syslog_name'].'"';
-		}
+		$Hosts  =  "";
+		while($host =& $res->fetchRow()) {
+                        if ($Hosts != "")
+                                $Hosts .= ",";
+                        if (strcmp($host['host_syslog_name'],$host['host_syslog_ipv4']) == 0) {
+                                $Hosts .= '"'.$host['host_syslog_ipv4'].'"';
+                        } else {
+                                $Hosts .= '"'.$host['host_syslog_ipv4'].'","'.$host['host_syslog_name'].'"';
+                        }
+                }
+
+                return $Hosts;
 	}
 
 	/**
