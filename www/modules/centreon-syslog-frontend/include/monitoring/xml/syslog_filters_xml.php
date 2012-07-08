@@ -41,7 +41,7 @@
 	/*
 	 * PHP require
 	 */
-	require_once "/etc/centreon/centreon.conf.php";
+	require_once "@CENTREON_ETC@centreon.conf.php";
 	require_once $centreon_path . "www/modules/centreon-syslog-frontend/include/common/header.php";
 	require_once $centreon_path . "www/include/common/common-Func.php";
 	

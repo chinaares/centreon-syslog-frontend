@@ -38,7 +38,7 @@
  * SVN : $Id$
  * 
  */
-	include ("/etc/centreon/centreon.conf.php");
+	include ("@CENTREON_ETC@centreon.conf.php");
 
 	if (!isset($_GET["hosts"])) {
 		exit();
