@@ -38,7 +38,7 @@
  * SVN : $Id$
  * 
  */
-	include ("@CENTREON_ETC@centreon.conf.php");
+	include ("/etc/centreon/centreon.conf.php");
 	
 	/*
 	 * Make PEAR DB object to connect to MySQL DB
@@ -636,7 +636,7 @@
 	function getHostNameAndIDFromCentreon() {
 		global $pearDB;
 		
-		$res =& $pearDB->query("SELECT `host_id`, `host_name` FROM `host` ORDER BY host_name ASC ");
+		$res =& $pearDB->query("SELECT `host_name` FROM `host` where `host_activate` = '1' AND `host_register` = '1' ORDER BY host_name ASC ");
 		if (PEAR::isError($pearDB)) {
 			displayConnectionErrorPage("Mysql Error : ". $pearDB->getMessage());
 		}
@@ -644,9 +644,8 @@
 		$list =  array("" => "");
 						
 		while ($element =& $res->fetchRow()) {
-			$list['host_id'] = $element['host_name'];
+			$list[$element['host_name']] = $element['host_name'];		
 		}
-		
 		return $list;
 	}
 ?>

@@ -41,7 +41,7 @@
 	/*
 	 * PHP require
 	 */
-	require_once "@CENTREON_ETC@centreon.conf.php";
+	require_once "/etc/centreon/centreon.conf.php";
 	require_once $centreon_path . "www/modules/centreon-syslog-frontend/include/common/header.php";
 	require_once $centreon_path . "www/include/common/common-Func.php";
 	
@@ -69,7 +69,12 @@
 	$contact_id = check_session($sid, $pearDB);
 	$is_admin = isUserAdmin($sid);
 	$access = new CentreonACL($contact_id, $is_admin);
-	$aclHostString = $access->getHostsString("ID", $pearDBndo);
+	if(!$is_admin) {
+		$aclHostString = $access->getHostsString("ID", $pearDBndo);
+	} else {
+		$aclHostString = getHostNameAndIDFromCentreon();
+	}
+
 	$aclHostGroups = $access->getHostGroups();
 
 	/*
@@ -129,12 +134,12 @@
 	    $pearDB_syslog = new SyslogDB("syslog", $collector_id);
 	    $cfg_syslog = getSyslogOption($collector_id);
 	    $check_syslog_access = getFilterHostsMerge($pearDB_syslog, $cfg_syslog); /* Check database access */
-	    $FilterHosts = getFilterHostsACL($aclHostString, $collector_id, $is_admin);
+	    $FilterHosts = $aclHostString;
 		$FilterHostGroups = "";
 	    if($is_admin)
 	    	$FilterHostGroups = getHostGroups();
 	    else
-			$FilterHostGroups = $aclHostGroups;
+		$FilterHostGroups = $aclHostGroups;
 
 	    if (!isset($check_syslog_access)) {
 	    	echo "<root><error>"._("Problem to access to merge cache table. Please contact your administrator.")."</error></root>";
