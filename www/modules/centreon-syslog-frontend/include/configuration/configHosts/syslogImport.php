@@ -146,7 +146,7 @@
 			$syslog_ip = getIPFromDNS($host["value"]);
 			
 			if (strcmp($syslog_ip, $syslog_name) == 0) {
-				$syslog_ip = _("Unable to get IP address");
+				$syslog_ip = _("no IP");
 			}
 		}
 

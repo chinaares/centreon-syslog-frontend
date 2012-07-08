@@ -38,9 +38,9 @@
  * SVN : $Id$
  * 
  */
-	include ("@CENTREON_ETC@centreon.conf.php");
+	include ("/etc/centreon/centreon.conf.php");
 
-	if (!isset($_GET["host"])) {
+	if (!isset($_GET["hosts"])) {
 		exit();
 	}
 
@@ -59,33 +59,35 @@
 	/*
 	 * Get host name and IP address
 	 */
-	$hostAndIP = split("::", $_GET["host"]);
+	$tab_host = explode(";", $_GET["hosts"]);
+	print_r($tab_host);
+	foreach ($tab_host as $host) {
+		$hostAndIP = split("::", $host);
+		if (isset($_GET['collector_id']) && $_GET['collector_id'] != "" ) {
+			$collector_id = $_GET['collector_id'];
+		}
+		$hostname = $hostAndIP[0];
+		$hostIP = $hostAndIP[1];
 
-	if (isset($_GET['collector_id']) && $_GET['collector_id'] != "" )
-		$collector_id = $_GET['collector_id'];
+		$value = _("no IP");
+		if (strcmp($hostIP, $value) == 0) {
+			$hostIP = "0.0.0.0";
+		}
 
-	$hostname = $hostAndIP[0];
-	$hostIP = $hostAndIP[1];
+		/*
+		 * Insert into Database informations
+		 */
+		$pearCentreonDB = new SyslogDB("centreon");
 
-	$value = _("Unable to get IP address");
+		$DBRESULT =& $pearCentreonDB->query("SELECT `host_id` FROM `host` WHERE `host_address` = '".$hostIP."' OR `host_name` LIKE '%".$hostname."%' OR `host_alias` LIKE '%".$hostname."%'");
+		$result = $DBRESULT->fetchRow();
 
-	if (strcmp($hostIP, $value) == 0) {
-		$hostIP = "0.0.0.0";
+		if ($DBRESULT->numRows() == 1) {
+			$query = "INSERT INTO mod_syslog_hosts (id, collector_id, host_centreon_id, host_syslog_name, host_syslog_ipv4, state) VALUES ('', $collector_id, '".$result["host_id"]."', '".$hostname."', '".$hostIP."', '1');";
+		} else {
+			$query = "INSERT INTO mod_syslog_hosts (id, collector_id, host_centreon_id, host_syslog_name, host_syslog_ipv4, state) VALUES ('', $collector_id, NULL, '".$hostname."', '".$hostIP."', '2');";
+		}
+
+		$pearCentreonDB->query($query);
 	}
-
-	/*
-	 * Insert into Database informations
-	 */
-	$pearCentreonDB = new SyslogDB("centreon");
-
-	$DBRESULT =& $pearCentreonDB->query("SELECT `host_id` FROM `host` WHERE `host_address` = '".$hostIP."' OR `host_name` LIKE '%".$hostname."%' OR `host_alias` LIKE '%".$hostname."%'");
-	$result = $DBRESULT->fetchRow();
-
-	if ($DBRESULT->numRows() == 1) {
-		$query = "INSERT INTO mod_syslog_hosts (id, collector_id, host_centreon_id, host_syslog_name, host_syslog_ipv4, state) VALUES ('', $collector_id, '".$result["host_id"]."', '".$hostname."', '".$hostIP."', '1');";
-	} else {
-		$query = "INSERT INTO mod_syslog_hosts (id, collector_id, host_centreon_id, host_syslog_name, host_syslog_ipv4, state) VALUES ('', $collector_id, NULL, '".$hostname."', '".$hostIP."', '2');";
-	}
-
-	$pearCentreonDB->query($query);
 ?>

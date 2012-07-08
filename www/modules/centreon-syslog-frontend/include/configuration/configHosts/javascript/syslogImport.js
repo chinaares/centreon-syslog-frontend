@@ -40,35 +40,47 @@
 
 function importHost(collector_id)
 {
-	if (!document.getElementById("centreonMsg_img"))
-	{
-		_setAlign("centreonMsg", "center");
-		_setTextStyle("centreonMsg", "bold");
-		_setImage("centreonMsg", "./img/misc/ajax-loader.gif");
-		_setText("centreonMsg", " Loading...");
-		_setValign("centreonMsg", "bottom");
+	var theForm = document.form, z = 0;
+	var tabSyslogHost = new Array(), i = 0;
+
+	for (z=0; z<theForm.length;z++){
+		if (theForm[z].type == 'checkbox' && theForm[z].disabled == '0'){
+			if (theForm[z].checked && theForm[z].name != "checkall") {
+				i++;
+				tabSyslogHost.push(theForm[z].name);
+			}
+		}
 	}
 
-    var theForm = document.form, z = 0;
+	if (i > 0) {
+		var xhr=null;
+		if (window.XMLHttpRequest) {
+			xhr = new XMLHttpRequest();
+		} else if (window.ActiveXObject) {
+			xhr = new ActiveXObject("Microsoft.XMLHTTP");
+		}
+		
+		xhr.onreadystatechange = function()
+        	{
+                	if (xhr.readyState <= 3)
+                	{
+                	        if (!document.getElementById("centreonMsg_img"))
+                	        {
+                	                _setAlign("centreonMsg", "center");
+                	                _setTextStyle("centreonMsg", "bold");
+                	                _setImage("centreonMsg", "./img/misc/ajax-loader.gif");
+                	                _setText("centreonMsg", " Loading...");
+                	                _setValign("centreonMsg", "bottom");
+                	        }
+                	}
+                	else if (xhr.readyState == 4 && xhr.status == 200)
+                	{
+                	        _clear("centreonMsg");
+				window.location.href = "main.php?o=l&p=60501&collector_id=" + collector_id;
+                	}
+        	}
 
-    for (z=0; z<theForm.length;z++){
-    	if (theForm[z].type == 'checkbox' && theForm[z].disabled == '0'){
-    		if (theForm[z].checked) {
-    			var xhr=null;
-    			
-    			if (window.XMLHttpRequest) { 
-    				xhr = new XMLHttpRequest();
-    			}
-    			else if (window.ActiveXObject) 
-    			{
-    				xhr = new ActiveXObject("Microsoft.XMLHTTP");
-    			}
-    			xhr.open('GET', "./modules/centreon-syslog-frontend/include/configuration/configHosts/importHostinDB.php?collector_id=" + collector_id + "&host=" + theForm[z].name, true);
-    			xhr.send(null);
-    		}
-    	}
-    }
-    
-    _clear("centreonMsg");
-    window.location.href = "main.php?p=60501";
+		xhr.open('GET', "./modules/centreon-syslog-frontend/include/configuration/configHosts/importHostinDB.php?collector_id=" + collector_id + "&hosts=" + tabSyslogHost.join(";"), true);
+		xhr.send(null);
+	}
 }
