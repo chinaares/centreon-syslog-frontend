@@ -637,7 +637,7 @@
 	 * Get host_id and host_name from Centreon database
 	 * @return array
 	 */
-	function getHostNameAndIDFromCentreon() {
+	function getHostNameFromCentreon() {
 		global $pearDB;
 		
 		$res =& $pearDB->query("SELECT `host_name` FROM `host` where `host_activate` = '1' AND `host_register` = '1' ORDER BY host_name ASC ");

@@ -46,8 +46,9 @@
 	/*
 	 * Resource Hosts
 	 */
-	$hostListInCentreon = getHostNameAndIDFromCentreon();
-	
+	$hostListInCentreon = getHostNameFromCentreon();
+	$centreonPollerList = 
+
 	$attrsText = array("size"=>"35");
 
 	/*
@@ -61,11 +62,13 @@
 	 */
 	$form = new HTML_QuickForm('Form', 'post', "?p=".$p);
 	$form->addElement('header', 'title', _("Link a Centreon host to a Syslog host"));
+	$form->addElement('select', 'centreon_pollers', _("Poller name"), $centreonPollerList);
 	$form->addElement('select', 'centreon_hosts', _("Centreon host name"), $hostListInCentreon);
 	$form->addElement('text', 'syslog_name', _("Syslog host name"), $attrsText);
 	$form->addElement('text', 'syslog_ip', _("Syslog host IP address"), $attrsText);
 	
 	$form->applyFilter('_ALL_', 'trim');
+	$form->addRule('centreon_pollers', _("Required Field"), 'required');
 	$form->addRule('centreon_hosts', _("Required Field"), 'required');
 	$form->addRule('syslog_name', _("Required Field"), 'required');
 	$form->addRule('syslog_ip', _("Required Field"), 'required');
