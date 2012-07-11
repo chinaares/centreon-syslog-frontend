@@ -34,8 +34,8 @@
  * Project name : Centreon Syslog
  * Module name: Centreon-Syslog-Frontend
  * 
- * SVN : $URL$
- * SVN : $Id$
+ * SVN : $URL: http://svn.modules.centreon.com/centreon-syslog/trunk/centreon-syslog-frontend/www/modules/centreon-syslog-frontend/include/common/common-Func.php $
+ * SVN : $Id: common-Func.php 560 2012-07-08 11:45:57Z lpinsivy $
  * 
  */
 	include ("@CENTREON_ETC@centreon.conf.php");
