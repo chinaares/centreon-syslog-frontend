@@ -381,22 +381,12 @@ function get_centreon_parameters() {
 	WEB_GROUP=`${CAT} $CENTREON_CONF/$FILE_CONF | ${GREP} "WEB_GROUP" | cut -d '=' -f2`;
 	WEB_GROUP=$(trim $WEB_GROUP)
 	
-	NAGIOS_DIR=`${CAT} $CENTREON_CONF/$FILE_CONF | ${GREP} "INSTALL_DIR_NAGIOS" | cut -d '=' -f2`;
-	NAGIOS_DIR=$(trim $NAGIOS_DIR)
-	NAGIOS_BINARY=`${CAT} $CENTREON_CONF/$FILE_CONF | ${GREP} "NAGIOS_BINARY" | cut -d '=' -f2`;
-	NAGIOS_BINARY=$(trim $NAGIOS_BINARY)
-	NAGIOSTATS_BINARY=`${CAT} $CENTREON_CONF/$FILE_CONF | ${GREP} "NAGIOSTATS_BINARY" | cut -d '=' -f2`;
-	NAGIOSTATS_BINARY=$(trim $NAGIOSTATS_BINARY)
-	NAGIOS_LOG_DIR=`${CAT} $CENTREON_CONF/$FILE_CONF | ${GREP} "NAGIOS_VAR" | cut -d '=' -f2`;
-	NAGIOS_LOG_DIR=$(trim $NAGIOS_LOG_DIR)
-	NAGIOS_CMD=$NAGIOS_LOG_DIR"/rw/nagios.cmd"
-	NAGIOS_CMD=$(trim $NAGIOS_CMD)
-	NAGIOS_PLUGIN=`${CAT} $CENTREON_CONF/$FILE_CONF | ${GREP} "NAGIOS_PLUGIN" | cut -d '=' -f2`;
-	NAGIOS_PLUGIN=$(trim $NAGIOS_PLUGIN)
-	NAGIOS_USER=`${CAT} $CENTREON_CONF/$FILE_CONF | ${GREP} "NAGIOS_USER" | cut -d '=' -f2`;
-	NAGIOS_USER=$(trim $NAGIOS_USER)
-	NAGIOS_GROUP=`${CAT} $CENTREON_CONF/$FILE_CONF | ${GREP} "NAGIOS_GROUP" | cut -d '=' -f2`;	
-	NAGIOS_GROUP=$(trim $NAGIOS_GROUP)
+	PLUGIN_DIR=`${CAT} $CENTREON_CONF/$FILE_CONF | ${GREP} "PLUGIN_DIR" | cut -d '=' -f2`;
+	PLUGIN_DIR=$(trim $PLUGIN_DIR)
+	CENTREON_USER=`${CAT} $CENTREON_CONF/$FILE_CONF | ${GREP} "CENTREON_USER" | cut -d '=' -f2`;
+	CENTREON_USER=$(trim $CENTREON_USER)
+	CENTREON_GROUP=`${CAT} $CENTREON_CONF/$FILE_CONF | ${GREP} "CENTREON_GROUP" | cut -d '=' -f2`;	
+	CENTREON_GROUP=$(trim $CENTREON_GROUP)
 
 	RESULT=0
 	# check centreon parameters
@@ -418,30 +408,18 @@ function get_centreon_parameters() {
 		RESULT=`expr $RESULT + 1`
 	fi
 	
-	# check Nagios parameters
-	if [ "$NAGIOS_DIR" != "" ] ; then
+	# check monitoring engine parameters
+	if [ "$PLUGIN_DIR" != "" ] ; then
 		RESULT=`expr $RESULT + 1`
 	fi
-	if [ "$NAGIOS_BINARY" != "" ] ; then
+	if [ "$CENTREON_USER" != "" ] ; then
 		RESULT=`expr $RESULT + 1`
 	fi
-	if [ "$NAGIOSTATS_BINARY" != "" ] ; then
-		RESULT=`expr $RESULT + 1`
-	fi
-	if [ "$NAGIOS_LOG_DIR" != "" ] ; then
-		RESULT=`expr $RESULT + 1`
-	fi
-	if [ "$NAGIOS_PLUGIN" != "" ] ; then
-		RESULT=`expr $RESULT + 1`
-	fi
-	if [ "$NAGIOS_USER" != "" ] ; then
-		RESULT=`expr $RESULT + 1`
-	fi
-	if [ "$NAGIOS_GROUP" != "" ] ; then
+	if [ "$CENTREON_GROUP" != "" ] ; then
 		RESULT=`expr $RESULT + 1`
 	fi
 	
-	if [ "$RESULT" -eq 12 ]; then 
+	if [ "$RESULT" -eq 8 ]; then 
 		return 1;
 	else
 		return 0;
@@ -518,14 +496,9 @@ function install_module_web() {
 		-exec ${SED} -i -e "s|@CENTCORE_CMD@|$CENTCORE_CMD|g" {} \; \
 		-exec ${SED} -i -e "s|@WEB_USER@|$WEB_USER|g" {} \; \
 		-exec ${SED} -i -e "s|@WEB_GROUP@|$WEB_GROUP|g" {} \; \
-		-exec ${SED} -i -e "s|@NAGIOS_DIR@|$NAGIOS_DIR|g" {} \; \
-		-exec ${SED} -i -e "s|@NAGIOS_BINARY@|$NAGIOS_BINARY|g" {} \; \
-		-exec ${SED} -i -e "s|@NAGIOSTATS_BINARY@|$NAGIOSTATS_BINARY|g" {} \; \
-		-exec ${SED} -i -e "s|@NAGIOS_CMD@|$NAGIOS_CMD|g" {} \; \
-		-exec ${SED} -i -e "s|@NAGIOS_LOG_DIR@|$NAGIOS_LOG_DIR|g" {} \; \
-		-exec ${SED} -i -e "s|@NAGIOS_PLUGIN@|$NAGIOS_PLUGIN|g" {} \; \
-		-exec ${SED} -i -e "s|@NAGIOS_USER@|$NAGIOS_USER|g" {} \; \
-		-exec ${SED} -i -e "s|@NAGIOS_GROUP@|$NAGIOS_GROUP|g" {} \;  \
+		-exec ${SED} -i -e "s|@PLUGIN_DIR@|$PLUGIN_DIR|g" {} \; \
+		-exec ${SED} -i -e "s|@CENTREON_USER@|$CENTREON_USER|g" {} \; \
+		-exec ${SED} -i -e "s|@CENTREON_GROUP@|$CENTREON_GROUP|g" {} \;  \
 		-exec ${SED} -i -e "s|@INSTALL_DIR_CENTREON@|$CENTREON_DIR|g" {} \;
 	if [ "$?" -eq 0 ] ; then
 		echo_success "Changing macros" "$ok"
@@ -594,14 +567,9 @@ function install_module_binaries() {
 		-exec ${SED} -i -e "s|@CENTCORE_CMD@|$CENTCORE_CMD|g" {} \; \
 		-exec ${SED} -i -e "s|@WEB_USER@|$WEB_USER|g" {} \; \
 		-exec ${SED} -i -e "s|@WEB_GROUP@|$WEB_GROUP|g" {} \; \
-		-exec ${SED} -i -e "s|@NAGIOS_DIR@|$NAGIOS_DIR|g" {} \; \
-		-exec ${SED} -i -e "s|@NAGIOS_BINARY@|$NAGIOS_BINARY|g" {} \; \
-		-exec ${SED} -i -e "s|@NAGIOSTATS_BINARY@|$NAGIOSTATS_BINARY|g" {} \; \
-		-exec ${SED} -i -e "s|@NAGIOS_CMD@|$NAGIOS_CMD|g" {} \; \
-		-exec ${SED} -i -e "s|@NAGIOS_LOG_DIR@|$NAGIOS_LOG_DIR|g" {} \; \
-		-exec ${SED} -i -e "s|@NAGIOS_PLUGIN@|$NAGIOS_PLUGIN|g" {} \; \
-		-exec ${SED} -i -e "s|@NAGIOS_USER@|$NAGIOS_USER|g" {} \; \
-		-exec ${SED} -i -e "s|@NAGIOS_GROUP@|$NAGIOS_GROUP|g" {} \;  \
+		-exec ${SED} -i -e "s|@PLUGIN_DIR@|$PLUGIN_DIR|g" {} \; \
+		-exec ${SED} -i -e "s|@CENTREON_USER@|$CENTREON_USER|g" {} \; \
+		-exec ${SED} -i -e "s|@CENTREON_GROUP@|$CENTREON_GROUP|g" {} \;  \
 		-exec ${SED} -i -e "s|@INSTALL_DIR_CENTREON@|$CENTREON_DIR|g" {} \;
 	if [ "$?" -eq 0 ] ; then
 		echo_success "Changing macros" "$ok"
@@ -660,14 +628,9 @@ function install_module_cron_files() {
 		-exec ${SED} -i -e "s|@CENTCORE_CMD@|$CENTCORE_CMD|g" {} \; \
 		-exec ${SED} -i -e "s|@WEB_USER@|$WEB_USER|g" {} \; \
 		-exec ${SED} -i -e "s|@WEB_GROUP@|$WEB_GROUP|g" {} \; \
-		-exec ${SED} -i -e "s|@NAGIOS_DIR@|$NAGIOS_DIR|g" {} \; \
-		-exec ${SED} -i -e "s|@NAGIOS_BINARY@|$NAGIOS_BINARY|g" {} \; \
-		-exec ${SED} -i -e "s|@NAGIOSTATS_BINARY@|$NAGIOSTATS_BINARY|g" {} \; \
-		-exec ${SED} -i -e "s|@NAGIOS_CMD@|$NAGIOS_CMD|g" {} \; \
-		-exec ${SED} -i -e "s|@NAGIOS_LOG_DIR@|$NAGIOS_LOG_DIR|g" {} \; \
-		-exec ${SED} -i -e "s|@NAGIOS_PLUGIN@|$NAGIOS_PLUGIN|g" {} \; \
-		-exec ${SED} -i -e "s|@NAGIOS_USER@|$NAGIOS_USER|g" {} \; \
-		-exec ${SED} -i -e "s|@NAGIOS_GROUP@|$NAGIOS_GROUP|g" {} \; \
+		-exec ${SED} -i -e "s|@PLUGIN_DIR@|$PLUGIN_DIR|g" {} \; \
+		-exec ${SED} -i -e "s|@CENTREON_USER@|$CENTREON_USER|g" {} \; \
+		-exec ${SED} -i -e "s|@CENTREON_GROUP@|$CENTREON_GROUP|g" {} \; \
 		-exec ${SED} -i -e "s|@INSTALL_DIR_CENTREON@|$CENTREON_DIR|g" {} \;
 	if [ "$?" -eq 0 ] ; then
 		echo_success "Changing macros" "$ok"
@@ -726,14 +689,9 @@ function install_module_plugins() {
 		-exec ${SED} -i -e "s|@CENTCORE_CMD@|$CENTCORE_CMD|g" {} \; \
 		-exec ${SED} -i -e "s|@WEB_USER@|$WEB_USER|g" {} \; \
 		-exec ${SED} -i -e "s|@WEB_GROUP@|$WEB_GROUP|g" {} \; \
-		-exec ${SED} -i -e "s|@NAGIOS_DIR@|$NAGIOS_DIR|g" {} \; \
-		-exec ${SED} -i -e "s|@NAGIOS_BINARY@|$NAGIOS_BINARY|g" {} \; \
-		-exec ${SED} -i -e "s|@NAGIOSTATS_BINARY@|$NAGIOSTATS_BINARY|g" {} \; \
-		-exec ${SED} -i -e "s|@NAGIOS_CMD@|$NAGIOS_CMD|g" {} \; \
-		-exec ${SED} -i -e "s|@NAGIOS_LOG_DIR@|$NAGIOS_LOG_DIR|g" {} \; \
-		-exec ${SED} -i -e "s|@NAGIOS_PLUGIN@|$NAGIOS_PLUGIN|g" {} \; \
-		-exec ${SED} -i -e "s|@NAGIOS_USER@|$NAGIOS_USER|g" {} \; \
-		-exec ${SED} -i -e "s|@NAGIOS_GROUP@|$NAGIOS_GROUP|g" {} \;  \
+		-exec ${SED} -i -e "s|@PLUGIN_DIR@|$PLUGIN_DIR|g" {} \; \
+		-exec ${SED} -i -e "s|@CENTREON_USER@|$CENTREON_USER|g" {} \; \
+		-exec ${SED} -i -e "s|@CENTREON_GROUP@|$CENTREON_GROUP|g" {} \;  \
 		-exec ${SED} -i -e "s|@INSTALL_DIR_CENTREON@|$CENTREON_DIR|g" {} \;
 	if [ "$?" -eq 0 ] ; then
 		echo_success "Changing macros" "$ok"
@@ -791,14 +749,9 @@ function install_module_cron() {
 		-exec ${SED} -i -e "s|@CENTCORE_CMD@|$CENTCORE_CMD|g" {} \; \
 		-exec ${SED} -i -e "s|@WEB_USER@|$WEB_USER|g" {} \; \
 		-exec ${SED} -i -e "s|@WEB_GROUP@|$WEB_GROUP|g" {} \; \
-		-exec ${SED} -i -e "s|@NAGIOS_DIR@|$NAGIOS_DIR|g" {} \; \
-		-exec ${SED} -i -e "s|@NAGIOS_BINARY@|$NAGIOS_BINARY|g" {} \; \
-		-exec ${SED} -i -e "s|@NAGIOSTATS_BINARY@|$NAGIOSTATS_BINARY|g" {} \; \
-		-exec ${SED} -i -e "s|@NAGIOS_CMD@|$NAGIOS_CMD|g" {} \; \
-		-exec ${SED} -i -e "s|@NAGIOS_LOG_DIR@|$NAGIOS_LOG_DIR|g" {} \; \
-		-exec ${SED} -i -e "s|@NAGIOS_PLUGIN@|$NAGIOS_PLUGIN|g" {} \; \
-		-exec ${SED} -i -e "s|@NAGIOS_USER@|$NAGIOS_USER|g" {} \; \
-		-exec ${SED} -i -e "s|@NAGIOS_GROUP@|$NAGIOS_GROUP|g" {} \; \
+		-exec ${SED} -i -e "s|@PLUGIN_DIR@|$PLUGIN_DIR|g" {} \; \
+		-exec ${SED} -i -e "s|@CENTREON_USER@|$CENTREON_USER|g" {} \; \
+		-exec ${SED} -i -e "s|@CENTREON_GROUP@|$CENTREON_GROUP|g" {} \; \
 		-exec ${SED} -i -e "s|@INSTALL_DIR_CENTREON@|$CENTREON_DIR|g" {} \;
 	if [ "$?" -eq 0 ] ; then
 		echo_success "Changing macros" "$ok"

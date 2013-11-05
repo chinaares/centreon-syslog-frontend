@@ -1,3 +1,6 @@
+## Centreon-Syslog-Frontend 1.5.1
+Bug #4899: Installation Frontend not compatible with Centreon 2.4.x
+
 ## Centreon-Syslog-Frontend 1.5
 Bug #2816: Displaying UTF8 in logs
 Bug #3066: Export to csv does not take into account if a message filter is applied
