@@ -1,7 +1,6 @@
-<<<<<<< .mine
 <?php
 /*
- * Copyright 2005-2011 MERETHIS
+ * Copyright 2005-2013 MERETHIS
  * Centreon is developped by : Julien Mathis and Romain Le Merlus under
  * GPL Licence 2.0.
  * 
@@ -46,8 +45,6 @@
 	require_once $centreon_path . "www/modules/centreon-syslog-frontend/include/common/header.php";
 	require_once $centreon_path . "www/include/common/common-Func.php";
 	
-	require_once $centreon_path . "www/class/centreonACL.class.php";
-	
 	require_once $syslog_mod_path . "/include/common/common-Func.php";
 	require_once $syslog_mod_path . "/class/syslogXML.class.php";
 
@@ -61,22 +58,6 @@
 	bind_textdomain_codeset("messages", "UTF-8"); 
 	textdomain("messages");
 	
-	/*
-	 * Get ACL
-	 */
-	$pearDB = new CentreonDB();
-	$pearDBndo = new CentreonDB("ndo");
-	$sid = session_id($_GET["sid"]);
-	$contact_id = check_session($sid, $pearDB);
-	$is_admin = isUserAdmin($sid);
-	$access = new CentreonACL($contact_id, $is_admin);
-	if(!$is_admin) {
-		$aclHostString = $access->getHostsString("ID", $pearDBndo);
-	} else {
-		$aclHostString = getHostNameFromCentreon();
-	}
-	$aclHostGroups = $access->getHostGroups();
-
 	/*
 	 * Get selected option in lists
 	 */
@@ -94,11 +75,6 @@
 		$host_selected = $_GET['host'];
 	else
 		$host_selected = "";
-
-	if (isset($_GET['hostgroup']) && $_GET['hostgroup'] != "")
-		$hostgroup_selected = $_GET['hostgroup'];
-	else
-		$hostgroup_selected = "";
 
 	if (isset($_GET['facility']) && $_GET['facility'] != "")
 		$facility_selected = $_GET['facility'];
@@ -133,15 +109,9 @@
 	if (is_numeric($collector_id)) {
 	    $pearDB_syslog = new SyslogDB("syslog", $collector_id);
 	    $cfg_syslog = getSyslogOption($collector_id);
-	    $check_syslog_access = getFilterHostsMerge($pearDB_syslog, $cfg_syslog); /* Check database access */
-	    $FilterHosts = getFilterHostsACL($aclHostString, $collector_id, $is_admin);
-		$FilterHostGroups = "";
-	    if($is_admin)
-	    	$FilterHostGroups = getHostGroups();
-	    else
-			$FilterHostGroups = $aclHostGroups;
+	    $FilterHosts = getFilterHostsMerge($pearDB_syslog, $cfg_syslog);
 
-	    if (!isset($check_syslog_access)) {
+		if (!isset($FilterHosts)) {
 	    	echo "<root><error>"._("Problem to access to merge cache table. Please contact your administrator.")."</error></root>";
 	    } else {
 		    $FilterPrograms = getFilterProgramsMerge($pearDB_syslog, $cfg_syslog);
@@ -161,7 +131,6 @@
 		    echo "</headers>";
 		    
 		    echo "<filters>";
-		    echo "<filter>"._("Host Group")."</filter>";
 		    echo "<filter>"._("Host")."</filter>";
 		    echo "<filter>"._("Facility")."</filter>";
 		    echo "<filter>"._("Severity")."</filter>";
@@ -172,21 +141,6 @@
 		    echo "<buttons>";
 		    echo "<buton>"._("stop")."</buton>";
 		    echo "</buttons>";
-		    
-		    # For hosts select box
-		    echo "<hostgroups>";
-		    if (preg_match('/^\d+$/', $collector_id)) {
-		    	foreach ($FilterHostGroups as $key=>$value) {
-		    		if (strcmp($value, $hostgroup_selected) == 0) {
-		    			echo "<hostgroup selected=\"Y\">".$value."</hostgroup>";
-		    		} else {
-		    			echo "<hostgroup>".$value."</hostgroup>";
-		    		}
-		    	}
-		    } else {
-		    	echo "<hostgroup></hostgroup>";
-		    }
-		    echo "</hostgroups>";
 		    
 		    # For hosts select box
 		    echo "<hosts>";

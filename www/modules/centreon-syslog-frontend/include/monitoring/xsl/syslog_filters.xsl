@@ -9,7 +9,7 @@
 			 <xsl:for-each select="headers">
 				<xsl:element name='td'>
 					<xsl:attribute name='class'>ListColHeaderLeft</xsl:attribute>
-					<xsl:attribute name='colspan'>7</xsl:attribute>
+					<xsl:attribute name='colspan'>6</xsl:attribute>
 					<img src='./img/icones/16x16/text_view.gif'/>
 					<xsl:value-of select="."/>
 				</xsl:element>
@@ -27,32 +27,11 @@
 			 </xsl:for-each>
 		</xsl:element>
 		<xsl:element name='tr'>
-			<xsl:for-each select="hostgroups">
-				<td class="ListColHeaderCenter">
-					<xsl:element name='select'>
-						<xsl:attribute name='id'>filter_hostgroup</xsl:attribute>
-						<xsl:attribute name='onChange'>reset_selectbox("hostgroup");</xsl:attribute>
-						<xsl:attribute name='name'>filter_hostgroup</xsl:attribute>
-						<xsl:for-each select="hostgroup">
-							<xsl:variable name="tmp"><xsl:value-of select="@selected"/></xsl:variable>
-							<xsl:element name="option">
-								<xsl:attribute name='value'><xsl:value-of select="."/></xsl:attribute>
-								<xsl:choose>
-									<xsl:when test="@selected='Y'">
-										<xsl:attribute name="SELECTED"></xsl:attribute>
-									</xsl:when>
-								</xsl:choose>
-								<xsl:value-of select="."/>
-							</xsl:element>
-						</xsl:for-each>
-					</xsl:element>
-				</td>
-			</xsl:for-each>
 			<xsl:for-each select="hosts">
 				<td class="ListColHeaderCenter">
 					<xsl:element name='select'>
 						<xsl:attribute name='id'>filter_host</xsl:attribute>
-						<xsl:attribute name='onChange'>reset_selectbox("host");</xsl:attribute>
+						<xsl:attribute name='onChange'>build_ajax();</xsl:attribute>
 						<xsl:attribute name='name'>filter_host</xsl:attribute>
 						<xsl:for-each select="host">
 							<xsl:variable name="tmp"><xsl:value-of select="@selected"/></xsl:variable>
