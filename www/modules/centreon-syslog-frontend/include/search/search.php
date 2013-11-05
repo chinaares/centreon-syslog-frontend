@@ -50,17 +50,6 @@
 	bind_textdomain_codeset("messages", "UTF-8");
 	textdomain("messages");
 	
-	/*
-	 * Get ACL
-	 */
-	$pearDB = new CentreonDB();
-	$pearDBndo = new CentreonDB("ndo");
-	$contact_id = check_session($sid, $pearDB);
-	$is_admin = isUserAdmin($sid);
-	$access = new CentreonACL($contact_id, $is_admin);
-	$aclHostString = $access->getHostsString("ID", $pearDBndo);
-	$aclHostGroups = $access->getHostGroups();
-
 	# Pagination
 	include("./include/common/autoNumLimit.php");
 
