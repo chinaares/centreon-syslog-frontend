@@ -7,7 +7,7 @@
 <form {$Formfilter.attributes}>
         <table class="ListTable">
                 <tr class='ListHeader'>
-                        <td class="ListColHeaderLeft" colspan=5>
+                        <td class="ListColHeaderLeft" colspan=4>
                                 <img src='./img/icones/16x16/text_view.gif'>&nbsp;{$FILTER_TITLE}
                         </td>
                         <td align=right>
@@ -18,7 +18,7 @@
                         </td>
                 </tr>
                 <tr class='ListColLeft'>
-                        <td colspan="7" align=center>
+                        <td colspan="6" align=center>
                                 <b>{$headerMenu_collectors}</b>
                                 &nbsp;&nbsp;
                                 {$Formfilter.collectors.html}
@@ -37,7 +37,6 @@
                         </td>
                 </tr>
                 <tr class='ListHeader'>
-                                <td class="ListColHeaderCenter">{$headerMenu_hostgroup}</td>
                                 <td class="ListColHeaderCenter">{$headerMenu_host}</td>
                                 <td class="ListColHeaderCenter">{$headerMenu_facility}</td>
                                 <td class="ListColHeaderCenter">{$headerMenu_severity}</td>
@@ -45,7 +44,6 @@
                                 <td class="ListColHeaderCenter">{$headerMenu_msg}</td>
                 </tr>
                 <tr class="list_one">
-                		<td class="ListColCenter">{$Formfilter.filter_hostgroup.html}</td>
                         <td class="ListColCenter">{$Formfilter.filter_host.html}</td>
                         <td class="ListColCenter">{$Formfilter.filter_Ffacility.html}&nbsp;&nbsp;{$Formfilter.filter_facility.html}</td>
                         <td class="ListColCenter">{$Formfilter.filter_Fseverity.html}&nbsp;&nbsp;{$Formfilter.filter_severity.html}</td>
@@ -53,7 +51,7 @@
                         <td class="ListColCenter">{$Formfilter.filter_msg.html}</td>
                 </tr>
                 <tr class="list_two">
-                        <td class="ListColCenter" colspan="7">{$Formfilter.filter_search.html}&nbsp;&nbsp;&nbsp;{$Formfilter.reset.html}</td>
+                        <td class="ListColCenter" colspan="6">{$Formfilter.filter_search.html}&nbsp;&nbsp;&nbsp;{$Formfilter.reset.html}</td>
                 </tr>
         </table>
         {$Formfilter.hidden}
