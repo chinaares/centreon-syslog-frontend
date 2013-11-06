@@ -1,5 +1,7 @@
 ## Centreon-Syslog-Frontend 1.5.1
-Bug #4899: Installation Frontend not compatible with Centreon 2.4.x
+Bug #4107: Install centreon-syslog-frontend error
+Bug #4899: Installation Frontend not compatible with Centreon 2.4.x (duplicate #4107)
+Enhancement #4971: Update installation information
 
 ## Centreon-Syslog-Frontend 1.5
 Bug #2816: Displaying UTF8 in logs
