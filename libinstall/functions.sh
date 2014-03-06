@@ -14,6 +14,7 @@ CAT=""
 SED=""
 CHMOD=""
 CHOWN=""
+AKW=""
 CRON=/etc/init.d/cron
 
 ## COLOR FUNCTIONS
@@ -112,7 +113,7 @@ function log() {
 ## @Globals	GREP, CAT, SED, CHMOD, CHOWN
 #----
 function define_specific_binary_vars() {
-	local vars_bin="GREP CAT SED CHMOD CHOWN RM MKDIR CP MV"
+	local vars_bin="GREP CAT SED CHMOD CHOWN RM MKDIR CP MV AWK"
 	local var_bin_tolower=""
 	for var_bin in $vars_bin ; 
 	do
@@ -315,7 +316,7 @@ function check_phpExtensions {
 	echo -e "\tChecking php extension"
 	echo "$line"
 	
-	php_extension=$(php -i | ${GREP} "extension_dir" | awk '{print $3}')
+	php_extension=$(php -i | ${GREP} -e "^extension_dir" | awk '{print $3}')
 	ssh2_extension=$(ls $php_extension | ${GREP} "ssh2.so" | wc -l)
 	xmlwriter_extension=$(ls $php_extension | ${GREP} "xmlwriter.so" | wc -l)
 	
@@ -366,7 +367,7 @@ function update_module_name() {
 #---
 ## {Get Centreon install dir and user/group for apache}
 #----
-function get_centreon_parameters() {
+function get_centreon_parameters_24() {
 	CENTREON_DIR=`${CAT} $CENTREON_CONF/$FILE_CONF | ${GREP} "INSTALL_DIR_CENTREON" | cut -d '=' -f2`;
 	CENTREON_DIR=$(trim $CENTREON_DIR)
 	CENTREON_LOG_DIR=`${CAT} $CENTREON_CONF/$FILE_CONF | ${GREP} "CENTREON_LOG" | cut -d '=' -f2`;
@@ -448,6 +449,37 @@ function get_centreon_parameters() {
 	fi
 }
 
+function get_centreon_parameters_25() {
+	CENTREON_DIR=`${CAT} $CENTREON_CONF/$FILE_CONF_CENTCORE  | ${GREP} "INSTALL_DIR_CENTREON" | cut -d '=' -f2`;
+	CENTREON_DIR=$(trim $CENTREON_DIR)
+
+	WEB_USER=`ls -l $CENTREON_DIR/www/main.php | ${AWK} '{print $3}'`;
+	WEB_USER=$(trim $WEB_USER)
+	WEB_GROUP=`ls -l $CENTREON_DIR/www/main.php | ${AWK} '{print $4}'`;
+	WEB_GROUP=$(trim $WEB_GROUP)
+
+	RESULT=0
+	# check centreon parameters
+	if [ "$CENTREON_DIR" != "" ] ; then
+		RESULT=`expr $RESULT + 1`
+	fi
+
+	# check apache parameters
+	if [ "$WEB_USER" != "" ] ; then
+		RESULT=`expr $RESULT + 1`
+	fi
+	if [ "$WEB_GROUP" != "" ] ; then
+		RESULT=`expr $RESULT + 1`
+	fi
+
+	if [ "$RESULT" -eq 3 ]; then
+		return 1;
+	else
+		return 0;
+	fi
+}
+
+
 #---
 ## {Get location of instCentWeb.conf file}
 ##
@@ -474,7 +506,12 @@ function get_centreon_configuration_location() {
 			err=0
 			CENTREON_CONF=$temp_read
 		else
-			echo_failure "File \"$FILE_CONF\" does not exist in this directory!" "$fail"
+			if [ -f $temp_read/$FILE_CONF_CENTCORE ] ; then
+				err=0
+				CENTREON_CONF=$temp_read
+			else
+				echo_failure "File \"$FILE_CONF\" does not exist in this directory!" "$fail"
+			fi
 		fi
 	done
 }

@@ -51,6 +51,8 @@ MODULE=$RNAME.$VERSION
 LINE_SIZE=80
 LOG_VERSION="Centreon Module $MODULE installation"
 FILE_CONF="instCentWeb.conf"
+FILE_CONF_CENTCORE="instCentCore.conf"
+FILE_CONF_CENTSTORAGE="instCentStorage.conf"
 FILE_CONF_CENTPLUGIN="instCentPlugins.conf"
 CENTREON_CONF="/usr/local/centreon/etc"
 INSTALL_DIR_CENTREON="0"
@@ -193,14 +195,21 @@ if [ "$silent_install" -eq 0 ] ; then
 else
 	if [ -d $user_conf ] && [ -f $user_conf/$FILE_CONF ] ; then
 		CENTREON_CONF=$user_conf/;
+		get_centreon_parameters_24;
+		load_parameters=$?
 	else
-		echo_failure "File \"$FILE_CONF\" does not exist in your specified directory!" "$fail"
-		exit 1
+		FILE_CONF=$FILE_CONF_CENTCORE
+		if [ -f $user_conf/$FILE_CONF ] ; then
+			CENTREON_CONF=$user_conf/;
+			get_centreon_parameters_25;
+			load_parameters=$?
+		else
+			echo_failure "File \"$FILE_CONF\" does not exist in your specified directory!" "$fail"
+			exit 1
+		fi
 	fi
 fi
 
-get_centreon_parameters;
-load_parameters=$?
 if [ "$load_parameters" -eq 1 ] ; then
 	echo_success "Parameters was loaded with success" "$ok"
 	update_module_name;
