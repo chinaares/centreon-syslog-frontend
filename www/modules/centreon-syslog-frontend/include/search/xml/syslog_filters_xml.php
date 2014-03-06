@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2005-2011 MERETHIS
+ * Copyright 2005-2013 MERETHIS
  * Centreon is developped by : Julien Mathis and Romain Le Merlus under
  * GPL Licence 2.0.
  * 
@@ -59,17 +59,6 @@
 	textdomain("messages");
 	
 	/*
-	 * Get ACL
-	 */
-	$pearDB = new CentreonDB();
-	$pearDBndo = new CentreonDB("ndo");
-	$sid = session_id($_GET["sid"]);
-	$contact_id = check_session($sid, $pearDB);
-	$is_admin = isUserAdmin($sid);
-	$access = new CentreonACL($contact_id, $is_admin);
-	$aclHostString = $access->getHostsString("ID", $pearDBndo);
-	
-	/*
 	 * Get selected option in lists
 	 */
 	if (isset($_GET['collector_id']) && $_GET['collector_id'] != "" )
@@ -113,8 +102,8 @@
 	if (is_numeric($collector_id)) {
 	    $pearDB_syslog = new SyslogDB("syslog", $collector_id);
 	    $cfg_syslog = getSyslogOption($collector_id);
-	    $FilterHosts = getFilterHostsACL($aclHostString, $collector_id, $is_admin);
-	    $FilterPrograms = getFilterProgramsMerge($pearDB_syslog, $cfg_syslog);
+	    $FilterHosts = getFilterHostsMerge($pearDB_syslog, $cfg_syslog);
+		$FilterPrograms = getFilterProgramsMerge($pearDB_syslog, $cfg_syslog);
 	}
 	
 	$FilterFacilities = getAllFacilities();

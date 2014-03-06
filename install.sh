@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Copyright 2005-2011 MERETHIS
+# Copyright 2005-2013 MERETHIS
 # Centreon is developped by : Julien Mathis and Romain Le Merlus under
 # GPL Licence 2.0.
 # 
@@ -60,10 +60,9 @@ CENTREON_LOG="0"
 CENTREON_VARLIB="0"
 WEB_USER="0"
 WEB_GROUP="0"
-NAGIOS_USER="0"
-NAGIOS_GROUP="0"
-NAGIOS_PLUGIN="0"
-NAGIOS_VAR="0"
+CENTREON_USER="0"
+CENTREON_GROUP="0"
+PLUGIN_DIR="0"
 PWD=`pwd`
 TEMP=/tmp/install.$$
 _tmp_install_opts="0"
