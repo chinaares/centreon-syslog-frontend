@@ -1,3 +1,10 @@
+## Centreon-Syslog-Frontend 1.5.2
+Bug #4689: Frontend - insufficient ORDER BY datetime
+Bug #5078: centreon-syslog-frontend-1.5.1-alpha
+Bug #5078: centreon-syslog-frontend-1.5.1-alpha
+Bug #5337: Installation script doesn't work with Centreon 2.5.x
+Assistance #4328: No download possible
+
 ## Centreon-Syslog-Frontend 1.5.1
 Bug #4107: Install centreon-syslog-frontend error
 Bug #4899: Installation Frontend not compatible with Centreon 2.4.x (duplicate #4107)

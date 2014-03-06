@@ -41,7 +41,7 @@
 # Define module information
 RNAME="Centreon Syslog Frontend"
 NAME="centreon-syslog-frontend"
-VERSION="1.5.1"
+VERSION="1.5.2"
 FORGE_URL="http://forge.centreon.com/projects/show/centreon-syslog"
 CRON_FILE="centreon_syslog_frontend.cron"
 MODULE_DIR="www/modules/"$NAME
