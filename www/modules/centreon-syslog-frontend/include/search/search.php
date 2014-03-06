@@ -77,17 +77,11 @@
 	include_once("./include/common/quickSearch.php");
 
 	# Set limit & num
-	$DBRESULT =& $pearCentreonDB->query("SELECT maxViewMonitoring FROM general_opt LIMIT 1");
+	$DBRESULT =& $pearCentreonDB->query("SELECT `value` FROM options WHERE `key`=\"maxViewMonitoring\" LIMIT 1");
+	$row = $DBRESULT->fetchRow();
+	$gopt = $row["value"];
 	if (PEAR::isError($DBRESULT)) {
-		# For Centreon 2.1 compatibility
-		$DBRESULT =& $pearCentreonDB->query("SELECT `value` FROM options WHERE `key`=\"maxViewMonitoring\" LIMIT 1");
-		$row = $DBRESULT->fetchRow();
-		$gopt = $row["value"];
-		if (PEAR::isError($DBRESULT)) {
-			print "Mysql Error : ".$DBRESULT->getMessage()."\n";
-		}
-	} else {
-		$gopt = array_map("myDecode", $DBRESULT->fetchRow());
+		print "Mysql Error : ".$DBRESULT->getMessage()."\n";
 	}
 
 	# Get end Post values
