@@ -173,9 +173,9 @@
 		$end_sql = strftime("%Y-%m-%d " , $EndDate).$EndTime;
 
 	if (count( $sql_filter ) > 0 ) 
-		$req = "SELECT * FROM ".$cfg_syslog["db_table_logs_merge"]." WHERE datetime > '$start_sql' AND datetime <= '$end_sql' AND ". $req_sql_filter." ORDER BY datetime";
+		$req = "SELECT * FROM ".$cfg_syslog["db_table_logs_merge"]." WHERE datetime > '$start_sql' AND datetime <= '$end_sql' AND ". $req_sql_filter." ORDER BY datetime DESC, seq DESC";
 	else
-		$req = "SELECT * FROM ".$cfg_syslog["db_table_logs_merge"]." WHERE datetime > '$start_sql' AND datetime <= '$end_sql' ORDER BY datetime";
+		$req = "SELECT * FROM ".$cfg_syslog["db_table_logs_merge"]." WHERE datetime > '$start_sql' AND datetime <= '$end_sql' ORDER BY datetime DESC, seq DESC";
 
 	$nom = "syslog_events";
 

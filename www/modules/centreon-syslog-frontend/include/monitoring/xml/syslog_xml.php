@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2005-2011 MERETHIS
+ * Copyright 2005-2013 MERETHIS
  * Centreon is developped by : Julien Mathis and Romain Le Merlus under
  * GPL Licence 2.0.
  * 
@@ -56,17 +56,6 @@
 	textdomain("messages");
 	
 	/*
-	 * Get ACL
-	 */
-	$pearDB = new CentreonDB();
-	$pearDBndo = new CentreonDB("ndo");
-	$sid = session_id($_GET["sid"]);
-	$contact_id = check_session($sid, $pearDB);
-	$is_admin = isUserAdmin($sid);
-	$access = new CentreonACL($contact_id, $is_admin);
-	$aclHostString = $access->getHostsString("ID", $pearDBndo);
-	
-	/*
 	 * Get selected option in lists
 	 */
 	if (isset($_GET['collector_id']) && $_GET['collector_id'] != "")
@@ -109,19 +98,9 @@
 	if (isset($_GET['program']) && $_GET['program'] != "" && $_GET['program'] != "undefined")
 		array_push($sql_filter ," (program = '". htmlentities($_GET['program'] , ENT_QUOTES) ."') ");
 
-	if (isset($_GET['hostgroup']) && $_GET['hostgroup'] != "" && $_GET['hostgroup'] != "undefined") {
-		array_push($sql_filter ," (host IN (". getSyslogHostFromHostgroups($_GET['hostgroup']) .")) ");
-	} else {
-		if (isset($_GET['host']) && $_GET['host'] != "" && $_GET['host'] != "undefined") {
-			array_push($sql_filter ," (host IN (". getSyslogHostFromCentreon($_GET['host']) .")) ");
-		} else {
-			if ($is_admin)
-			array_push($sql_filter ," (host IN (". getFullSyslogHostFromCentreon($collector_id, $aclHostString) .")) ");
-			else
-			array_push($sql_filter ," (host IN (". getAllSyslogHostFromCentreon($collector_id, $aclHostString) .")) ");
-		}
-	}
-
+	if (isset($_GET['host']) && $_GET['host'] != "" && $_GET['host'] != "undefined")
+		array_push($sql_filter ," (host = '". htmlentities($_GET['host'] , ENT_QUOTES) ."')  ");
+			
 	if (isset($_GET['facility']) && $_GET['facility'] != "" && $_GET['facility'] != "undefined") {
 		if ((strcmp($Ffacility_selected, "") == 0) || (strcmp($Ffacility_selected, "eq") == 0)) {
 			array_push($sql_filter ," (facility = '". htmlentities($_GET['facility'] , ENT_QUOTES) ."') ");
@@ -164,9 +143,9 @@
 		$req_sql_filter = join(" AND " , $sql_filter);
 
 	if ($req_sql_filter != "")
-		$req = "SELECT * FROM ".$cfg_syslog["db_table_logs"]." WHERE ".$req_sql_filter." ORDER BY datetime DESC LIMIT 50";			
+		$req = "SELECT * FROM ".$cfg_syslog["db_table_logs"]." WHERE ".$req_sql_filter." ORDER BY datetime DESC, seq DESC LIMIT 50";			
 	else
-		$req = "SELECT * FROM ".$cfg_syslog["db_table_logs"]." ORDER BY datetime DESC LIMIT 50";	
+		$req = "SELECT * FROM ".$cfg_syslog["db_table_logs"]." ORDER BY datetime DESC, seq DESC LIMIT 50";	
 
 	$DBRESULT =& $pearDB_syslog->query($req);
 
