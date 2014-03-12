@@ -5,7 +5,7 @@ Using packages
 Merethis provides RPM for its products through Centreon Entreprise Server (CES). Open source products are available for free from our
 repository.
 
-These packages have been successfully tested with CentOS 5 and RedHat 5.
+These packages have been successfully tested with CentOS and RedHat 5.x / 6.x.
 
 *************
 Prerequisites
