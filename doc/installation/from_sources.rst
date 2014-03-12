@@ -4,7 +4,7 @@ Using sources
 
 Centreon Syslog Team provides source packages.
 
-These packages have been successfully tested with CentOS/RedHat 5.x, Debian 5.x and Ubuntu 10.x.
+These packages have been successfully tested with CentOS/RedHat 5.x / 6.x, Debian 5.x and Ubuntu 10.x.
 
 *************
 Prerequisites
@@ -12,7 +12,7 @@ Prerequisites
 
 Before starting to install Centreon Syslog Frontend module you need the follwing packages:
 
-* Centreon 2.2.x, 2.3.x, 2.4.x
+* Centreon 2.2.x, 2.3.x, 2.4.x, 2.5.x
 * libssh2 >= 1.2.1
 * ssh2 >= 0.11.0
 
