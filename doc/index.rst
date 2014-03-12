@@ -40,10 +40,3 @@ This documentation will explain to you how to install, use and manage a Centreon
   configuration/index
   user/index
 
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
-
