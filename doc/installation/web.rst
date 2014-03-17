@@ -4,7 +4,7 @@
 Web installation
 ################
 
-Go to web interface of Centreon then navigate to the menu "Administration -> Modules -> Setup".
+Go to web interface of Centreon then navigate to the menu "Administration -> Extentions -> Setup".
 
 A line should reference the Centreon Syslog Frontend module but it is not installed yet.
 To complete the installation, click on the icon located right on the line as shown by the red box:
