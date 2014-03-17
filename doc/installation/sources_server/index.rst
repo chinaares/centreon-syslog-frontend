@@ -62,8 +62,23 @@ Start installation using following command::
   Changing macros                                            OK
   Setting right                                              OK
   Setting owner/group                                        OK
+  Delete old install module                                  OK
+  Copying module                                             OK
+
+  ------------------------------------------------------------------------
+          End of Centreon Syslog Frontend installation
+  ------------------------------------------------------------------------
+  Installation of Centreon Syslog Frontend is finished       OK
+  See README and the log file for more details.
   
-.. todo:: finir capture shell
+  ################################################################################
+  #                                                                              #
+  #       Go to the URL : http://your-server/centreon/ to finish the setup       #
+  #                                                                              #
+  #       Report bugs at                                                         #
+  #          http://forge.centreon.com/projects/show/centreon-syslog             #
+  #                                                                              #
+  ################################################################################
 
 Your module is installed
 
