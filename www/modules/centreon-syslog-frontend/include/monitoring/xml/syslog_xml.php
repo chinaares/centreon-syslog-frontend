@@ -199,7 +199,7 @@
 	 		$buffer->writeElement("severity", $row["priority"]);
 	 		$buffer->writeElement("datetime", $row["datetime"]);
 	 		$buffer->writeElement("program", $row["program"]);
-	 		$buffer->writeElement("msg", utf8_decode($row["msg"]));
+	 		$buffer->writeElement("msg", $row["msg"], 0);//$buffer->writeElement("msg", utf8_decode($row["msg"]));//fixed chinese bug
 	 		$style == "list_two" ? $style = "list_one" : $style = "list_two";
 	 		$buffer->writeElement("style", $style); 		
 	 		$buffer->writeElement("prio_class", $priority_color[$row['priority']]);
